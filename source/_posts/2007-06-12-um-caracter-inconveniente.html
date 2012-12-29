@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Um Caracter Inconveniente"
+date: 2007-06-12T17:19:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Não é incomum passar pelo problema de tentar apagar um arquivo cujo nome começa com o caracter '-', como no exemplo abaixo:<br /><br /><pre><code>$ rm -arquivo.txt<br />rm: invalid option -- a</code></pre><br /><br />Não adianta proteger a string pois não é o Shell que atrapalha a ação, e sim o próprio programa que reconhece o símbolo - de uma forma diferente. O programa <span style="font-weight:bold;">rm</span> aceita, alem de uma lista de arquivos para apagar, uma série de opções que modificam o seu funcionamento. As mais comuns são:<br /><br /><pre><code>  -f  ignore nonexistent files, never prompt<br />  -i  prompt before any removal<br />  -r  remove the contents of directories recursively<br />  -v  explain what is being done</code></pre><br /><br />As opções normalmente pode ser colocadas em qualquer lugar da lista de parâmetros.<br /><br /><pre><code>$ rm -v a.out<br />removed `a.out'<br /><br />$ rm a.out -v <br />removed `a.out'</code></pre><br /><br />Quem avalia os parâmetros normalmente é uma função chamada getopt (presente em várias linguagens, inclusive no Bash). Bom, vimos que o - é um caracter especial para o getopt, mas existe alguma forma de <span style="font-weight:bold;">burlar</span> isso?<br /><br />Sim! O proprio getopt prove essa funcionalidade: o uso dos simbolos '--'. Eles interrompem a expansão de parâmetros e tudo o que vier <span style="font-weight:bold;">depois</span> desses dois caracteres será interpretado literalmente pelo programa.<br /><br />Assim sendo:<br /><br /><pre><code>$ rm -v -- -arquivo.txt<br />removed `-arquivo.txt'</code></pre><br /><br />Esta dica está no help do comando rm e vale para todos os programas que usem getopts.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>La Batalema Pitonisto</div>
+<div class='content'>
+É Tiago,<BR/><BR/>Nunca caí nessa do arquivo começado com sinal de menos, não por ser mais esperto que os outros, mas porque sou uma traça de manual. =)<BR/><BR/>Basta um man rm para resolver o problema (foi o que fiz na primeira vez em que me deparei com um arquivo desses).<BR/><BR/>Mas sabia que existe um livro que muitos chamam de «A Bíblia Negra do Hacker» (creio que a alcunha correta seria «o livreto negro de bolso do lammer»)? Esse livro apresenta a questão do «ataque» (ó! pretenção) onde o «atacante» (uf!) usa :> para criar arquivos começando com sinal de menos, cuja única forma de resolver o problema, segundo o livro, é mover todos os demais arquivos para outro diretório e apagar (argh!) o diretório onde estão os arquivos maliciosos.<BR/><BR/>É de se escangalhar de rir&hellip; um verdadeiro livreto de piadas sujas.<BR/><BR/>[]'s<BR/>Cacilhas</div>
+</div>
+</div>

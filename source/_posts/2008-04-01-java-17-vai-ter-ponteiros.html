@@ -1,0 +1,36 @@
+---
+layout: post
+title: "Java 1.7 vai ter Ponteiros!!!"
+date: 2008-04-01T19:28:00-03:00
+---
+
+<div class='post'>
+Sensacional.<br /><br />Um dos recursos mais uteis do C finalmente conquistou o mundo java: a notação de ponteiros do Kernighan & Ritchie.<br /><br /><code><pre>public class Example{<br />    public static void main(String [] args){<br />       int *x, y=0;<br />       x = &y;<br />       System.out.println("O valor de x eh " + *x);<br />    }<br />}</pre></code><br /><br />Agora será possivel fazer, em java:<br /><br />- Passar primitivos por referência.<br />- Usar malloc, realloc e free.<br />- Utilizar ponteiros void para converter uma URL em String, ou um Throwable em um List.<br />- Sem falar que as Strings terão um caracter a mais no fim: o famoso \0 (na verdade a classe String deve desaparecer no Java 1.8, sendo substituida pelo bom e velho array de char)<br /><br />Parabéns Sun!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+É claudemiro, vc deveria observar a data que eu postei essa mensagem :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Claudemiro</div>
+<div class='content'>
+cadê a fonte disso? cara sinto muito mas acho que isso não vai acontecer. e para o tiago stos. C sempre tera ponteiros. os ponteiros são um dos recursos mais importantes da linguagem c.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Sinto falta de um eval() no Java.<BR/><BR/>eval("variavel" +i + " = " + j);</div>
+</div>
+<div class='comment'>
+<div class='author'>tiago_stos</div>
+<div class='content'>
+Estranho observar essas mudanças nas linguagens. Ainda hoje ouvi dizer que na próxima versão do gcc a linguagem C não usará mais ponteiros, isso para fascilitar o aprendizado e aumentar o número de programadores C...</div>
+</div>
+<div class='comment'>
+<div class='author'>Claudio Rodrigues</div>
+<div class='content'>
+Sinto a falta de métodos destrutores.</div>
+</div>
+</div>

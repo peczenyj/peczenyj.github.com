@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Ruby e o method_missing"
+date: 2007-09-28T11:43:00-03:00
+categories:
+ - Ruby
+---
+
+<div class='post'>
+Os objetos em Ruby possuem um método chamado 'respond_to?' para verificar se o objeto possui (ou melhor, se ele responde a) um determinado método. Em uma linguagem dinâmica como o ruby, onde podemos incluir um método numa classe em <span style="font-style:italic;">runtime</span>, é um recurso muito necessário, ainda mais se pensarmos em termos de <span style="font-style:italic;">Duck Typing</span>.<br /><br />Em caso de dúvida, basta fazer um <span style="font-weight:bold;">if</span>, afinal chamar um método que não existe causa um <span style="font-weight:bold;">NoMethodError</span>, certo?<br /><br />Depende. Observe:<br /><br /><pre><code>class A<br />        def xxx()<br />                puts "xxx"<br />        end<br />        def method_missing(m, *args)<br />                puts "nao tenho esse metodo: #{m}"<br />        end<br />end<br /><br />a = A.new<br />a.xxx<br /># aqui normalmente daria erro e o script seria abortado <br /># sem o rescue adequado<br />a.yyy </code></pre><br /><br />Resultado:<br /><pre>~> ruby A.rb<br />xxx<br />nao tenho esse metodo: yyy</pre><br /><br />Eu sobreescrevi o método 'method_missing', que como o próprio nome indica, intercepta uma chamada a um método inexistente. Divertido, não?</div>

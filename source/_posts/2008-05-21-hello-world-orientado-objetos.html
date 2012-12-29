@@ -1,0 +1,48 @@
+---
+layout: post
+title: "Hello World orientado a objetos"
+date: 2008-05-21T13:47:00-03:00
+categories:
+ - Programacao
+---
+
+<div class='post'>
+Hoje em dia é raro um desenvolvedor conhecer bem apenas uma linguagem. Em nome da multidisciplinaridade, decidi mostrar algums exemplos do mesmo programa: uma classe HelloWord com um construtor que recebe uma mensagem ("ola mundo") e um método show() que imprime essa mensagem.<br /><br />Vejamos um exemplo em C++<br /><br /><pre><code>#include &lt;iostream&gt;<br />#include &lt;string&gt;<br />using namespace std;<br /><br />class HelloWorld{<br />        string mensagem;<br />        public:<br />        HelloWorld(string mensagem) { // construtor!<br />                this-&gt;mensagem = mensagem;<br />        }<br />     <br />        void show() { // metodo show<br />                cout &lt;&lt; "mensagem: " &lt;&lt; this-&gt;mensagem &lt;&lt; endl;<br />        }<br />};<br />int main()<br />{<br />        HelloWorld obj("ola mundo");<br />        obj.show();<br />        return(0);<br />}<br /></code></pre><br /><br />Agora o mesmo código em Java:<br /><br /><pre><code>package Hello;<br /><br />public class HelloWorld{<br />        private String mensagem;<br />        public HelloWorld(String mensagem){ <br />                this.mensagem = mensagem;<br />        }<br />        public void show() { <br />                System.out.println("mensagem: " + mensagem);<br />        }<br />        public static void main(String [] args){<br />                HelloWorld obj = new HelloWorld("ola mundo");<br />                obj.show();<br />        }<br />}</code></pre><br /><br />Agora, percebam a simplicidade do Ruby:<br /><pre><code>class HelloWorld<br />        def initialize(mensagem)<br />                @mensagem = mensagem <br />        end<br />        def show <br />                puts "mensagem: #{@mensagem}"<br />        end<br />end<br /><br />obj = HelloWorld.new "ola mundo"<br />obj.show</code></pre><br /><br />Agora em Perl (sim, Perl!)<br /><pre><code>package HelloWorld;<br /><br />sub new<br />{<br />        my ($class, $mensagem) = @_;<br />        my $self = {  mensagem =&gt; $mensagem  };<br />        bless $self, $class; # abençoando a variavel!<br />        return $self;<br />}<br /><br />sub show<br />{<br />        my $self = shift; # sim, ela vem como argumento!<br />        print "mensagem: " . $self-&gt;{mensagem} . "\n";<br />}<br /><br />my $obj = new HelloWorld("ola mundo");<br />$obj-&gt;show(); # parece artificial, não?<br /><br />1;</code></pre><br /><br />PHP também é: <br /><pre><code>&lt;?php<br /><br />Class HelloWorld{<br />        var $mensagem = "";<br />        function HelloWorld($mensagem){<br />                $this-&gt;mensagem = $mensagem;<br />        }<br />        function show(){<br />                echo "mensagem : " . $this-&gt;mensagem . "&lt;br/&gt;";<br />        }<br />}<br /><br />$obj = new HelloWorld("ola mundo");<br />$obj-&gt;show();<br />?&gt;</code></pre><br /><br />Por fim, vamos criar um tipo usando JavaScript<br /><pre><code>function HelloWorld(mensagem){<br />        this.mensagem = mensagem;<br />        this.show = function(){<br />                alert("mensagem: " + this.mensagem);<br />        }<br />}<br /><br />var obj = new HelloWorld("ola mundo");<br />obj.show();</code></pre><br /><br />Edit: Python, atendendo a diversos pedidos<br /><pre><code>class HelloWorld:<br />    def __init__(self, arg):<br />        self.message = arg<br /><br />    def show(self):<br />        print "mensagem: ", self.message<br /><br />hello = HelloWorld("Ola Mundo")<br />hello.show()</code></pre><br /><br />A diferença entre uma linguagem e outra está (entre outras coisas) na sintaxe: em Perl eu tenho que criar os mecanismos na mão (com bless e receber $self) mas em Java e Ruby é tudo muito natural. Em Javascript eu não tenho uma construtor propriamente dito (muito menos classes) mas uma função (e crio um objeto dando um new nessa função). <br /><br />Vou abordar o tema "herança" no proximo post, espero que seja útil :)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>douttorx</div>
+<div class='content'>
+Opa cara, que legal o post.<BR/>estava procurando hello world em C++.<BR/>um abraço.</div>
+</div>
+<div class='comment'>
+<div class='author'>Cauê</div>
+<div class='content'>
+Oi cara!<BR/>Sou do Rio grande do sul e faço faculdade de Eng.Elétrica na Unipampa de Alegrete e vi um post teu em um site sobre um programa em C++ que precisava usar a biblioteca math.<BR/>Tirei uma duvida ali contigo pq não lembrava que tinha que passar o grau pra radianos antes de transformar.<BR/>Eu gostaria que se quando eu tiver alguma duvida eu posso te avisar e quem sabe evoluir meus conhecimentos em C++.<BR/>Abraço.<BR/>Meu msn é : caue_cmm@hotmail.com</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+Bah, Perl dói o olho. hehe</div>
+</div>
+<div class='comment'>
+<div class='author'>Airton Arantes</div>
+<div class='content'>
+Só para complementar o post do amigo,Olhem esse post no meu blog:<BR/><BR/>http://defopenblog.wordpress.com/2008/05/07/e-eu-que-pensei-que-ja-tinha-visto-de-tudo/</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+LG, pena que o comentario destruiu a indentação (que é fundamental no Python). Também esqueci do C#, mas é 99% igual ao Java.<BR/><BR/>Só não consegui fazer um exemplo em SmallTalk :(</div>
+</div>
+<div class='comment'>
+<div class='author'>lg</div>
+<div class='content'>
+Tiago,<BR/><BR/>Muito bacana seu post. <BR/>Colaborando com a proposta do seu texto, fiz um código, em Python, que ficou assim:<BR/><BR/>class helloWord():<BR/>    def __init__(self, msg):<BR/>        self.hello_msg = msg<BR/>    def show(self):<BR/>        print self.hello_msg<BR/> <BR/>a = helloWord("Ola Mundo !")<BR/>a.show()<BR/><BR/>Abraços,<BR/>Luiz Guilherme <BR/>lg.aldabalde em  gmail.com</div>
+</div>
+<div class='comment'>
+<div class='author'>Gallimimus</div>
+<div class='content'>
+Pô Thiago faltou em Shell Script ahahahah, abraços e parabéns pelo post.<BR/><BR/>Carlos Ferreira<BR/>http://carnivorosemdentes.blogspot.com/</div>
+</div>
+</div>

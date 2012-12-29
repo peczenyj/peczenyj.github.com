@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Resolvendo Problemas Comuns 5 - The parameter list is too long"
+date: 2007-07-26T12:50:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Essa é raro, mas acontece<br /><br /><code><pre>$ cd /meu/diretorio<br />$ rm *.dll<br />Error: The parameter list is too long</pre></code><br /><br /> - O que? Eu não posso apagar todos os meus 3459834574935734957 arquivos?<br /><br />Bom, primeiro vamos analisar o que aconteceu: a linha de comando 'rm *.dll' é expandida pelo shell corrente a 'rm arquivo1.dll arquivo2.dll ... arquivoN.dll' e, nesse caso, esta lista de parâmetros foi demais pro probrezinho do rm. <br /><br />Com o <span style="font-weight:bold;">xargs</span> é facil de resolver!<br /><code><pre>$ find /meu/diretorio -name '*.dll' -print | xargs rm</pre></code><br /><br />O que ele faz? o xargs recebe pela <span style="font-style:italic;">stdin</span> toda uma lista de parâmetros que será entregue ao programa rm. Se esta lista extender o limite do sistema, então o xargs, inteligentemente, irá executar o rm uma vez, com a lista que for possível e, depois, executar de novo, até que todos os parâmetros sejam lidos. Aliás o xargs possui muitas opções interessantes, vale a pena dar uma estudada nele.<br /><br />E assim todas as dll's são apagadas -- em definitivo, pois com rm 'tr00' não tem undelete ;-)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Ah sim, quem limita/expande os coringas é o shell. Acho que escrevi uma frase ambígua -- valeu!</div>
+</div>
+<div class='comment'>
+<div class='author'>eljunior</div>
+<div class='content'>
+na verdade a lista de parâmetros não foi demais para o `rm', quem limita isso é o próprio shell (tanto é que, num caso desses, nem um ls * funciona...). também não funcionaria somente `xargs rm', se fosse limitação do `rm'; seria necessário limitar a quantidade de parâmetros com a opção -n pro `xargs'. ;-)<BR/><BR/>nas máquinas que usei, o limite do bash geralmente fora 32768 parâmetros...<BR/><BR/>falou!</div>
+</div>
+</div>

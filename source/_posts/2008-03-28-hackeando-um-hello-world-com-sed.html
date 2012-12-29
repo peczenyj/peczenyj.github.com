@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Hackeando um Hello World com sed"
+date: 2008-03-28T17:55:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Fantástico o que o sed pode fazer!<br /><br /><pre><code>$ cat a.c<br />main(){ <br />     puts("hello world"); <br />}<br />$ gcc a.c<br />$ ./a.out <br />hello world<br />$ sed -i 's/hello world/_ola mundo_/'./a.out <br />$ ./a.out <br />_ola mundo_</code></pre></div>

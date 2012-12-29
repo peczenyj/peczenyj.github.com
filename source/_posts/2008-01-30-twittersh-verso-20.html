@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Twitter.sh versão 2.0"
+date: 2008-01-30T09:02:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+O Bruno me deu uma ótima sugestão: um simples <span style="font-style:italic;">usage</span>.<br /><br />Entretanto ontem eu fiquei batendo cabeça com os inúmeros tac/tail's mas percebi q um sed resolvia a questão. Alias é possivel também passar uma lista de parâmetros também!<br /><pre><code>#!/bin/bash<br />TWIURL=http://m.twitter.com   # utilizando versão 'mobile' do twitter<br />USAGEMSG="Usage: $(basename $0) &lt;twitter-user&gt; [user list...]"<br /><br />[ -z "$1" ] && { echo "${USAGEMSG}" ; exit 1 ; }<br />for i in "$@" ; do<br />    echo "==============================="<br />    links -dump "${TWIURL}/${i}" | sed -r '1,3d;/^\ +Older [0-9]+/,$d'<br />done</code></pre><br />Agora chega :)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Oi Paulo,<BR/><BR/>O Gabriel Stein me deu uma ótima ideia de como postar no twitter:<BR/><BR/>http://gabrielstein.org/?p=181<BR/><BR/>Estou pensando em fazer um script simples para ler e postar no twitter e isso pode evoluir para muita coisa :) Se quiser colaborar ou indicar como eu poderia divulgar mais, sinta-se à vontade.</div>
+</div>
+<div class='comment'>
+<div class='author'>Paulo Diovani</div>
+<div class='content'>
+Script interessante.<BR/>Já pensou em fazer algum widget para desktop com ele? Ou quem sabe divulgar em alguma comunidade internacional para alguém fazê-lo.</div>
+</div>
+</div>

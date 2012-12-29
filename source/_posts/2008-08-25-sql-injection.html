@@ -1,0 +1,33 @@
+---
+layout: post
+title: "SQL Injection - A fina arte de criar paginas realmente inseguras"
+date: 2008-08-25T13:11:00-03:00
+categories:
+ - Security
+---
+
+<div class='post'>
+Este post diz tudo:<br /><img src="http://imgs.xkcd.com/comics/exploits_of_a_mom.png"/><br /><br />Por mais que existam alertas sobre os perigos de <a href="http://en.wikipedia.org/wiki/SQL_injection">SQL Injection</a>, muita gente resolve ignorar e criar sistemas cujas consultas ao banco de dados são feitas através de concatenações de strings com os dados oriundos do usuário.<br /><br />Uma das primeiras coisas que aprendi quando trabalhava como testador foi tentar este código em telas de login:<br /><br /><pre><code>' or '1' ='1<code></pre><br /><br />Imagine que o impacto dessa belezinha em uma query como esta:<br /><br /><pre><code>"SELECT USUARIO FROM TABELA WHERE USUARIO = '" + usuario + "' AND SENHA = '" + senha + "'"</code></pre><br />temos, então:<br /><br /><pre><code>SELECT USUARIO FROM TABELA WHERE USUARIO = 'qqCoisa' AND SENHA = '' or '1' ='1'</code></pre><br /><br />Consegui efetuar o login devido a extrema <b>preguiça</b> do desenvolvedor que nunca se interessou em estudar um pouco de segurança, muito menos sabe o que é um <b>prepared statement</b>. Isso no melhor dos casos, posso querer inserir um DROP TABLE da vida facilmente, pois o sistema está, literalmente, de pernas abertas.<br /><br />Recentemente um colega testou esse tipo de ataque contra um site de uma <span style="font-style:italic;">instituição</span> por curiosidade. Ele conseguiu obter um arquivo contento a senha e o IP do banco de dados e conseguiu acessa-lo, perceberam o perigo?<br /><br />Sinceramente? Se eu vejo um site que cai nesse truque eu não sinto pena. Não vou zoar ou fazer algo maléfico, as vezes até tento avisar, mas não sei se vale a pena: ou o sistema custou muito barato ou custou muito caro, foi produzido por uma consultoria que lucou 1980% em cima do salario do estágiario e que, por mais documentos que tenham produzido não conseguiram fazer algo básico: um site seguro contra hackers que estudam pela Wikipedia.<br /><br />Se o seu site não pode receber aspas simples, duplas ou %, tenha MUITO medo, pois alguem VAI fazer algo em breve...</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Marcio</div>
+<div class='content'>
+Muito bom o post!</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcio</div>
+<div class='content'>
+muito bom o post!</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Essa tirinha do xkcd é uma das melhores.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Brincar com SQLInjection é divertido... principalmente em dias de tédio.</div>
+</div>
+</div>

@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Extended Globbing"
+date: 2007-08-28T15:15:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Não sei se é conhecimento de todos mas o Bash possui, alem do globbing normal (a expansão * ? e [a-z] de nomes de arquivos e diretórios), um globbing extendido.<br /><br />Acho que, em alguns casos, podera ser BEM util, eliminando um pipe para um grep por exemplo.<br /><br />São eles (direto do man)<br /><pre>?(pattern-list)<br />     Matches zero or one occurrence of the given patterns<br />*(pattern-list)<br />     Matches zero or more occurrences of the given patterns<br />+(pattern-list)<br />     Matches one or more occurrences of the given patterns<br />@(pattern-list)<br />     Matches exactly one of the given patterns<br />!(pattern-list)<br />     Matches anything except one of the given patterns</pre><br />Para poder utiliza-lo precisa executar o shopt conforme o exemplo abaixo<br /><br /><pre><code>$ shopt -s extglob<br /><br />$ ls<br />file  filename  filenamename  fileutils<br /><br />$ ls file?(name) # padrão pode aparecer 0 a 1 vezes<br /> <br />file  filename<br /><br />$ ls file*(name) # padrão pode aparecer 0 a N vezes<br />file  filename  filenamename<br /><br />$ ls file+(name) # padrão pode aparecer 1 a N vezes<br />filename  filenamename<br /><br />$ ls file@(name) # padrão deve aparecer 1 unica vez<br />filename<br /><br />$ ls file!(name) # divertido esse! padrão NÃO deve aparecer<br />file  filenamename  fileutils<br /><br />$ ls file+(name|utils) # cada padrão pode aparecer 1 a N vezes<br />filename  filenamename  fileutils<br /><br />$ ls file@(name|utils) # "lembra" um file{name,utils} ;-)<br />filename  fileutils</code></pre></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Para um administrador é interessante saber as opções huponexit e restricted_shell -- e depois dizem que o shell é complicado.<BR/><BR/>Po é cada coisa util que tem :)</div>
+</div>
+<div class='comment'>
+<div class='author'>NetWalker</div>
+<div class='content'>
+Hail again Peczenyj. :)<BR/>Esse recurso extended globbing realmente é uma mão-na-roda. Isso sem falar em outros built-in do shell acessíveis pelo shopt. Lembrei de um comum q alguns odeiam, e tem quem goste: o cdspell; e mesmo o cmdhist.<BR/>No mais vale lembrar, pra quem visita, o óbvio desses globbings, q é um globbing poder "englobbar" outro. :P<BR/>Assim sendo: ls file!(+(name))<BR/>Eliminando qualquer ocorrência de name.<BR/>Até +.<BR/><BR/>NetWalker</div>
+</div>
+</div>

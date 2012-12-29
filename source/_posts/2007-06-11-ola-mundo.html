@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Ola Mundo!"
+date: 2007-06-11T16:42:00-03:00
+categories:
+ - C
+ - Java
+ - Shell
+---
+
+<div class='post'>
+Quando aprendemos uma nova linguagem de programação, normalmente o primeiro exemplo é o famoso "Hello World!", ou seja, um pequeno código que imprime uma mensagem na tela do computador.<br /><br />Em C, ele seria assim:<br /><br /><pre><code>/* Um comentário */<br />#include &lt;stdio.h&gt;<br /><br />int main ()<br />{<br />  puts ("Hello world!");<br />  return 0;<br />}</code></pre><br /><br />As vezes o <span style="font-weight:bold;">puts</span> é substituido pelo multifacetado <span style="font-weight:bold;">printf</span> no exemplo, mas o efeito é o mesmo. Vejamos como seria em Java.<br /><br /><pre><code>/* Comentarios, igual ao C */<br />package Hello;<br /><br />public class HelloWorld {<br />     public static void main(String[] args) {<br />         System.out.println("Hello world");<br />     }<br /> }</code></pre><br /><br />As diferenças são várias, apesar da estrutura ser semelhante. Em C nós temos funções parametrizadas, enquanto em Java nós temos objetos (System.out) e métodos (println). <br /><br />Por fim, vamos ver um exemplo em Shell Script<br /><br /><pre><code>#!/bin/bash<br /># comentario<br />echo "Hello World!"</code></pre><br /><br />Diferente de uma linguagem de programação, aqui o interpretador de comandos (normalmente) chama um programa capaz de escrever mensagens para o usuario. Ou seja, alguem ja escreveu um "Hello World!" genérico o suficiente para nós. <br /><br />Cada linguagem possui um propósito. Enquanto vc projeta sistemas operacionais e drivers em C, Java ocupa uma área no desenvolvimento de grandes sistemas corporativos  enquanto o shell está presente na administração de determinadas tarefas de um servidor (normalmente rodando algum sabor de *nix). <br /><br />Não basta comparar um hello world, pois é preciso ver muito além da sintaxe e recursos da linguagem, mas normalmente se começa por ele.<br /><br />Outros exemplos podem ser encontrados <a href="http://www.roesler-ac.de/wolfram/hello.htm">aqui</a>.<br /><br />Abraços</div>

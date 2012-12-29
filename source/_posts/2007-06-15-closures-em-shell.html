@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Closures em Shell"
+date: 2007-06-15T17:27:00-03:00
+categories:
+ - Ruby
+ - Linux
+ - Shell
+---
+
+<div class='post'>
+Uma das coisas mais impressionantes (pelo menos para mim) da linguagem Ruby são os Closures:<br /><br /><pre><code>$ ruby -e 'r=0...3 ; r.each { puts "oi"}<br />oi<br />oi<br />oi</code></pre><br /><br />em um objeto do tipo Range eu tenho um método chamado each que recebe um bloco de código como argumento. Este bloco pode até ser parametrizado, por exemplo:<br /><br /><pre><code>$ ruby -e 'r=0...3 ; r.each { |i| puts 2*i}'<br />0<br />2<br />4</code></pre><br /><br />O que o metodo each faz é passar este bloco de código para 'dentro de si' e aplica-o em cada elemento do objeto 'range'. Pode ser para imprimir o resultado ou efetuar uma operação matemática, até mesmo substituindo um laço for simples. A verdade é que os Closures são bem mais do que isso e permitem fazer scripts bem interessantes.<br /><br />Sera que poderiamos ter o mesmo em BashScript ? Bem... vou simular aqui <br /><br /><pre><code>$ each(){ <br />  local F="${@}" <br />  while read i ; do <br />     set - $i <br />     eval "${F}" <br />  done <br />}<br /><br />$ seq 3 | each '{ echo "encontrei $1" ; }'<br />encontrei 1<br />encontrei 2<br />encontrei 3</code></pre><br /><br />Simples heim? Eu crio uma variavel local dentro de uma função e 'executo-a' para cada resultado via comando eval. Se este tipo de construção for util para alguem, fica aí a dica!</div>

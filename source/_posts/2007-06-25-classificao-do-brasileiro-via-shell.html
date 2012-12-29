@@ -1,0 +1,34 @@
+---
+layout: post
+title: "Classificação do Brasileiro via Shell Script"
+date: 2007-06-25T14:07:00-03:00
+categories:
+ - Linux
+ - Shell
+---
+
+<div class='post'>
+Querendo saber a classificação do seu time no campeonato brasileiro de 2007.<br /><br />O bom e velho <b>lynx + grep</b> resolve.<br /><br /><pre><code>$ URL=http://esportes.terra.com.br/futebol/brasileiro2007/classificacao/<br />$ lynx --dump ${URL} | grep '%'<br /><br />   Colocação Time          PG J V E D GP GC SG  %<br />   1º        Botafogo      17 7 5 2 0 18 7  11 81%<br />   2º        Paraná        14 7 4 2 1 14 9  5  67%<br />   3º        São Paulo     13 7 4 1 2 7  2  5  62%<br />   4º        Goiás         12 7 4 0 3 13 9  4  57%<br />             Fluminense    12 7 3 3 1 11 6  5  57%<br />             Corinthians   12 6 3 3 0 7  2  5  67%<br />   7º        Atlético-PR   11 7 3 2 2 12 10 2  52%<br />             Atlético-MG   11 7 3 2 2 11 9  2  52%<br />             Vasco         11 7 3 2 2 11 10 1  52%<br />   10º       Cruzeiro      10 7 3 1 3 16 15 1  48%<br />             Figueirense   10 7 3 1 3 13 14 -1 48%<br />   12º       Grêmio        9  7 3 0 4 5  12 -7 43%<br />   13º       Palmeiras     8  7 2 2 3 9  12 -3 38%<br />   14º       Juventude     7  7 2 1 4 9  11 -2 33%<br />             Internacional 7  7 2 1 4 8  12 -4 33%<br />             Santos        7  7 2 1 4 7  11 -4 33%<br />   17º       Flamengo      6  6 1 3 2 11 15 -4 33%<br />   18º       Sport         5  7 1 2 4 9  13 -4 24%<br />             Náutico       5  7 1 2 4 9  15 -6 24%<br />   20º       América-RN    4  7 1 1 5 6  12 -6 19%</code></pre></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+O link de 2007 tambem serve, o terra redireciona para o brasileirão atual :)</div>
+</div>
+<div class='comment'>
+<div class='author'>J. F. Mitre</div>
+<div class='content'>
+O novo link para 2008 é:<BR/><BR/>http://esportes.terra.com.br/futebol/brasileiro/2008/classificacao/<BR/><BR/>funciona igualzinho ao anterior...</div>
+</div>
+<div class='comment'>
+<div class='author'>Alexandre</div>
+<div class='content'>
+Bacana isso ( de mais um flamenguista -triste- por aqui).</div>
+</div>
+<div class='comment'>
+<div class='author'>Julio</div>
+<div class='content'>
+Isso serve para mostrar como o Shell tem mil-e-uma utilidades. Script simples e rápido.<BR/><BR/>Legal Tiago, ficará melhor ainda qdo o <B>mengão</B> estiver em 1o. lugar. :)<BR/><BR/>Julio<BR/>:wq</div>
+</div>
+</div>

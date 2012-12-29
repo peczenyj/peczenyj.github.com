@@ -1,0 +1,38 @@
+---
+layout: post
+title: "Closures em Java - Parte 2"
+date: 2008-08-11T10:48:00-03:00
+categories:
+ - Java
+---
+
+<div class='post'>
+Ainda sobre a Closures do java 7, agora será possivel fazer isso:<br /><br /><pre><code>public class A {<br />        public static void main(String args[]) {<br />            @Shared int acumulador = 0;<br /><br />            {int => int } xxx  = { int i =>  acumulador += i; i};<br /><br />            System.out.println(xxx.invoke(1));<br />            System.out.println(xxx.invoke(2));<br />            System.out.println(xxx.invoke(3));<br />            System.out.println("o valor do acumulador eh " + acumulador );<br /><br />        }<br />}</code></pre><br /><br />Só eu estou achando divertido?<br /><br /><a href="http://gafter.blogspot.com/2008/08/java-closures-prototype-feature.html">http://gafter.blogspot.com/2008/08/java-closures-prototype-feature.html</a></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Não dá ideia!!<BR/><BR/>Logo aparece um @Global da vida... ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+Fiquei com medo que tu falasse que era uma "variavel global" <BR/><BR/>hehe</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Martins, sem o @Shared o codigo compila mas gera um warning. É uma marcação que a variavel é compartilhada com outra closure ou bloco de código.</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+O que que vem a ser aquele @shared?</div>
+</div>
+<div class='comment'>
+<div class='author'>Fabio Nascimento</div>
+<div class='content'>
+Pois é, a única dúvida é como ele faz o autoboxing escondido(leia-se por debaixo dos panos)?<BR/>Mas no geral, tbm estou gostando, vamos ver... quando chegar a hora do SDK implementar isso de verdade mesmo.<BR/><BR/>Té +</div>
+</div>
+</div>

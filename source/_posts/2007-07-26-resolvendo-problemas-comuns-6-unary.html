@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Resolvendo Problemas Comuns 6 - unary operator expected"
+date: 2007-07-26T13:07:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Uma desatenção, muito comum quando trabalhamos com variáveis de ambiente no shell é que, quando elas não foram setadas ainda, o shell expande elas para... nada.<br /><br /><pre><code>$  [ $XALALA == "oi" ] && echo 'ok' || echo 'nok'<br />-bash: [: ==: unary operator expected<br />nok</code></pre><br /><br />Nesse caso o (resultado do) teste da variável até pode fazer sentido, porém troque o == por um != e veja o resultado. A solução é proteger a variável com aspas!<br /><br /><pre><code>$  [ "$XALALA" != "oi" ] && echo 'ok' || echo 'nok'<br />ok</code></pre><br /><br />Simples e rápido!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Bah, não tinha reparado nisso.<BR/><BR/>E faz sentido, afinal [[ é built-in e [ é, geralmente, um apelido para o comando /bin/test<BR/><BR/>valeu!</div>
+</div>
+<div class='comment'>
+<div class='author'>Cláudio</div>
+<div class='content'>
+Outra solução: usar [[ ]] ao invés de [ ].</div>
+</div>
+</div>

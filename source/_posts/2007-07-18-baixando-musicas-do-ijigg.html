@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Baixando musicas do iJigg"
+date: 2007-07-18T14:54:00-03:00
+categories:
+ - Punk
+ - Shell
+---
+
+<div class='post'>
+O <a href="http://www.ijigg.com">iJigg</a> é um youtube de mp3, basicamente. É interessante para trocar músicas ou mesmo colocar um pequeno player no seu site, como este:<br /><object width="315" height="80"><param name="movie" value="http://www.ijigg.com/jiggPlayer.swf?songID=V2DA7ADPD&Autoplay=0"><param name="scale" value="noscale" /><param name="wmode" value="transparent"><embed src="http://www.ijigg.com/jiggPlayer.swf?Autoplay=0&songID=V2DA7ADPD" width="315" height="80"  scale="noscale" wmode="transparent"></embed></object><br /><br />Escolhi a musica <a href="http://www.ijigg.com/songs/V2DA7ADPD">Surfista Calhorda</a>, dos Replicantes. Conheci este site graças a esta <a href="http://www.dicas-l.com.br/dicas-l/20070718.php">dica</a> do dicas-l.<br /><br />Como todo bom nerd, decidi melhorar a dica, provendo um script para isso.<br /><br /><pre><code>#!/bin/bash<br />[ -z "${1}" ] && { echo "usage: $0 < ijigg URL | ID >" ; exit 1 ; }<br />ID=${1##*/}<br />CMD='/Location\|Title/{s/<[^>]\+>//g;p}'<br />URL="http://www.ijigg.com/cgi-bin/loadSongData.cgi?songID=${ID}"<br /><br />set - $( wget  -q -O - "${URL}" | sed -n "${CMD}" | tr '\n ' '\t_' )<br /><br />wget ${1} -O "${2%.mp3}.mp3"</code></pre><br /><br />Ao executar e passar a URL ou ID da música como argumento, eu faço uma busca no site atras de informações sobre a mesma (veja variavel URL). Esta consulta é um xml que retorna a localização do arquivo mp3 e do seu nome. Faço uns malabarismos com SED -- que nem são tão complicados assim -- e obtenho a url direta para baixar o arquivo e o seu nome em um bom formato (troco os espaços do nome por '_' -- para permanecer os espaços no nome tem q fazer mais uns malabarismos...).<br /><br />Nesse caso:<pre>$ ./ijigg.sh http://www.ijigg.com/songs/V2DA7ADPD<br />--15:10:05--  http://staticmdb-001.ijigg.com/songdata04/...<br />           => `Replicantes_-_Surfista_calhorda.mp3'<br />...<br />15:10:55 (33.26 KB/s) - `Replicantes_-_Surfista_calhorda.mp3' saved</pre><br />Agora basta ouvir no seu player preferido.</div>

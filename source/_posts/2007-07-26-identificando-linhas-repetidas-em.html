@@ -1,0 +1,28 @@
+---
+layout: post
+title: "Identificando linhas repetidas em varios arquivos"
+date: 2007-07-26T00:10:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Vamos imaginar dois arquivos bem simples e tres formas de identificar as linhas que aparecem em ambos:<br /><br /><pre><code>$ cat arq1<br />oi<br />awk<br />ciencia<br />oi zoi<br /><br />$ cat arq2<br />luxo<br />awk<br />oi<br />luxo</code></pre><br /><br />Simples de perceber que as linhas 'oi' e 'awk' se repetem. Poderiamos pensar em uma poderosa união de sort + uniq <br /><pre><code>$ sort <(sort arq1 | uniq) <(sort arq2 | uniq) | uniq -d<br />awk<br />oi</code></pre><br /><br />Ou podemos abordar arrays em AWK (elegante, não?)<br /><pre><code>$ awk 'NR==1{ base=FILENAME } <br />base == FILENAME {linhas[$0]++}<br />base != FILENAME && linhas[$0] { print }' arq1 arq2<br />awk<br />oi</code></pre><br /><br />Ou podemos usar o bom e velho grep:<br /><pre><code>$ grep -xf arq1 arq2<br />awk<br />oi</code></pre><br />Qual a melhor abordagem? Ai depende de cada um :)<br /><br />Veja toda a aula que deu origem à estes scritps <a href="http://br.groups.yahoo.com/group/shell-script/message/23362">aqui</a>.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Denis, mantive os seus dois comentarios, apesar de serem semelhantes.<BR/><BR/>Saca só, se pensarmos em 16 milhões de linhas, temos q pensar exatamente no que queremos. se for para encontrar as linhas exatas, talvez o grep seja mais rápido, porém acredito que vai ter muito acesso a disco.<BR/><BR/>Se separarmos os arquivos em partes, de acordo com os caracteres iniciais, acho que a pesquisa pode ficar bem mais rapida -- se estiverem ordenados então vai q é um tapa.<BR/><BR/>Ou talvez seja o momento de pensar em algoritmos mais complexos :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Denis</div>
+<div class='content'>
+Imagino que para um busca menor de 16milhoes a melhor seria o grep, pois nao utiliza os redirects como no caso do UNIQ.</div>
+</div>
+<div class='comment'>
+<div class='author'>Denis</div>
+<div class='content'>
+Imagino que para um busca menor de 16milhoes a melhor seria o grep, pois nao utiliza os redirects como no caso do SORT. Se nao o AWK.</div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Mono: C# no Linux"
+date: 2007-07-02T11:33:00-03:00
+categories:
+ - Linux
+ - Mono
+---
+
+<div class='post'>
+Considere este simples código:<br /><br /><pre><code>using System;<br /><br />class MainClass {<br /><br />  public static void Main() {<br />    Console.WriteLine("Eu sou um programa feito em C#");<br />    Console.ReadLine();<br />  }<br />}</code></pre><br /><br />Tcharam: um <span style="font-style:italic;">hello world</span> que, no mundo MS, seria compilado no Visual Studio após alguns segundos de espera. Para plataformas abertas, podemos usar o <a href="http://www.mono-project.com/">Mono</a>:<br /><br /><pre>$ uname<br />Linux<br />$ mcs Example.cs    # Mono Compiler Suite<br />$ mono Example.exe  # Mono's ECMA-CLI native code generator<br />Eu sou um programa feito em C#<br />[enter]<br />$ </pre><br /><br />Independente de <span style="font-style:italic;">Ideologias</span>, C# é uma linguagem interessante e seu uso está cada vez mais comum. Para quem não quer ficar fora do mercado de trabalho, o mono pode ser uma ótima oportunidade para praticar. O site java2s possui um <a href="http://www.java2s.com/Tutorial/CSharp/CatalogCSharp.htm">tutorial interessante</a> para os curiosos.</div>

@@ -1,0 +1,24 @@
+---
+layout: post
+title: "Test Driven Development - parte 1."
+date: 2008-08-06T14:31:00-03:00
+categories:
+ - Java
+ - TDD
+---
+
+<div class='post'>
+Veja este código:<br /><br /><pre><code> public void testEhPar() throws Exception{<br />  assertTrue("2 deve ser par",algoritmo.ehPar(2));<br />  assertTrue("4 deve ser par",algoritmo.ehPar(4));<br />  assertTrue("6 deve ser par",algoritmo.ehPar(6));<br />  <br />  assertTrue("1 NAO deve ser par",!algoritmo.ehPar(1));<br />  assertTrue("3 NAO deve ser par",!algoritmo.ehPar(3));<br />  assertTrue("5 NAO deve ser par",!algoritmo.ehPar(5));  <br /> }</code></pre><br /><br />Dentro de uma classe de teste, usando o framework <a href="http://junit.sourceforge.net/#Getting">JUnit</a>, a leitura dessas linhas é a seguinte:<br /><br />Eu tenho um objeto chamado <span style="font-style:italic;">algortimo</span>.<br />A chamada algoritmo.ehPar(2) deve retornar <span style="font-weight:bold;">true</span>, pois 2 é par, e este método informa se o parâmetro informado é, ou não, par.<br />O método <span style="font-weight:bold;">assertTrue</span> recebe dois parâmetros: uma mensagem informando o significado deste teste, e o resultado do mesmo.<br /><br />Se o método estivesse com algum problema e retornasse false, isso:<br /><br />assertTrue("2 deve ser par",algoritmo.ehPar(2));<br /><br />seria o mesmo que<br /><br />assertTrue("2 deve ser par",false);<br /><br />Logo, o teste falha, pois <span style="font-weight:bold;">2 deve ser par</span>.<br /><br />Esta é uma forma <span style="font-style:italic;">programática</span> de garantir o comportamento do código que eu desenvolvo: testando. Se o meu método só depende dos parâmetros informados, é muito simples verificar o seu funcionamento.<br /><br />Desenvolvendo os testes antes de implementar o código, tendo apenas as assinaturas dos métodos (por isso recorri a uma interface <a href="/2008/08/voltas-s-aulas-e-o-java.html">aqui</a>, lembra?), eu posso pensar nos comportamentos esperados e, então, vou desenvolvendo até que todos os testes estejam passando.<br /><br />Não é nada fácil, funciona melhor quando o projeto que estás desenvolvendo está começando, porém os resultados são excelentes: veja o quanto de tempo estás economizando! Se tu pretendes determinar se um código teu está funcionando por programas que perguntam os valores, escrever <br /><br /><pre>$ ant clean test</pre><br /><br />é muito mais rápido! <br /><br />O problema surge quando queremos fazer algo complexo, pois a dificuldade de testar mostra problemas na arquitetura adotada, por exemplo. Quanto temos objetos que tem objetos, herança, polimorfismo, tecnicas mais avançadas podem ser usadas como usar Mocks de objetos (e prover os mecanismos para injetar estes Mocks).<br /><br />No caso desse exemplo, esta é uma solução:<br /><pre><code>public boolean ehPar(int numero){<br />      return numero % 2 == 0;<br />}</code></pre><br /><br />Muitos alunos desconhecem as operações de divisão e módulo entre inteiros. O 1, inteiro, dividido por 2, inteiro, não é 0.5, (em java), e sim 0, pois este é o resultado da divisão inteira. O resto da divisão, simbolizado por %, retorna 1. Dessa forma, o resto da divisão de um numero par por 2 é 0, caso contrario é um número inteiro. São operações básicas que precisam ser dominadas. Repare que eu fiz um código que funcione, não tentei nada mais maquiavélico que dê 0.0001 milissegundos mais rápido. <a href="http://gc.blog.br/2008/01/08/a-falacia-da-otimizacao-prematura/">Evite a otimização precoce</a>.<br /><br />Programar profissionalmente é uma tarefa de <span style="font-weight:bold;">muita</span> responsabilidade. Desenvolver testes para garantir a qualidade provê excelentes resultados a longo prazo.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Sim sim, escrevi errado!</div>
+</div>
+<div class='comment'>
+<div class='author'>OLP</div>
+<div class='content'>
+"caso contrario é um número inteiro" não seria "caso contrario o numero é impar" ?</div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Youtube Downloader 2.0"
+date: 2007-07-06T15:25:00-03:00
+categories:
+ - Linux
+ - Shell
+---
+
+<div class='post'>
+A versão 1.0 foi até pro <a href="http://www.dicas-l.com.br/dicas-l/20070705.php">Dicas-L</a>. Graças a esta exposição percebi que o script é muito útil para quem não tem um plug-in flash (que preste) no <span style="font-style:italic;">browser</span>. É o caso do pessoal que usa <a href="en.wikipedia.org/wiki/BeOS">Beos</a>, por exemplo. <br /><br />Reduzi o número de linhas, usei a <a href="http://www.aurelio.net/shell/canivete.html#expansao">expansão de variáveis</a> do bash para algumas substituições simples e agora vc pode informar o nome do arquivo que vc quer salvar, senão será usado aquele nada pratico id. A extensão é flv que pode ser visualizado pelo <span style="font-style:italic;">mplayer </span>ou convertido pra mpeg.<br /><br /><pre>$ ./script.sh endereço_do_video nome_do_video</pre><br />Eis o código<br /><pre><code>#!/bin/bash<br /># youtube downloader<br />test -n "${1}" || { echo -e "Missing url or id!\nUsage: ${0} &lt;url | id&gt; [filename]" ; exit 1; }<br /><br />set - ${1/*=}  ${2:-${1/*=}}  "http://www.youtube.com/watch?v=${1/*=}"  'video_id=.+&t=[^\"&]+'<br />           <br />wget -O  "${2%.flv}.flv"  "${3%/*}/get_video?$(wget -qO - "${3}" | grep -oE "${4}" | sed '1q')" <br /></code></pre><br /><br />Tentei usar o <span style="font-weight:bold;">curl </span>e não consegui. Quem quiser tentar, faça um curl -I na url final e veja os cabeçalhos -- não sei como ir para o 'Location'. O wget faz isso numa boa, mas seria interessante ter a opção com o curl.<br /><br />O que seria mais interessante? Baixar uma lista de videos? Baixar os X primeiros videos que aparecem em uma dada pesquisa?</div>

@@ -1,0 +1,28 @@
+---
+layout: post
+title: "Bases Numericas em Bash"
+date: 2007-07-12T11:49:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Com Bash, podemos representar números nas mais variadas bases, desde <a href="http://en.wikipedia.org/wiki/Base2">2</a> até <a href="en.wikipedia.org/wiki/Base64">64</a> usando o operador # como no exemplo abaixo:<pre><code><br />X=101 <br />for BASE in 2 8 10 16 32 64 ; do <br />    echo "$X na base $BASE eh $(( ${BASE}#${X} ))" # conversao pra decimal<br />done<br />101 na base 2 eh 5<br />101 na base 8 eh 65<br />101 na base 10 eh 101<br />101 na base 16 eh 257<br />101 na base 32 eh 1025<br />101 na base 64 eh 4097 <br /><br />echo $((16#FF)) $((32#V))<br />255 31<br /><br />echo $((64#z))  $((64#Z))  $((64#@))  $((64#_)) # atenção nos 2 ultimos!<br />35 61 62 63<br /></code></pre><br />Além de ser possível usar a notação de octal e hexa do C (iniciar a expressão com 0 e 0x, respectivamente)<pre><code>echo $((10)) $(( 010 )) $(( 0x10 )) $((10 + 010 + 0x10))<br />10 8 16 34<code></pre><br />Bastante útil para pequenas conversões. Agora se quisermos converter um numero de uma base qualquer para outra, o nosso amigo <span style="font-weight:bold;">bc</span> pode servir:<br /><br /><pre></code>bc <<< 'ibase = 8 ; obase = 16 ; 1027'<br />2A3</code></pre><br />Onde ibase é a base de entrada (input) e a obase é a de saída (output). A diferença fica nas bases muito altas (32 ou 64) onde não são usados os caracteres minúsculos, maiusculos e especiais.<br /><br />Esta dica foi tirada do <a href="http://tldp.org/LDP/abs/abs-guide.pdf">Advanced Bash Scripting Guide</a>.<br /><br /><!-- INICIO DO CODIGO DO CONTADOR DE VISITAS 2W.COM.BR --><br /><img src="http://www.2w.com.br/imgcontador.php?p=e3ca6d6d" alt="Contador de visitas" border=0><br /><!-- FIM DO CODIGO DO CONTADOR DE VISITAS 2W.COM.BR --></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Ola!<BR/><BR/>Se vc prestar atenção eu coloquei um comentário que informava a conversão para a base decimal pois achei q, se colocasse o 'na base 10' no final de cada linha poderia ficar um pouco poluido. Pelo visto ficou é confuso.<BR/><BR/>agora, 101 em hexa é 257 sim, uma vez  que 100 significaria, nesse caso, 1 x 16^2 -- 256. Vou postar mais sobre o assunto ai e vai vamos chegar a um consenso ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>naoliv</div>
+<div class='content'>
+Hum... comentando com um amigo meu eu acho que você quis dizer:<BR/><BR/>101 na base 2 eh 5 na base 10<BR/><BR/>101 na base 8 eh 65 na base 10<BR/><BR/>101 na base 10 eh 101 na base 10<BR/><BR/>101 na base 16 eh 257 na base 10<BR/><BR/>101 na base 32 eh 1025 na base 10<BR/><BR/>101 na base 64 eh 4097 na base 10<BR/><BR/>Faltou os "na base 10" :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>naoliv</div>
+<div class='content'>
+Isso tá certo?<BR/>Como que o número pode ser 5 na base 2? (se só existem os caracteres 0 e 1)<BR/><BR/>101 em hexa (base 16), por exemplo, é 65 e não 257.<BR/><BR/>Ou eu entendi errado o seu post?</div>
+</div>
+</div>

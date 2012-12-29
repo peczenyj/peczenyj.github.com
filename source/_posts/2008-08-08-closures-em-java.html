@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Closures em Java"
+date: 2008-08-08T19:23:00-03:00
+categories:
+ - Java
+---
+
+<div class='post'>
+Olha o que vai ter no java 1.7<br /><br /><pre><code>public class A {<br />        public static void main(String args[]) {<br />                exec( { int a, int b => a + b });<br />                exec( { int a, int b => a * b });<br />                exec( { int a, int b => <br />                        System.out.println("closure " + a + ":" + b); <br />                        (a * a) + (b * b) <br />                });<br />        }<br />        public static void exec({ int, int => int } closure){<br />                System.out.println(closure.invoke(3,2));<br />        }<br />}</code></pre><br /><br /><pre>$ java -Xbootclasspath/p:./closures-2008-08-04/lib/closures.jar   A<br />5<br />6<br />closure 3:2<br />13</pre><br /><br />Divertido :)<br /><br />Fonte:<br /><a href="http://guj.com.br/posts/list/99477.java">http://guj.com.br/posts/list/99477.java</a></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Hehehe... bizarro mesmo sera quando o java tiver suporte a pipes, sinais e outras coisas do mundo shell/C/*nix.<BR/><BR/>Imagina uma classe fazendo um TRAP... hehehe!</div>
+</div>
+<div class='comment'>
+<div class='author'>La Batalema Pitonisto</div>
+<div class='content'>
+Tenho muito medo disso!<BR/><BR/>[]'s<BR/>Cacilhas, La Batalema</div>
+</div>
+</div>

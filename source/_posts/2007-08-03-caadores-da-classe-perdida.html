@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Caçadores da Classe Perdida"
+date: 2007-08-03T16:20:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Eu já tinha feito algo parecido mas este <a href="http://www.claudius.com.br/blog/claudio/2007/07/29/Como-encontrar-uma-classe">post</a> do Claudio Miranda reavivou a minha memória.<br /><br /><pre><code>#!/bin/bash<br />[[ $2 ]] || { echo "Uso: ${0} diretorio classe" ; exit 1 ; }<br />find "${1}" -name \*.jar -print | xargs -n 1 unzip -l 2>&- | awk -v class="${2}" '<br />        BEGIN       { IGNORECASE=1                                     }<br />        /^Archive/  { file="\nArquivo:\n\t"$NF": \nClasses:\n\t"       }<br />        /class$/ && $NF ~ class { print file,$NF ; file="\t"; total++  }<br />        END         { print "\nTotal",total + 0,"classes encontradas!" }'</code></pre><br /><br />Informando como parâmetros um diretório de partida e um fragmento do nome da classe, o find localizará todos os arquivos com extensão jar e vai mandar pro nosso amigo xargs. Este envia um a um para o unzip que lista (-l) o conteúdo de cada arquivo. Eu poderia procurar a classe que eu quero com o grep, mas o awk foi a escolha para formatar melhor a saída de dados.<br /><br />Perceba que a variavel IGNORECASE tem valor diferente de 0, assim eu posso procurar por um trecho do tipo xml ou XML. Eu preciso saber o nome do arquivo 'corrente' e isso é informado pela linha que começa com 'Archive'. Quando eu encontro uma linha que termina com 'class' e o ultimo campo ( $NF ) 'casa' com o fragmento de nome (alias pode ser uma expressão regular!) eu imprimo esta linha.<br /><br />Eu fiz uma sacanagem pra saída de dados ficar 'bonitinha', que é imprimir o 'cabeçalho' apenas uma vez, depois eu troco por tab (\t) -- e no final eu mostro um sumário com o número de referências encontradas.<br /><br />Este script pode ser modificado para outros propósitos. Note que eu procuro tanto no nome da classe quando no nome dos pacotes (diretórios), assim xml poderia casar com XMLHelper.class ou /java/xml/foobar.jar -- mas basta ser criativo para resolver isso!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+AWK é extremamente versátil!</div>
+</div>
+<div class='comment'>
+<div class='author'>Claudio Miranda</div>
+<div class='content'>
+Olá Tiago, obrigado pela dica-dica e manter a formatação de saída. Vou aprender um pouco mais de AWK.</div>
+</div>
+</div>

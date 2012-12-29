@@ -1,0 +1,24 @@
+---
+layout: post
+title: "Um corretor ortográfico em gawk"
+date: 2008-04-13T14:39:00-03:00
+categories:
+ - awk
+ - Shell
+---
+
+<div class='post'>
+Ano passado eu publiquei <a href="http://peczenyj.blogspot.com/2007/08/implementando-um-corretor-ortogrfico.html">uma pequena nota sobre um pequeno corretor ortográfico feito em Python</a>.<br /><br />No <a href="http://norvig.com/spell-correct.html">artigo</a> do Peter Norwig, ele explica o principio estatístico do algoritmo. No final, ele mostra varias implementações do algoritmo (em D, Java, Ruby e até Erlang).<br /><br />Depois de muito pesquisar, decidi fazer uma versão em gawk. A primeira tinha 30 linhas e não funcionava muito bem, arrumando e testando cheguei a esta forma final com apenas 15 linhas.<br /><br />Eu chamo de linha um <span style="font-style:italic;">statement</span> completo do awk. Perceba que nenhuma linha dessas possui o separador de statement <span style="font-weight:bold;">;</span> (ponto-e-virgula), exceto quando estou utilizando o for no estilo C.<br /><br /><pre><code># Usage: gawk -v word=something -f thisfile.awk [ big.txt [ big2.txt ... ]]<br /># Gawk version with 15 lines -- 04/13/2008<br /># Author: tiago (dot) peczenyj (at) gmail (dot) com <br /># Based on : http://norvig.com/spell-correct.html<br />function edits(w,max,candidates,list,        i,j){<br />       for(i=0;i<  max ;++i) ++list[substr(w,0,i) substr(w,i+2)]  <br />       for(i=0;i< max-1;++i) ++list[substr(w,0,i) substr(w,i+2,1) substr(w,i+1,1) substr(w,i+3)] <br />       for(i=0;i<  max ;++i) for(j in alpha) ++list[substr(w,0,i) alpha[j] substr(w,i+2)] <br />       for(i=0;i<= max ;++i) for(j in alpha) ++list[substr(w,0,i) alpha[j] substr(w,i+1)] <br />       for(i in list) if(i in NWORDS) candidates[i] = NWORDS[i] }<br /><br />function correct(word            ,candidates,i,list,max,temp){<br />       edits(word,length(word),candidates,list)<br />       if (!asort(candidates,temp)) for(i in list) edits(i,length(i),candidates)<br />       return (max = asorti(candidates)) ? candidates[max] : word }<br /><br />BEGIN{ if (ARGC == 1) ARGV[ARGC++] = "big.txt" # http://norvig.com/big.txt<br />       while(++i<=length(x="abcdefghijklmnopqrstuvwxyz")) alpha[i]=substr(x,i,1)<br />       IGNORECASE=RS="[^"x"]+" }<br /><br />{      ++NWORDS[tolower($1)]   }<br /><br />END{   print (word in NWORDS) ? word : "correct("word")=> " correct(tolower(word)) }</code></pre><br /><br />Veja o script em funcionamento:<br /><pre>$ time gawk -v word=somethink -f spelling.awk<br />correct(somethink)=> something<br /><br />real    0m4.862s<br />user    0m4.702s<br />sys     0m0.093s</pre></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Rael</div>
+<div class='content'>
+Tiago, mais uma vez, parabéns!<BR/>É muito divertido mexer com estas coisas, não?<BR/>Ah, eu não esqueci de te mandar a versão otimizada em Java... eu só não achei seu email pra enviar! :P<BR/>Me manda um email, e eu te dou reply!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Corretor ortográfico, tatuagem... esse foi um final de semana divertido pra você heim! hahahha</div>
+</div>
+</div>

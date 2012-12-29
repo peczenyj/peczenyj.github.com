@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Resolvendo Problemas Comuns 1 - Permission denied"
+date: 2007-07-26T11:12:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Não é incomum, quando não temos experiência em shell, passar por uma situação dessas:<br /><br /><pre><code>$ ./script.sh<br />-bash: ./script.sh: Permission denied</code></pre><br /><br />Antes de sair olhando se há algo errado com o script, vamos analisar a mensagem de erro em pt_BR: <span style="font-weight:bold;">Permissão negada</span>. Diferente de outros sistemas operacionais, no mundo *nix o que faz de um arquivo um programa executável não é a sua extensão e sim as suas <span style="font-weight:bold;">permissões</span>.<br /><br />Resumidamente, existem 3 permissões básicas quando se trata de arquivos: ler, escrever e (finalmente) executar (representado pelas letras r,w e x, respectivamente). Isto é o que impede um usuário de conseguir ler os documentos de outro, por exemplo. Então, um programa, para ser executado, precisa ter esta permissão correspondente, e ai entra o comando <a href="http://focalinux.cipsga.org.br/guia/iniciante/ch-perm.htm#s-perm-chmod">chmod</a>.<br /><br /><pre><code>$ ls -l script.sh<br />-rw-r--r--  1 peczenyj users 22 2007-07-26 11:08 script.sh<br />$ chmod +x script.sh  # vamos ativar o bit de execução (x)<br />$ ls -l script.sh<br />-rw<span style="font-weight:bold;">x</span>r-xr-x  1 peczenyj users 22 2007-07-26 11:08 <span style="font-weight:bold;">./script.sh</span><br />$ ./script.sh         #agora sim!!!<br />oi</code></pre><br /><br />Problema resolvido.</div>

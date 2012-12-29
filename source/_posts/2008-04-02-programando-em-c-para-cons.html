@@ -1,0 +1,34 @@
+---
+layout: post
+title: "Programando em C para console -  parte 1"
+date: 2008-04-02T14:10:00-03:00
+categories:
+ - C
+ - Programacao
+---
+
+<div class='post'>
+(Depois de um fecundo primeiro de Abril... )<br /><br />Cada vez mais eu me espanto com a quantidade de novatos que tentam fazer programas para o "modo console" que não fazem o menor sentido.<br /><br />Programas com menuzinho (1 - saque , 2 - deposito, 3 - sair) ou do estilo "digite um numero (q para sair)" são totalmente contra-produtivos. O novato perde TEMPO fazendo um monte de código desnecessário quando esquece o que deveria fazer (o tal do <span style="font-style:italic;">algoritmo</span>).<br /><br />Veja um exemplo: um programa que receba uma quantidade variavel de números e que imprima a soma dos mesmos. IMHO a forma mais interessante para fazer isso é pegar os números como argumentos do programa principal. Vc cria um programa console absolutamente limpo e facil de scriptar, por exemplo.<br /><br />Veja só:<br /><br /><pre><code>#include &lt;stdio.h&gt;<br /><br />int main(int argc, char *argv[]){<br />        double soma = 0.0;<br /><br />        printf("A soma dos numeros eh %g\n",soma);<br /><br />        return 0;<br />}</code></pre><br /><br />Feito esse simples arquivo, vamos compilar<br /><pre>$ gcc -Wall soma.c<br />$ ./a.out 1 2 3 4 5 <br />A soma dos numeros eh 0</pre><br /><br />Ai vc fala "po, ta errado!", mas claro, eu primeiro escrevi a base do meu programa. Perceba que eu compilei com a opção -Wall, que me informa todos os <span style="font-style:italic;">warnings</span> que a compilação pode gerar (o que sempre é uma excelente pratica, eu procuro compilar sempre com 0 warnings).<br /><br />Feito isso, vamos definir 2 coisas:<br /> - O algoritmo da soma e<br /> - Possiveis fluxos de excessão.<br /><br />Vou partir do suposto que, se vc digitar alguma coisa que não seja um numero, eu vou ignorar e considerar como 0. Caso eu não informe nenhum numero ao programa, isso significa que estou faltando com alguma coisa, nesse caso vou informar uma mensagem elucidativa sobre o uso do programa.<br /><br /><pre><code>#include &lt;stdio.h&gt;<br />#include &lt;stdlib.h&gt;<br /><br />int main(int argc, char *argv[]){<br />        int i;<br />        double soma = 0.0;<br /><br />        if(argc == 1){<br />                fprintf(stderr,"Faltando Argumentos!\n");<br />                fprintf(stderr,"Uso: %s x1 [ x2 .. xN ]\n",argv[0]);<br />                return 1;<br />        }<br /><br />        for(i=1;i&lt;argc;i++) <br />                soma += atof(argv[i]);<br /><br />        printf("A soma dos numeros eh %g\n",soma);<br /><br />        return 0;<br />}</code></pre><br /><br />Todos os argumentos que eu passo para o programa, incluindo o nome do mesmo, ficam no vetor <span style="font-weight:bold;">argv</span>, e o número de argumentos fica na variavel <span style="font-weight:bold;">arcc</span>. Dessa forma, o nome do programa é o argv[0] e, se eu não passar nenhum argumento adicional, argc será 1. A função atof converte a string para um número de ponto flutuante e retorna 0 se não for possivel converter.<br /><br />Simples, não? Agora vamos executar:<br /><br /><pre>$ ./a.out          <br />Faltando Argumentos!<br />Uso: ./a.out x1 [ x2 .. xN ]<br />$ echo $?<br />1<br />$ ./a.out 1 2 3 4 5<br />A soma dos numeros eh 15<br />$ echo $?<br />0</pre><br /><br />A mensagem de uso utiliza uma notação no manual de alguns programas do mundo unix: colocar os argumentos opcionais entre colchetes. Eu informo que preciso de pelo menos <span style="font-weight:bold;">um</span> argumento. Caso eu entre no fluxo de excessão, o meu main retorna um valor diferente de 0 para o sistema operacional que pode ser capturado pela variavel de ambiente $? (nesse caso estou em um linux utilizando o bash, em outros sistemas mais exotéricos como o Windows eu não imagino como vc poderia capturar essa informação, tampouco imagino se ela seria util).<br /><br />Perceba que eu posso criar um script extremamente simples para utilizar esse programa, assim como testar o resultado é uma tarefa de um grep (ou diff). Eu poderia juntar um script de teste e um makefile nesse post mas estou esperando um exemplo um pouco mais interessante.<br /><br />Eu criei um programa sucinto, facil de entender e muito util, sem ter que perguntar para o usuario nada. transformar esse programa num que calcula a média, por exemplo, é uma tarefa de colocar apenas uma linha (na verdade uma subtração e uma divisão) a mais. Espero que os programadores novatos se inspirem nessa forma de pensar e que utilizem os programas básicos do unix como o grep, cat, diff, cp, etc, para seus futuros trabalhos.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Aguardando....<BR/><BR/>OFF: As mentiras de ontem forma muito engraçadas, a do Java mesmo :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Felipem, o GDB por si só precisaria de um post exclusivo. Tenho que pensar bem no exemplo para que seja util.<BR/><BR/>Estou pensando num algoritmo de ordenação com algum <I>errinho</I>, ou algum processo recursivo como calcular fibonacci, etc.</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Poucos sabem o que é um UNIX. Programam no DOS usando um while(1) para não fechar a tela do DOS, não sabem nem ir no cmd e digitar o nome do programa, eles clicam no executável.<BR/><BR/>O C é uma linaguagem que os programadores mais comuns não sabem/se interessam. Ler o TCPL sem entender o que é um wc, grep, sort... é IMHO impossível.<BR/><BR/>Aguardo os posts sobre getopt e GDB(ah sim GDB não está na lista de "promessas", mas vai ter, vai?)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Duas coisas que esqueci de comentar: <BR/><BR/>1) As mensagens de erro vão para a saida de erro (stderr)<BR/><BR/>2) A mensagem "A soma dos numeros eh " é totalmente desnecessária. Inclusive seria mais sucinto se a resposta fosse apenas o valor numérico.<BR/><BR/>fica para a proxima então: scripts de teste, makefile, getopt (posso querer utilizar uma opção -v [verbose]) e, se der tempo, localização!</div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Youtube Downloader"
+date: 2007-07-02T10:26:00-03:00
+categories:
+ - Linux
+ - Shell
+---
+
+<div class='post'>
+Cerca de um ano atras eu pesquisei uma forma de fazer o download automatico de videos do youtube informando o id ou a url inteira. Ele é bem didático, basta ser um pouco nerd e conhecer um pouco de expressões regulares (alias o livro do Aurelio está em <a href="http://aurelio.wordpress.com/2007/06/28/descontao-livro-saindo-por-menos-de-20-reais/">promoção</a>).<br /><br />Minha inspiração para postar este script veio desta <a href="http://br-linux.org/linux/videos-do-youtube-no-lynx-em-ascii">notícia</a>, onde Warren Harding baixou um vídeo usando o Lynx e usou o Mplayer para exibir o vídeo no modo <span style="font-style:italic;">ASCII</span>. O resultado é insano, porém divertido.<br /><br /><pre><code>#!/bin/bash<br /># youtube downloader<br /># usage: script <url or video_id><br /># YouTube URL: http://www.youtube.com/watch?v=[video_id] <br /><br />[ -z "${1}" ] && { echo 'Error! Missing url or video_id!' ; exit 1 ; }<br /><br />URL="http://www.youtube.com"<br /><br /># download link: http://youtube.com/get_video?video_id=[video_id]&t=[t_id]&...<br /><br />DOWNLOAD=`wget -qO - "${URL}/watch?v=${1/*=}" | grep -oE 'video_id=.*&t=[^\"&]*' | head -1`<br /><br />wget -O "${1/*=}.flv"  "${URL}/get_video?${DOWNLOAD}"</code></pre><br /><br />Eu poderia ter feito tudo em uma unica linha usando xargs, porém ficaria um pouco poluído para publicar neste humilde blog, mas fica aí a dica.</div>

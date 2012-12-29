@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Testes Unitários com VBScript"
+date: 2007-12-03T12:49:00-03:00
+categories:
+ - TDD
+---
+
+<div class='post'>
+Nas ultimas semanas, tive que aprender VBScript por conta de alguns testes que estão por vir. A sintaxe é bem estranha, mas fazer o que...<br /><br />Entretanto é simples o suficiente para se desenvolver pequenas rotinas e, de quebra, aprender boas praticas de programação, como TDD, no exemplo abaixo:<br /><br /><pre><code>' Função a ser testada<br />' EhPrimo determina se um determinado número inteiro é primo ou não<br />Function EhPrimo(numero)<br />   '<br />   'coloque o codigo aqui :)<br />   '<br />   EhPrimo=false ' so pra retornar algo...<br />End Function<br /><br />'Coloquei o nome Test para ficar mais facil :)<br />Sub Test( objQuery, strMessage ) <br />   If Not objQuery Then<br />    WScript.Echo VbCrlf & "ERRO: " & strMessage<br />    WScript.Quit 'no primeiro teste errado...<br />   End If<br />End Sub<br /><br />' Testando primos<br />Primos = array(2,3,5,7,11)<br />For Each Numero  In Primos<br />  Test EhPrimo(Numero),"Numero " & Numero & " deve ser primo!"<br />Next<br /><br />' Testando _nao_ primos<br />NaoPrimos = array(4,6,8,9,10)<br />For Each Numero In NaoPrimos<br />  Test (Not EhPrimo(Numero)),"Numero " & Numero & " NAO deve ser primo!"<br />Next<br /><br />' Testando outras coisas<br />Test (Not EhPrimo( 0)),"Numero  0 NAO deve ser primo!"<br />Test (Not EhPrimo( 1)),"Numero  1 NAO deve ser primo!"<br />Test (Not EhPrimo(-1)),"Numero -1 NAO deve ser primo!"<br /><br /><br />WScript.Echo VbCrlf & "Pronto, passou tudo!"</code></pre><br /><br />Pronto, agora <br /><br />Qual a vantagem dessa abordagem?<br /> 1) vc se obriga a testar o seu código <br /> 2) vc descobre quais parametros são uteis nas suas funções<br /> 3) vc especifica o comportamento das suas funções ANTES de implementa-la:)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>NetWalker</div>
+<div class='content'>
+Paranóia minha, mas código VB sempre me pareceu como um texto que abriu com erros... :D</div>
+</div>
+</div>

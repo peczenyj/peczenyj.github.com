@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Ruby e suas travessuras"
+date: 2007-09-24T23:33:00-03:00
+categories:
+ - Ruby
+---
+
+<div class='post'>
+<pre><code>irb(main):001:0> def some(thing)<br />irb(main):002:1>    puts "some#{thing}"<br />irb(main):003:1> end<br />=> nil<br />irb(main):004:0> some "thing"<br />something<br />=> nil<br />irb(main):005:0> some = "thing"<br />=> "thing"<br />irb(main):006:0> some(some)<br />something<br />=> nil</code></pre></div>

@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Melhorando o “try()” do Ruby, a maneira “Groovy” [parte final]"
+date: 2008-03-05T18:21:00-03:00
+categories:
+ - Ruby
+---
+
+<div class='post'>
+<pre><code>class Omega<br />        def a<br />                self<br />        end<br />        def b<br />                self<br />        end<br />        def c<br />                self<br />        end<br />        def to_s<br />                "Omega"<br />        end<br />end<br /><br />def da? <br />        begin<br />                yield() if block_given?<br />        rescue => exc<br />                nil<br />        end<br />end<br /><br />xyz = nil<br />a = da? { xyz.a.b.c } <br /><br />xyz = Omega.new<br />b = da? { xyz.a.b.c } <br /><br />puts "da? com nil -> '#{a}'"<br />puts "da? com Omega -> '#{b}'"</code></pre><br /><br />Executando:<br /><pre>da? com nil -> ''<br />da? com Omega -> 'Omega'</pre><br /><br />O que eu fiz? como a expressão xyz.a.b.c poderia retornar algum erro pois um dos métodos poderia returnar nil, bastaria executar em um bloco de código com a ajuda do método da? (péssimo nome, uma corruptela de "da para executar sem erro? se não, me retorna nil e era wilson...), que captura qualquer erro e some com ele.<br /><br />Ruby é divertido. :)<br /><br />ps: teste com<br /><br /><code>a = da? { xyz.a.b.c } || "nao deu..."</code></div>

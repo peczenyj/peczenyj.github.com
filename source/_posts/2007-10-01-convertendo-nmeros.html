@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Convertendo Números"
+date: 2007-10-01T19:29:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Um dos meus primeiros desafios na área de programação foi fazer um conversor de números decimais para romanos. Eu estava aprendendo Turbo Pascal e usava um potente 286 com 1MB de memória - sem HD.<br /><br />Fiz a maior sequencia de ifs da minha vida. Hoje estava relembrando e resolvi fazer uma versão SED.<br /><br /><pre><code>/[0-9]*[5-9]...$/q<br />s/1...$/M&/;s/2...$/MM&/;s/3...$/MMM&/;s/4...$/MMMM&/<br />s/6..$/DC&/;s/7..$/DCC&/;s/8..$/DCCC&/;s/9..$/CM&/<br />s/1..$/C&/;s/2..$/CC&/;s/3..$/CCC&/;s/4..$/CD&/;s/5..$/D&/<br />s/6.$/LX&/;s/7.$/LXX&/;s/8.$/LXXX&/;s/9.$/XC&/<br />s/1.$/X&/;s/2.$/XX&/;s/3.$/XXX&/;s/4.$/XL&/;s/5.$/L&/<br />s/1$/I/;s/2$/II/;s/3$/III/;s/4$/IV/;s/5$/V/<br />s/6$/VI/;s/7$/VII/;s/8$/VIII/;s/9$/IX/<br />s/[0-9]//g</pre></code><br /><br />Tendo um número por linha ja basta. <br /><br /><pre>$ echo '3999' | sed -f other.sed<br />MMMCMXCIX</pre><br /><br />O sed é realmente fantástico! Pena que acima de 5 mil tem que colocar <a href="http://en.wikipedia.org/wiki/Roman_numerals">uma barra em cima dos números</a>.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>voyeg3r</div>
+<div class='content'>
+Também sou super fã do SED, estou no momento criando um script para converter um wiki do pbwiki para moinmoin, são mais de 300 páginas e adição manual seria um trabalho digno para um usuário windows :)</div>
+</div>
+</div>

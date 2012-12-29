@@ -1,0 +1,12 @@
+---
+layout: post
+title: "O melhor de dois mundos: C e Fortran"
+date: 2007-07-02T11:48:00-03:00
+categories:
+ - C
+ - Linux
+ - Fortran
+---
+
+<div class='post'>
+C é uma ótima linguagem de programação, simples e clara.<br />Fortran, para problemas matemáticos, é imbativel!<br /><br />Que tal usar o melhor dos dois mundos com este <a href="http://www.yolinux.com/TUTORIALS/LinuxTutorialMixingFortranAndC.html">tutorial</a>?<br /><br />Vejamos o exemplo abaixo:<br /><br />Arquivo testC.cpp<br /><pre><code>#include <iostream><br /><br />using namespace std;<br /><br />extern"C" {<br />void fortfunc_(int *ii, float *ff);<br />}<br /><br />main()<br />{<br /><br />   int ii=5;<br />   float ff=5.5;<br /><br />   fortfunc_(&ii, &ff);<br /><br />   return 0;<br />}</code></pre><br /><br />Arquivo testF.f<br /><pre><code>      subroutine fortfunc(ii,ff)<br />      integer ii<br />      real*4  ff<br /><br />      write(6,100) ii, ff<br /> 100  format('ii=',i2,' ff=',f6.3)<br /><br />      return<br />      end</code></pre><br /><br />Compilando<br /><br /><pre>$ f77 -c testF.f<br />$ g++ -c testC.cpp<br />$ g++ -o test testF.o testC.o -lg2c</pre><br /><br />Executando<br /><br /><pre>$ ./test<br />ii= 5 ff= 5.500</pre><br /><br />Aceito sugestões, agora que não tenho muita coisa para fazer em Fortran.</div>

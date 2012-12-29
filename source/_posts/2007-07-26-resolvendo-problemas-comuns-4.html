@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Resolvendo Problemas Comuns 4 - Corrigindo o localle"
+date: 2007-07-26T12:20:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Precisamos estar atento que as variáveis de ambiente de <a href="http://focalinux.cipsga.org.br/guia/avancado/ch-pers.htm">localização </a>podem atrapalhar, e muito, o comportamento de algumas <a href="http://aurelio.net/er/">expressões regulares</a>.<br /><br />Por exemplo, se eu quero encontrar uma palavra que começe com a e termine com o (ex: ação)<br /><pre><code>$ cat arquivo<br />luz, camera, ação<br />$ grep -oE 'a\w+o' arquivo    # nao mostra nada!</code></pre><br />Antes de sair dizendo que o linux, grep ou as expressões regulares não prestam, vamos testar o mesmo comando no nosso 'idioma'<br /><pre><code>$ LC_ALL=pt_BR grep -oE 'a\w+o' arquivo<br />ação</code></pre><br />Ahá! Agora vamos ver um exemplo mais interessante:<br /><pre><code>$ tr '[:lower:]' '[:upper:]' < arquivo<br />LUZ, CAMERA, AçãO<br />$ LC_ALL=pt_BR tr '[:lower:]' '[:upper:]' < arquivo<br />LUZ, CAMERA, AÇÃO</code></pre><br />Perceberam como a variavel altera o comportamento das ERs? <br /><br />Como ultima dica: sempre que precisarem comparar textos independente da 'caixa' (se maiúscula ou minúscula), usem os recursos de ignorecase da ferramenta utilizada. Converter um texto todo para minúscula pode não apenas ser afetado pela localização como existem idiomas onde alguns caracteres não tem o exato correspondente entre uma caixa e outra como nós pensamos -- é o caso do idioma Turco, onde o 'i' maiúsculo não é 'I'. E, principalmente, não tente fazer <a href="http://worsethanfailure.com/Articles/Extra-Sensitive-Case-Insensitivity.aspx">isso</a>.<br /><br />Mais informações em 'man locale' ;-)</div>

@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Considerações de Segurança"
+date: 2007-08-06T14:21:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Me irrita profundamente usar um script que pressupõe certas definições no meu ambiente sem aviso prévio. O caso mais comum é, em algum *nix, acreditar que o diretório corrente faz parte do PATH -- contrariando uma regra básica de segurança, inclusive.<br /><br />Não é dificil fazer ./<span style="font-style:italic;">programa</span> (na verdade com o tempo isso vira padrão até). Fica uma dica importante: nunca façam suposições a respeito do ambiente, variaveis, estruturas de diretórios sem documentar ou fazer os testes necessários (pelo menos quando for fora de algum <span style="font-style:italic;">padrão</span>).</div>

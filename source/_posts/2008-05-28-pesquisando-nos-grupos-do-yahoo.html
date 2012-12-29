@@ -1,0 +1,43 @@
+---
+layout: post
+title: "Pesquisando nos Grupos do Yahoo"
+date: 2008-05-28T18:17:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Meu amigo MrBits me deu essa grande ideia:<br /><br /><pre><code>#!/bin/bash<br />QTDE=20<br />CHARSET=UTF-8<br />GROUP=shell-script<br /><br />while getopts g:c:q: OPTION ; do<br />        case $OPTION in<br />        g) GROUP=$OPTARG ;;<br />        c) CHARSET=$OPTARG ;;<br />        q) QTDE=$OPTARG ;;<br />        esac<br />done<br /><br />shift $(($OPTIND -1))<br /><br />SEARCH="$@"<br /><br />if [ -z "$SEARCH" ]; then <br />        echo "Usage: $(basename $0) [-q qtde] [-g grupo] [-c charset] search" <br />        exit 1<br />fi<br /><br />BASEURL="http://br.groups.yahoo.com/group"<br />URL="${BASEURL}/${GROUP}/msearch?submit=OK&charset=${CHARSET}&cnt=${QTDE}&query=${SEARCH// /+}"  <br />SEDCMD="/message/!d;/${GROUP}/!d;/.*[0-9]/!d;s#/group#${BASEURL}#g;s/<[^>]*span>//g;s/$/&lt;br \/&gt;/"<br /><br />LYNXOPT="-dump -force_html -assume_charset=${CHARSET}"<br />lynx $LYNXOPT <(  curl -b /tmp/cookie$$ -sL "${URL}" |  sed "${SEDCMD}" )</code></pre><br /><br />Vejamos em uso:<br /><pre>$ ./find.sh              <br />Usage: find.sh [-q qtde] [-g grupo] [-c charset] search<br /><br />$ ./find.sh -q 10 getopts # procurando por getopts limitando a 10 registros<br />   [1]Re: [shell-script] Script de busca de mensagens<br />   [2]Re: [shell-script] Re: script iterativo / passo a passo<br />   [3]Re: [shell-script] Script de Backup<br />   [4]Re: [shell-script] Script de Backup<br />   [5]Re: [shell-script] Script de Backup<br />   [6]Re: [shell-script] Script de Backup<br />   [7]Re: [shell-script] Echo e executa: superecho<br />   [8]Re: [shell-script] testar se parametro $1 foi passado<br />   [9]Re: [shell-script] Echo e executa: superecho<br />   [10]Re: [shell-script] testar se parametro $1 foi passado<br /><br />References<br /><br />   1. http://br.groups.yahoo.com/group/shell-script/message/26373<br />   2. http://br.groups.yahoo.com/group/shell-script/message/26204<br />   3. http://br.groups.yahoo.com/group/shell-script/message/26078<br />   4. http://br.groups.yahoo.com/group/shell-script/message/26076<br />   5. http://br.groups.yahoo.com/group/shell-script/message/26075<br />   6. http://br.groups.yahoo.com/group/shell-script/message/26072<br />   7. http://br.groups.yahoo.com/group/shell-script/message/25742<br />   8. http://br.groups.yahoo.com/group/shell-script/message/25720<br />   9. http://br.groups.yahoo.com/group/shell-script/message/25719<br />  10. http://br.groups.yahoo.com/group/shell-script/message/25718</pre><br /><br />Divertido, não? o default é procurar no grupo shell-script do yahoo, mas ele pode investigar em qualquer um.<br /><br />Valeu Mr.Bits!!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Hahaha... te amarrou, gc?<BR/><BR/>Podes usar pra pesquisar no rioguj ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Guilherme Chapiewski</div>
+<div class='content'>
+\o/<BR/><BR/>É por isso que bash é a melhor coisa de todo o universo!!!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Mas é facil, Roger!<BR/><BR/>/padrão/!d -> apaga *todas* as linhas que *não* casam com o padrão<BR/><BR/>s/padrão/substituição/g -> substitui, globalmente, o padrão pela substituição<BR/><BR/>s#xxx#yyy#g -> mesma coisa, util para não ter que escapar o caracter /</div>
+</div>
+<div class='comment'>
+<div class='author'>Roger Leite</div>
+<div class='content'>
+Putz Tiago ! Você tá ficando muito louco mesmo, deve ser o sol ai do Rio ... não é possível !<BR/><BR/>Estes comandos de sed são de arrepiar, um dia ainda vou entender isso "nativo".<BR/><BR/>flw e sucesso!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+VB ? NUNCA!!!<BR/><BR/>Mas ja fiz coisas com VBScript... :$</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+Tiago, tu ta ficando cada vez pior cara. Já pensou em dar um tempo e programar um pouco em Visual Basic?<BR/><BR/><BR/>hehe.. muito bom!</div>
+</div>
+</div>

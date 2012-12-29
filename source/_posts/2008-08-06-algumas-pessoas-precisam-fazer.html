@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Algumas pessoas PRECISAM fazer programas interativos"
+date: 2008-08-06T15:05:00-03:00
+categories:
+ - C
+---
+
+<div class='post'>
+Este código:<br /><pre><code>#include &lt;stdio.h&gt;<br />#include &lt;stdlib.h&gt;<br /><br />int main(int argc, char **argv){<br />        int i;<br />        double total =0;<br /><br />        for(i=1;i &lt; argc;i++){<br />            total = total + atof(argv[i]);<br />        }<br /><br />        printf("A soma dos %d parametros eh %f\n",(argc - 1),total);<br /><br />        return 0;<br />}</code></pre><br /><br />É limpo, prático e scriptável. Não preciso fazer pergunta nenhuma nem tratar nada que o usuario informe: no maximo posso ver o número de parâmetros e reclamar. Basta saber como funciona o laço for e saber que argc é o número de parâmetros que eu passei para o programa e argv é um vetor de strings (que, em C puro, são vetores de chars) onde cada elemento é um parâmetro. O primeiro é sempre o nome do programa (a posição 0, que eu pulei).<br /><br /><pre>$ gcc -Wall soma.c<br />$ ./a.out 1 2 3 4 5<br />A soma dos 5 parametros eh 15.000000</pre><br /><br />Eu compilo e pelo para que todos os warnings possiveis sejam mostrados. Novamente não tive nenhum problema e o código funciona bem. Nem um flush de stdin foi preciso. Se eu colocar uma palavra no meio, como abóbora, será ignorado.<br /><br />Não é mais facil assim do que fazer milhões de menus? Nem precisa de system("pause") system("cls")!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>NetWalker</div>
+<div class='content'>
+hmmm...<BR/>in.ignore(std::numeric_limits<BR/>&lt;std::streamsize&gt;::max(),&#39;\n&#39;);<BR/>in.get();<BR/>??<BR/>heheheh :D<BR/>i agree</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Que fique registrado: system("pause") é um convite a <B>morte</B>.</div>
+</div>
+</div>

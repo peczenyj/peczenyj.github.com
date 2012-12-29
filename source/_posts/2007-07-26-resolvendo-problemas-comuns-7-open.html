@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Resolvendo Problemas Comuns 7 - open failed: |"
+date: 2007-07-26T14:03:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Imagine um arquivo com algumas linhas duplicadas:<br /><pre><code>$ cat arquivo<br />permission denied<br />bad interpreter<br />missing separator<br />set correct localle<br />parameter list too long<br />unary operator expected<br />parameter list too long<br />bad interpreter</code></pre><br /><br />Obter as linhas distintas pode ser feito com a ajuda do sort + uniq<br /><br /><pre><code>$ cat arquivo | sort | uniq<br />bad interpreter<br />missing separator<br />parameter list too long<br />permission denied<br />set correct localle<br />unary operator expected</code></pre><br /><br /> - Puxa! Que ótima combinação! Vamos guarda-la?<br /><br />Bom, podemos querer guardar este e outros comandos em uma variável de ambiente também, afinal, deve funcionar sem maiores problemas, certo?<br /><pre><code>$ CMD="sort | uniq"<br />$ cat arquivo | $CMD<br /><span style="font-weight:bold;">sort: open failed: |: No such file or directory</span></code></pre><br /><br /> - OPA! Eu sabia, maldito shell, encrenca com tudo!<br /> <br />Tsc... isso acontece porque o pipe | não foi informado como um 'pipe' e sim como a string "|" -- e o sort não conseguiu abrir o arquivo "|".<br />Este tipo de problema pode ser resolvido pelo eval -- ele interpreta novamente as strings na linha de comando.<br /><pre><code>$ eval "cat arquivo | $CMD"<br />bad interpreter<br />missing separator<br />parameter list too long<br />permission denied<br />set correct localle<br />unary operator expected</code></pre><br /><br /> - Ah, agora funciona. Mas esse eval ai ficou feio...<br /><br />Então vamos criar um alias para o comando!<br /><pre><code>$ alias cmd="sort | uniq"<br />$ cat arquivo | cmd<br />bad interpreter<br />missing separator<br />parameter list too long<br />permission denied<br />set correct localle<br />unary operator expected</code></pre><br /><br />Perceba que o comportamento do alias é diferente de uma variavel de ambiente. Devemos ficar atento à correta interpretação da nossa linha de comando pelo shell corrente, senão vamos ter resultados nem sempre amigáveis.<br /><br />Ah, sim, o cat nesse exemplo é completamente supérfluo, poderia ser assim: 'sort arquivo | uniq' <br /><br /> - E o uniq precisa do sort ? <br /> <br />Sim... sem o sort ele fatalmente vai se perder, e é muito mais facil eliminar linhas repetidas que estejam em sequencia do que aleatórias. É bom dar uma lida no man destes comandos pois possuem opções muito poderosas!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Claro, sort + uniq é um prato cheio! <BR/><BR/>Uma coisa interessante é nessa dupla é, por exemplo, imprimir apenas as linhas repetidas ou não repetidas de um texto (opções -u ou -d) e, quando a entrada vem ordenada, o resultado é extremamente confiável.<BR/><BR/>Entretanto não lembro se não existe algum furo no sort -u apenas, vou pesquisar.<BR/><BR/>Abração!</div>
+</div>
+<div class='comment'>
+<div class='author'>Alexsander</div>
+<div class='content'>
+Olá! muito boas as dicas q tens disponibilizado!<BR/>só uma sugestão:<BR/>"sort -u" também remove duplicidades.<BR/>abraços<BR/>t+</div>
+</div>
+</div>

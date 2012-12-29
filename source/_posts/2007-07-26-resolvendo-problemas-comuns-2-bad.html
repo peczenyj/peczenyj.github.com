@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Resolvendo Problemas Comuns 2 - bad interpreter"
+date: 2007-07-26T11:07:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Seguindo na nossa sessão de dicas, quem nunca passou por isso?<br /><br /><pre><code>$ ./script.sh<br />: bad interpreter: No such file or directory<br /><br />$ cat script.sh<br />#!/bin/bash<br />echo "oi"</code></pre><br /> - Hein? Mas está tudo certo, eu tenho um <span style="font-weight:bold;">/bin/bash</span>, o que está acontecendo?<br /><br />Bom, vamos ver mais de perto:<br /><pre><code>$ cat -v script.sh  # 'show nonprinting'<br />#!/bin/bash^M<br />echo "oi"^M</code></pre><br /><br />Ahá! Tem um ^M no final das linhas atrapalhando. <br />  - Mas o que é isso?<br />Muito provavelmente a origem desde script é uma maquina windows. A explicação é o caracter <a href="http://en.wikipedia.org/wiki/Newline">newline</a>. O windows precisa de 2 caracteres para simbolizar o fim de uma linha em um arquivo texto puro, a dupla \r\n (veja link para a wikipedia), porém os *nix não precisam do \r -- que o cat gentilmente mostrou como um ^M. Este caracter a mais atrapalha o interpretador, que não recebe um /bin/bash e sim /bin/bash\r -- e isso realmente não existe.<br /><br />Como resolver? Existem dois programas para este fim: unix2dos e dos2unix (as vezes aparecem como unixtodos e dostounix) que convertem os finais de linha em casos como este. Se vc abrir um arquivo texto do *nix em um bloco de texto vai ver todas as quebras de linha substituidas por um quadrado preto e todas as linhas em uma só.<br /><br />Caso vc não tenha um programa conversor, pode usar o SED<br /><pre><code>$ sed -i 's/\r$//' script.sh<br />$ ./script.sh<br />oi</code></pre><br /><br />O tr também poderia ser usado, mas não é tão amigável.<br /><pre><code>$ tr -d '\r' < script.sh > novo_script.sh</code></pre><br /><br />Este detalhe pode ser muito importante um dia!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>arpapa</div>
+<div class='content'>
+Pode também converter usando o comando  dos2unix script.sh que funciona legal.</div>
+</div>
+<div class='comment'>
+<div class='author'>Rioges</div>
+<div class='content'>
+Resolveu o meu problema, muito obrigado pela dica!!</div>
+</div>
+</div>

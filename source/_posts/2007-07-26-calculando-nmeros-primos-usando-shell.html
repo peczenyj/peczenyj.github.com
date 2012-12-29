@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Calculando Números Primos usando Shell"
+date: 2007-07-26T01:48:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Será possivel determinar se um número é primo, ou não, usando o bom e velho shell?<br /><br />A resposta está no comando <span style="font-weight:bold;">factor</span><br /><br /><pre><code>seq 1 250 | factor | awk -F \: '$1 == $2{ print $1}' | column -x<br />2       3       5       7       11      13      17      19      23      29<br />31      37      41      43      47      53      59      61      67      71<br />73      79      83      89      97      101     103     107     109     113<br />127     131     137     139     149     151     157     163     167     173<br />179     181     191     193     197     199     211     223     227     229<br />233     239     241</code></pre><br /><br />A ideia é simples: se um número é primo ele possui apenas um único fator -- ele mesmo. Basta detectar esses casos via awk (ou grep, sed, existem varias formas). Usei aqui o <span style="font-weight:bold;">seq</span> para gerar uma seqüência e o <span style="font-weight:bold;">column </span>para tabular os resultados.</div>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Google Wars"
+date: 2007-08-07T18:43:00-03:00
+categories:
+ - off-topic
+ - Shell
+---
+
+<div class='post'>
+Inutilidade Pública: veja o que/quem possui mais resultados no google?<br /><br /><pre><code>./GoogleWars.sh  superman batman<br /><span style="color:red;">batman          48500000</span><br />superman        33700000<br /><br />./GoogleWars.sh  gremio inter<br /><span style="color:red;">inter           213000000</span><br />gremio          5560000<br /><br />./GoogleWars.sh  hp ibm<br /><span style="color:red;">hp      379000000</span><br />ibm     147000000<br /><br />./GoogleWars.sh  cobol java fortran perl ruby lisp haskell<br /><span style="color:red;">java    272000000</span><br />perl    103000000<br />ruby    101000000<br />lisp    21400000<br />fortran 17400000<br />haskell 15400000<br />cobol   10900000</code></pre><br />O script é simples, abusando um pouco do SED e do AWK, com um toque de SORT ;-)<br /><br /><pre><code>#!/bin/bash<br />COR=`echo -ne '\e[31;1m'`<br />END=`echo -ne '\e[m'`<br />CORSED="1s/.*/${COR}&${END}/"<br />GOOGLE='http://www.google.com/search'<br /><br />[[ $2 ]] || { echo "usage: $0 item item2 [ ... item n]" ; exit 0 ; }<br /><br />SEDCMD='/did not match any documents/{s/.*/0/g;p;q}<br />        /Results/{s/.* about[ ]\+\([0-9,.]\+\).*/\1\n/;p;q}'<br />AWKCMD='{ result[$1]=$2 ; x = length($1) ; if(x > max) max=x }<br />        END{   for(i in result) printf "%-"max"s\t%s\n",i,result[i]}'<br /><br />for i in "$@" ; do echo -ne "${i}\t" <br />        lynx -dump "${GOOGLE}?q=${i}" | tr -d '\n.,' | sed -n "${SEDCMD}" <br />done | awk -F '\t' "${AWKCMD}" | sort -nr -t $'\t' -k 2 | sed "${CORSED}"</pre></code><br /><br />Quem quiser melhora-lo, sinta-se à vontade :)<br /><br />Edit: ja lancei uma versão .02 com umas correções cosméticas <a href="http://pastebin.com/f2459820a">aqui</a> -- não resisti...</div>

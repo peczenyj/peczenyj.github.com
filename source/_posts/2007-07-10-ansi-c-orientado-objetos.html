@@ -1,0 +1,24 @@
+---
+layout: post
+title: "Ansi C orientado à objetos"
+date: 2007-07-10T16:37:00-03:00
+categories:
+ - C
+ - Nerd
+---
+
+<div class='post'>
+Divertido! Compila e não gera nenhum warning.<br /><br /><pre><code><br />#include &lt;stdio.h&gt;<br /><br />struct {<br />        struct {<br />                int (*println) (const char *);<br />        } out;<br />} System = { {puts} };<br /><br /><br />int main (void){<br /><br />        System.out.println("ola mundo");<br /><br />        return 0;<br />}</pre></code><br /><br />Achei um pdf no google sobre o assunto chamado <a href="http://www.planetpdf.com/codecuts/pdfs/ooc.pdf">Orientação A Objetos em C Ansi</a>. Neste caso, eu criei um ponteiro para a função puts (presente na libc), chamado println. Criei uma variavel chamada <span style="font-style:italic;">System</span>, que é uma estrutura que possui uma variavel chamada <span style="font-style:italic;">out </span>que, por sua vez, possui o ponteiro <span style="font-style:italic;">println</span>.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Ola!<BR/>Esqueci mesmo, achei o pdf e postei na correria. :)</div>
+</div>
+<div class='comment'>
+<div class='author'>J. F. Mitre</div>
+<div class='content'>
+Amigo, <BR/>tenho acompanhado seu textos a algum tempo, são de alta qualidade, mesmo quando são curtos. Muito bom.<BR/><BR/>Mas quando você escreveu esse texto e colocou esse link no fim da página, você esqueceu de mencionar que era um <B>livro gratuito de mais de 200 páginas...</B><BR/><BR/><A HREF="http://www.planetpdf.com/developer/article.asp?ContentID=object_orientated_programming_&gid=6635" REL="nofollow">Link para a página de divulgação do livro</A>. Bom para saber quando e quem escreveu.<BR/><BR/>Eu só posso dizer obrigado !<BR/><BR/>1[]'s</div>
+</div>
+</div>

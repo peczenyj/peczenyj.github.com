@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Erlang é dificil (parte 2)"
+date: 2008-06-19T15:15:00-03:00
+categories:
+ - Erlang
+---
+
+<div class='post'>
+Agora vamos usar as funções específicas para manipular listas.<br /><br /><pre><code>-module(tut).<br />-export([generate/1]).<br /><br />%%<br />%% Funcao generate(X)<br />%% Quando X for 0, retorna [0]<br />%% Quando X > 0, retorna [X,X-1,...,0]<br />%% Caso contrario retorna [0,1,2,...,abs(X)]<br />%%<br />generate(0) -> [0];<br />generate(L) when integer(L), L > 0 -> <br />        lists:seq(0,L); % cria uma lista de 0 até L<br />generate(L) when integer(L) -> <br />        % vamos reverter a lista?<br />        lists:reverse(generate(-L)).</pre></code><br /><br />Muito mais simples, certo? Veja o teste:<br /><br /><pre>$ erl<br />Erlang (BEAM) emulator version 5.5.5 [source] [async-threads:0] [kernel-poll:false]<br /><br />Eshell V5.5.5  (abort with ^G)<br />1> c(tut). <br />{ok,tut}<br />2> tut:generate(5) ++ tut:generate(-5).<br />[0,1,2,3,4,5,5,4,3,2,1,0]<br />3> </pre><br /><br />O operador ++ une 2 listas :)</div>

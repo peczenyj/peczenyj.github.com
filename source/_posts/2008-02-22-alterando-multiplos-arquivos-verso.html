@@ -1,0 +1,28 @@
+---
+layout: post
+title: "Alterando Multiplos Arquivos (versão final?)"
+date: 2008-02-22T19:27:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+O site Dicas-L trouxe na ultima semana 2 formas de renomear multiplos arquivos (<a href="http://www.dicas-l.com.br/dicas-l/20080219.php">aqui</a> e <a href="http://www.dicas-l.com.br/dicas-l/20080221.php">aqui</a>)<br /><br /><code><pre>#Forma 1<br />for o in $(ls -1 *.txt); do<br />  mv $o $(echo $o | awk -F. '{print $1".htm"}');<br />done</pre></code><br /><br /><code><pre>#Forma 2<br />for i in `ls *.txt`; do<br />  mv $i $(echo `basename $i .txt`.html)<br />done</pre></code><br /><br />São ambas formas interessantes, porém ao meu ver consomem muito recursos da maquina, sem falar que são um tanto... feios... (nada contra - o que importa é que funcione)<br /><br />Vou utiliza-los como exemplo de como podemos tornar algo melhor e mais prático (se o tempo permitir).<br /><br />Vamos dividir as paradas:<br /><br /><code><pre>altera() { mv $1 $(echo `basename $1 .txt`.html) ; }<br /><br />for i in `ls *.txt`; do<br />  altera $i<br />done</pre></code><br /><br />Agora vamos tomar um cuidado: arquivos com espaço no nome<br /><br /><code><pre>altera() { mv "$1" $(echo `basename "$1" .txt`.html) ; }<br /><br />for i in `ls *.txt`; do<br />  altera "${i}"<br />done</pre></code><br /><br />Bom, o for pode iterar sobre uma lista de argumentos. As mascaras de nome de arquivo são expandidos pelo shell durante a execução, logo...<br /><br /><code><pre>for i in *.txt ; do<br />  altera "${i}"<br />done</pre></code><br /><br />Agora, a rotina de alteração do nome do arquivo de destino é complicadissima, depende de um ou mais sub-processos. Isso poderia ser...<br /><br /><code><pre>altera() { mv "$1" "${1%.txt}.html" ; }</pre></code><br /><br />Que, inserido no for...<br /><br /><code><pre>for i in *.txt ; do<br />  mv "${i}" "${i%.txt}.html"<br />done</pre></code><br /><br />Interessante, certo? Nenhum sub-processo, exceto o inumeros mv que serão executados. Existem outras formas de fazer a mesma coisa<br /><br /><code><pre>ls *.txt | awk -F. -v OFS=. '{ O=$0; $NF="html" ;printf "\"%s\" \"%s\"\n",O,$0 }' | xargs -n 2 mv<br /><br />ls *.txt | sed 's#^\(.\+\)\.[^.]\+$#"&" "\1.html"#g' | xargs -n 2 mv </pre></code><br /><br />(rodem as linhas acima sem o mv do xargs para entende-las -- é metaprogramação)<br /><br />Agora... tudo isso é muito bonito mas... veja se o seu computador possui os comandos mmv ou rename (que facilitam Absurdamente a tarefa)<br /><br /><code><pre>rename .txt .html *.txt<br /><br />mmv "*.txt" "#1.html"</pre></code><br /><br />Simples, não?<br /><br />Tudo depende do tempo que temos e das nossas necessidades. Mesmo que o rename/mmv sejam uteis, pode ser que a forma com awk / sed valha  mais a pena pois o ls pode ser substituido por um find (ja pensou nisso?)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Leonardo Bernardes</div>
+<div class='content'>
+Já conhecia o NF, depois de conhecê-lo queimei um pouco a cabeça tentando elaborar um método pra fazer essa passagem do 1 ao NF. Pensei em qualquer coisa semelhante ao while.. mas não veio nada.<BR/><BR/>Na verdade, Tiago, sou um belo amador, brinco de fazer scripts como terapia.. terapia que eu realizava aos montes na época de mIRC.<BR/><BR/>Por conta mesmo do meu amadorismo, não consegui entender seu exemplo de como queimar os registros intermediários. Mas não esquente com isso, se não há aquela variável mágica que eu usava no mIRC, é melhor que eu me contente com minhas limitações. Em todo caso, fico ligado nas suas dicas da seção shell.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Ola Leonardo.<BR/><BR/>Infelizmente o gawk não tem o conceito de range. Quando vc utiliza o operador $X vc esta pegando o X-ésimo campo daquele registro. Vc tem uma variavel que é setada a cada registro que é NF, o numero de registros, que permite que vc leia o ultimo registro de forma simples<BR/><BR/>print $1,$NF<BR/><BR/>Agora... tem uma sacanagem que vc pode fazer: $0 é o registro inteiro, porém vc pode "queimar" alguns registros intermediarios<BR/><BR/>no seu caso, se vc fizesse<BR/><BR/>$3=$4=$5=$6=""<BR/>print $0<BR/><BR/>só sobraria o que vc quer.<BR/><BR/>Uma forma, menos agressiva, seria tentar pegar um padrão via expressões regulares.</div>
+</div>
+<div class='comment'>
+<div class='author'>Leonardo Bernardes</div>
+<div class='content'>
+Tiago,<BR/><BR/>Você parece o sujeito certo pra esclarecer um dúvida:<BR/><BR/>Se eu quiser filtrar uma string do seguinte tipo<BR/><BR/>7718  0.0  0.0   1756   476 ?        Ss   17:59   0:00 /bin/sh -c pidgin<BR/><BR/>Como AWK eu posso fazer através de algo como "awk '{print $1,$2,$10}'" <BR/><BR/>Mas se eu quiser, por exemplo, filtrar o $1, o $2 e todos OS DEMAIS após o $7 sem saber o número total de termos, há alguma variável pra isso? Não sei se me fiz entender, mas essa dúvida me persegue desde que lembrei que quando eu brincava editando scripts no mIRC, uma simples $7- realizava essa função<BR/><BR/>Desculpe o abuso, abraços</div>
+</div>
+</div>

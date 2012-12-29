@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Entendendo Ponteiros na linguagem C"
+date: 2007-10-24T11:09:00-03:00
+categories:
+ - C
+---
+
+<div class='post'>
+Entender ponteiros (e ponteiros para ponteiros) nem sempre é facil quando estamos vendo C ou C++ pela primeira vez. O conceito é absurdamente simples, assim como os operadores * e &, mas pelo menos para mim demorou um tempão para a ficha cair (e olha que eu utilizava arrays direto e nem me ligava nesse detalhe).<br /><br />Com auxilio do pre-processador C, vejamos se este exemplo que pode ser elucidativo:<br /><br /><pre><code>#include "pointer.h" <br />int main () <br />{ <br />        int x = 0;              // variavel de exemplo <br />        pointer(int) y;         // ponteiro <br /><br />        y = address(x);         // y aponta para o endereco de x <br /><br />        x++;                    // incrementamos o valor de x <br />        value(y)++;             // incremento indireto (via ponteiro) <br /><br />        printf("value   %d %d\n",x, value(y) ); <br />        printf("address %p %p\n",address(x), y ); <br /><br />        return 0; <br />} </code></pre><br /><br />Ou seja, a criação de um ponteiro para uma variavel do tipo inteira é através da macro pointer. Outra macro, address, retorna o endereço de uma variavel e, assim, tenho uma referência aquela variavel. Posso então ter acesso ao valor e até mesmo manipular a variavel original.<br /><br />Vejamos agora o resultado da execução:<br /><pre>$ ./a.out<br />value   2 2<br />address 0xbfffeaa4 0xbfffeaa4</pre><br /><br />Perceba que eu consegui incrementar a variavel duas vezes (através das duas formas disponíveis). Perceba também que o ponteiro y tem como valor o mesmo endereço de memória que a variavel x, razão pela qual consigo alterar o seu valor.<br /><br />O codigo gerado pelas macros <br /><br /><pre><code>int main () <br />{ <br />        int x = 0; // variavel de exemplo <br />        int * y; // ponteiro <br /><br />        y = (&(x)); // y aponta para o endereco de x <br /><br />        x++; // incrementamos o valor de x <br />        (*y)++; // incremento indireto (via ponteiro) <br /><br />        printf("value   %d %d\n",x, (*y)); <br />        printf("address %p %p\n",(&(x)), y); <br /><br />        return 0; <br />} </code></pre><br /><br />Eu recomendo que, uma vez que o conceito tenha ficado claro, <span style="font-weight:bold;">que não se use mais este header</span> sob pena de criar arquivos ilegíveis. Por exemplo, tente compilar com a opção de gerar os simbolos para debug (-g) e depois tente debugar esse programa: perceberão que o gdb, por exemplo, não mostra o codigo fonte com tanta clareza.<br /><br />Para fazer este exemplo, utilizamos este arquivo header:<br /><br /><pre><code>#define pointer(type)                    type *<br />#define value(var)                       (*(var))<br />#define address(var)                     (&(var))</code></pre></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Magoei... :(</div>
+</div>
+<div class='comment'>
+<div class='author'>Ron</div>
+<div class='content'>
+lixo! vai aprender a programar! :D</div>
+</div>
+</div>

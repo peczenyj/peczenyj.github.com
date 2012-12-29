@@ -1,0 +1,43 @@
+---
+layout: post
+title: "Metaprogramação com awk e sed"
+date: 2007-08-28T15:17:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Criar um programa que cria programas é simples nas linguagens interpretadas.<br /><br />Criamos o programa em uma string e executamos via <span style="font-weight:bold;">eval()</span> ou então gravamos em arquivo e executamos novamente.<br /><br />Me deparei com o seguinte problema: inverter as palavras de uma frase ou arquivo <span style="font-weight:bold;">mantendo</span> a ordem em que aparecem.<br /><br />É claro que eu pensei em usar o rev, mas ele inverte a linha como um todo. Depois de fazer um laço for muito feio em awk, fiquei pensando em como resolver de forma mais legível.<br /><br />Tive esta ideia: vou fazer uma lista de palavras, inverte-las com o rev e, para cada palavra, vou substitui-la pela palavra invertida. Beleza, o <span style="font-weight:bold;">sed </span>faz isso com um pé nas costas.<br /><br />Eu tenho um arquivo (poderia ser um <a href="http://twiki.softwarelivre.org/bin/view/TWikiBar/TWikiBarPapo011#Named_Pipes">named pipe</a>) chamado 'direito' que contem uma lista de palavras sem repetição, com uma palavra por linha. Outro arquivo, com o mesmo conteudo mas revertido via 'rev'.<br /><br />Uso o paste para colocar os arquivo lado a lado e uso o awk para gerar comandos como este:<pre>s/\bpalavra\b/palavra_revertida/g;</pre><br /><br />Usei o awk pq a sintaxe fica mais clara, o sed ficou muito poluído. Perceba que eu uso o recurso de <span style="font-weight:bold;">borda</span> das expressões regulares. Isso me garante que vou trocar uma palavra inteira, e não um pedaço da string.<br /> <br />Agora vem o pulo do gato: mando estes comandos via <span style="font-style:italic;">stdin </span>para o sed, fazendo uso de um pipe. eu informo para o sed que os comandos virão pela stdin passando a opção -f -<br /><br />Vejam o resultado abaixo, espero que seja útil para alguem :)<br /><br /><pre><code>$ cat stuff<br />Nosso fórum principal.<br /><br />Problemas com hardware em geral,<br /><br />temperaturas, comparação de desempenho,<br /><br />compatibilidades de componentes, etc.<br /><br />$ LC_ALL=pt_BR grep -oE '\w+' stuff | sort -u | tee direito | rev > reverso<br /><br />$ paste direito reverso | awk '{<br />     printf "s/\\b%s\\b/%s/g;\n",$1,$2 # facil, não?<br />  }' | sed -f - stuff<br />ossoN muróf lapicnirp.<br /><br />samelborP moc erawdrah me lareg,<br /><br />sarutarepmet, oãçarapmoc ed ohnepmesed,<br /><br />sedadilibitapmoc ed setnenopmoc, cte.</code></pre><br />Como o arquivo possui acentos, precisei setar a variavel <span style="font-weight:bold;">LC_ALL</span> para <span style="font-weight:bold;">pt_BR</span>, caso contrario a expressão regular <span style="font-weight:bold;">\w+</span> não iria casar com todas as palavras.<br /><br />Ps: Julio, que tal chamar isso de "Inversor do Tiago"?</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+O que acontece é o seguinte:<BR/><BR/>cada vez que vc invoca o comando rev, vc perde tempo com a inicialização do programa e seu término. Eu utilizei o rev apenas uma vez, mas vc executa a cada palavra.<BR/><BR/>É a mesma diferença de<BR/><BR/>for i in *.txt ; do rm $i ; done<BR/><BR/>e rm *.txt<BR/><BR/>A segunda forma recebe ja todos os parâmetros e só tem o trabalho de iterar internamente sobre esta lista. A primeira forma cria um custoso laço por conta do detalhe que eu ja lhe falei.<BR/><BR/>Shel é sensacional, porém não pode ser pensado como uma linguagem script sempre, ele é uma forma de interação do usuario com o sistema ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Leandro Santiago</div>
+<div class='content'>
+Mas, se você transformar esse for acima numa função, tipo<BR/>InverteFrase()<BR/>{<BR/>   local IFS='  ' # tab e espaço<BR/>   string=($@)<BR/>   for (( i=0; i<=${#string[@]}; i+=1 ))<BR/>   {<BR/>       echo ${string[$i]} | rev | tr "\n" ' '<BR/>   }<BR/>}<BR/><BR/>Pode utilizar para fazer num arquivo, simplesmente tomando cada linha como uma string independente:<BR/><BR/>while read LINHA<BR/>do<BR/>   InverteFrase $LINHA<BR/>   echo ## esse daqui é para quebrar a linha, no final de cada frase<BR/>done < <(cat arquivo_de_texto)<BR/><BR/>Nossa, esse meu aí demorou 18 segundos num arquivo de textos simples, mas em compensação não precisa escrever em disco. Contra o seu método, que no mesmo arquivo demorou 0.12 segundo... hauhaau<BR/><BR/>Flw, e foi mal invadir assim o seu blog ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Leandro</div>
+<div class='content'>
+Poderia também utilizar vetores, num forzão bem cabuloso.<BR/>Exemplo:<BR/>$ read string<BR/>o rato roeu a roupa do rei de roma<BR/>$ string=($string)<BR/>$ for (( i=0; i<=${#string[@]}; i+=1 ))<BR/>> {<BR/>>   echo ${string[$i]} | rev | tr "\n" ' '<BR/>> }<BR/>o otar ueor a apuor od ier ed amor<BR/><BR/>Mas só funciona com uma só string... rsrs. Só é muito lento, pois o rev, que troca palavra por palavra, é executado muuitas vezes,  quebrando a linha, o que me obriga a utilizar um tr para substituir as quebras por espaço... Fica muito lento... (mas funciona para uma string ;-))</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Ola NetWalker,<BR/><BR/>Pois bem, o sed pode parecer dispendioso, porém em alguns casos a perda de desempenho é imperceptível. Sem falar que a sintaxe dele é mais clara (99% dos casos eu uso a opção de busca e substituição).<BR/><BR/>Mas perceba que o sed pode ser usado de forma mais otimizada, como o caso de imprimir apenas a linha 105 de um grande arquivo:<BR/><BR/>sed -n '105q;d' arquivo<BR/><BR/>sed + awk são uma dupla muito interessante ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>NetWalker</div>
+<div class='content'>
+Cá denovo. :)<BR/>Depois de achar um exemplo teu de inversor em sed pela net (assustador lol), lhe pergunto: que faz/fez tanto com sed?? :D<BR/>Outra questão q intriga fora o uso real desse inversor (http://www.alltooflat.com/geeky/elgoog/ ?? weird heheh); é se já fez alguma avaliação sobre a performance do sed em relação ao awk, ou mesmo tarefas q possam ser substituídas por grep, cut, expansões e afins.<BR/>Pois em alguns casos sed me pareceu meio dispendioso. Porém não conheço sed a fundo para saber sobre o quanto os comandos estavam otimizados.<BR/>E adiantando, muito boa essa indicação do "On The Lot". Não conhecia. :) Ótimos posts como sempre.<BR/>Então é isso.<BR/>Farewell.<BR/><BR/>NetWalker</div>
+</div>
+<div class='comment'>
+<div class='author'>match</div>
+<div class='content'>
+bem legaw, olha, estou usando o tput e para me familiarizar com ele resolvi fazer algo pratico brincando com ele e fazendo a "Screen Matrix" em shel, consiste em usar colunas fixas no tput com linhas aleatorias pra gerar akela chuva verde de caracters do Matrix Movie, saiu meio bagunçado e n tive tempo ainda de por uma ordem, talvez vc esteja interessando em ajudar o codigo estah em: http://crimeboy.110mb.com/neo.sh<BR/>[]z</div>
+</div>
+</div>

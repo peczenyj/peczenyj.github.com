@@ -1,0 +1,10 @@
+---
+layout: post
+title: "AWK e Arrays Associativos"
+date: 2007-10-31T13:09:00-03:00
+categories:
+ - Shell
+---
+
+<div class='post'>
+Um grande problema para quem trabalha com arrays associativos no AWK é<br />com relação a ordem dos elementos quando esta fazendo uma iteração.<br /><br />Ex:<br /><pre><code>$ gawk 'BEGIN{ split("5 4 2 1 3",T) ; for(i in T) print T[i]}'<br />1<br />3<br />5<br />4<br />2</pre></code><br /><br />Eu inseri, nessa ordem, 5, depois 4, depois 2... porém o acesso aos<br />elementos de um array em um for do tipo<br /><pre><code>for( variavel in array)</pre></code><br />é imprevisive / incontrolável.<br /><br />Agora vejamos isto:<br /><br /><pre><code>$ WHINY_USERS=1 gawk 'BEGIN{ split("5 4 2 1 3",T) ; for(i in T) print T[i]}'<br />5<br />4<br />2<br />1<br />3</pre></code><br /><br />WOW! Através da variavel de ambiente do unix WHINY_USERS agora eu consigo acessar os elementos na ordem em que eles foram inseridos no array!<br /><br />E para acessar os valores na ordem crescente:<br /><pre><code>$ WHINY_USERS=1  gawk 'BEGIN{ split("5 4 2 1 3",T)<br /> asort(T) ;  for(i in T) print T[i] }'<br />1<br />2<br />3<br />4<br />5</pre></code><br /><br />A variavel de ambiente WHINY_USERS <span style="font-weight:bold;">não</span> esta documentada no man, muito menos na documentação que consegui a respeito do gawk. Descobri esta dica no <span style="font-style:italic;">comp.lang.awk</span> e, por incrivel que pareça, tive que vasculhar o codigo fonte do <span style="font-style:italic;">gawk</span> (graças a deus podemos fazer isso) para entender melhor o que essa variavel poderia fazer.<br /><br />Enfim, fica a dica.</div>
