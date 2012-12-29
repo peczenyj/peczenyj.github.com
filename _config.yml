@@ -3,11 +3,11 @@
 # ----------------------- #
 
 url: http://pacman.blog.br
-title: My Personal Blog
+title: Peczenyj's Blog
 subtitle: Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker
 author: Tiago Peczenyj
 simple_search: http://google.com/search
-description: ...
+description: My personal blog with cool stuff
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -68,7 +68,7 @@ twitter_user: pac_man
 twitter_tweet_count: 4
 twitter_show_replies: false
 twitter_follow_button: true
-twitter_show_follower_count: false
+twitter_show_follower_count: true
 twitter_tweet_button: true
 
 # Google +1
@@ -89,8 +89,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-#disqus_short_name: peczenyj
-#disqus_show_comment_count: true
+disqus_short_name: peczenyj
+disqus_show_comment_count: false
 
 # Google Analytics
 google_analytics_tracking_id: UA-2150536-2
