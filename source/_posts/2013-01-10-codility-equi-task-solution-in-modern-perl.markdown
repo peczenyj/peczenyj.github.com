@@ -44,31 +44,31 @@ ok 4 - single
 I'm using two new features: the defined-or operator and state variables.
 
 The defined-or is like a regular logic or BUT consider only undefined values as 'false'. Instead doing this:
-
+``` perl
 	(defined $p)? $p : -1
-
+``` 
 you can do only
-
+``` perl
 	$p // -1
-	
+``` 	
 0 is a valid value for P, but 0 is false for boolean operations. For example, te code below fails:
-
+``` perl
 	$p || -1
-	
+``` 
 the test 'single', where I have only one element.
 
 The List::Util first subroutine is similar to grep, we can pass a block and an array, and we evaluate the block for each element of the array until the block returns a true value, then stops. If I can't find anything, the subroutine return undef.
 
 Another feature is the state variable. Instead do this
-
+``` perl
 	my $pivot = 0;
 	my $p = first { ... ; $pivot  = $A[$_]; ... }
-	
+```
 We just declare the state variable
-
+``` perl
 	my $pivot = 0;
 	my $p = first { state $pivot = 0; ... ; $pivot  = $A[$_]; ... }
-	
+```	
 In this case, $pivot is a state variable. The keyword state declares a lexically scoped variable, just like my. However, those variables will never be reinitialized, contrary to lexical variables that are reinitialized each time their enclosing block is entered.
 
 And sum returns the sum of all elements of this array.
