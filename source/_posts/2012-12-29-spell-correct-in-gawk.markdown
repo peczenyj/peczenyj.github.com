@@ -100,7 +100,7 @@ and here is the magic of edits:
 ``` 
 I'm using w as a mnemonic of word to reduce the size of each statement, specialty in 'transposes'. Here we get the word and try to apply 4 types of operations: deletes, transposes, replaces and inserts (see the [original article](http://norvig.com/spell-correct.html) ). If we find, we add copy the value from NWORDS to candidates.
 
-The idea is simple: if I apply all four operations and find one or more candidates in NWORDS, the most probably word will be the most present word in big.txt - CQD.
+The idea is simple: if I apply all four operations and find one or more candidates in NWORDS, the most probably word will be the most present word in big.txt - QED.
 
 Example:
     $ wget http://norvig.com/big.txt
