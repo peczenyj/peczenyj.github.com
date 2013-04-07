@@ -177,7 +177,7 @@ role {
  
         $self->is_dry_run() 
           ? $self->on_dry_run($method,@_) 
-          : $self->$code->(@_)  
+          : $self->$code(@_)  
       }
   }
 };
