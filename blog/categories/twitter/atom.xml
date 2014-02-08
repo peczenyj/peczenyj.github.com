@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: twitter | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/twitter/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Twitter + shell script]]></title>
+    <link href="http://pacman.blog.br/blog/2008/01/29/twitter-shell-script/"/>
+    <updated>2008-01-29T22:59:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2008/01/29/twitter-shell-script</id>
+    <content type="html"><![CDATA[<div class='post'>
+Como acessar o twitter a partir de um shell script de apenas 2 linhas? Fácil<br /><br /><pre><code>#!/bin/bash<br />links -dump http://m.twitter.com/${1} | tac | sed -n '/\*/,$p' | tac | tail +2</code></pre><br /><br />Basta informar o username a ser impresso:<br /><br /><pre>$./twitter.sh pac_man<br />   Twitter<br /><br />   pac_man pac_man fogo controlado agora. about 1 hour ago<br /><br />   Previous Updates<br />     * minha cozinha pegou fogo. about 4 hours ago<br />     * @gchapiewski To com a cuia, onde se compra a erva (mate)? about 9<br />       hours ago<br />     * @pcalcado alias XYZZY='echo -ne Zork!' about 16 hours ago<br />     * XYZZY about 16 hours ago<br />     * 4 horas pra montar um armario. Pelo menos jantei pizza. 08:36 PM<br />       January 28, 2008<br />     * Odeio fazer mudanc,a! Armario ainda nao ta pronto... 03:41 PM January<br />       28, 2008<br />     * Amanha chega a minha mudanc,a. Terei um pc finalmente. 07:41 PM<br />       January 27, 2008<br />     * Odeio limpar a areia dos gatos. 07:38 PM January 27, 2008<br />     * E ainda tenho q desmontar uma geladeira :/ 12:30 PM January 27, 2008</pre><br /><br />Não consegui fazer com que o links entenda o conjunto de caracteres correto mas... quebra um galho. Depois vou fazer um que submeta um post :)</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>aprendiz</div>
+<div class='content'>
+Fiz algumas pequenas modificações pra ficar mais legal:<BR/><BR/>#!/bin/bash<BR/><BR/>if [ "$1" = "" ]; then<BR/> echo "Usage: $0 < twitter-username >"<BR/>fi<BR/><BR/>links -dump http://m.twitter.com/${1} | tac | sed -n '/\*/,$p' | tac | tail -n +2<BR/><BR/>adicionei o Usage, pra daqui uns 6 meses eu nao precisar abrir pra ver o que faz :P<BR/><BR/>e também adicionei ao tail o -n +number pq tail +number ta deprecated na minha versao do tail.<BR/><BR/>Abraços,<BR/>Bruno Carvalho<BR/><BR/>PS: Aguardamos sua primeira aparição aqui na globo.com ! Bem vindo a equipe :)</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

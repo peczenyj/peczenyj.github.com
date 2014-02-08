@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Moose | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/moose/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable]]></title>
+    <link href="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/"/>
+    <updated>2013-04-07T09:55:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable</id>
+    <content type="html"><![CDATA[<p>A 'dry run' is a testing process where the effects of a possible failure are intentionally mitigated. For example, an aerospace company may conduct a "dry run" test of a jet's new pilot ejection seat while the jet is parked on the ground, rather than while it is in flight. Or, in software development, we can change the behavior of some methods in order to test, like avoid change data into a database (logging the action instead).</p>
+
+<p>There are many ways to implement this capability. For example, we can add an explicity return in each method and test some condition. I will show some options in this article and we will find how to use the module <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a> in our Moose classes (Perl).</p>
+
+<p>One simple example in Perl, reading from an environment variable <code>DRY_RUN</code>.</p>
+
+<p>```perl</p>
+
+<p>package Foo;</p>
+
+<p>sub bar {</p>
+
+<pre><code>logger-&gt;debug("Foo::bar @_");
+return if $ENV{'DRY_RUN'};
+...
+</code></pre>
+
+<p>}
+```</p>
+
+<!--more-->
+
+
+<p>In this example, the <code>bar</code> method change something in the database and my test is very simple, like a simple diff between log files. To test my application in dry run (to test in the product environment, for example, without a big risk), we can do this:</p>
+
+<p><code>
+bash$ DRY_RUN=1 ./my-application.pl --other-options
+</code></p>
+
+<p>Sounds good, for large systems, with a good number of modules, it can be a problem. For example, the method <code>bar</code> has two or three responsabilities: logging the parameters, doing the original job and do nothing if we are in the <code>dry run</code> state. This method is doing a lot of things, and I have the same code in multiple places. Lets think about reuse of this code, using OO principles.</p>
+
+<p>```perl</p>
+
+<p>package FooBase;</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>package Foo;
+use base 'FooBase';</p>
+
+<p>sub bar {</p>
+
+<pre><code>logger-&gt;debug("Foo::bar @_");
+return if $ENV{'DRY_RUN'};
+
+my $self = shift;
+$self-&gt;SUPER::bar(@_);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now it is interesting: my Foo class has just one job: dispatch (or not) the method call to FooBase (who knows our business rule). But we still have the problem of the same code in multiple places. Lets try to solve this with Aspect Oriented Programming, using Moose.</p>
+
+<p>```perl
+package Foo;
+use Moose;</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub baz {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>around [ qw(bar baz) ] => sub {</p>
+
+<pre><code>my $orig = shift;
+my $self = shift;
+
+logger-&gt;debug("Foo::bar @_");
+return if $ENV{'DRY_RUN'};
+
+$self-&gt;$orig(@_)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Moose is a complete object system for Perl 5. Consider any modern object-oriented language (which Perl 5 definitely isn't). It provides keywords for attribute declaration, object construction, inheritance, and maybe more. In this example, we can use the Method Modifier <code>around</code> and we can inject this new piece of code in one or more methods. But we still need add this hook in each class, this is why I create the <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<p>Moose has a great number of features, like Roles. Roles have two primary purposes: as interfaces, and as a means of code reuse. In our example we can do this:</p>
+
+<p>```perl
+package DryRunnable;
+use Moose::Role;</p>
+
+<p>requires 'in_dry_run';
+requires 'on_dry_run';</p>
+
+<p>package Foo;
+use Moose;
+with 'DryRunnable';</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub baz {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub is_dry_run {</p>
+
+<pre><code>$ENV{'DRY_RUN'}
+</code></pre>
+
+<p>}</p>
+
+<p>sub on_dry_run {</p>
+
+<pre><code>logger-&gt;debug("Foo::bar @_")
+</code></pre>
+
+<p>}</p>
+
+<p>around [ qw(bar baz) ] => sub {</p>
+
+<pre><code>my $orig = shift;
+my $self = shift;
+
+$self-&gt;is_dry_run()
+    ? $self-&gt;on_dry_run(@_)
+    : $self-&gt;$orig(@_)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>In this example, the role DryRunnable provides the basic infrastructure to add the dry run capability. Instead ask direclty to an environment variable I'm asking to a method ( <code>is_dry_run</code> ), and instead only log / return nothing we call another method to do this ( <code>on_dry_run</code> ). Using this kind of pattern it is easy to inject the correct <code>around</code> statement using, for example, <a href="https://metacpan.org/module/MooseX::Role::Parameterized">MooseX::Role::Parameterized</a>. With a parameterized role, we can set the list of methods in a Objected Oriented way, with more code reuse and less copy/paste. This is the base of <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<p>```perl
+package Foo;
+use Moose;</p>
+
+<p>with 'MooseX::Role::DryRunnable' => {
+  methods => [ qw(bar baz) ]
+};</p>
+
+<p>has dry_run => (is => 'ro', isa => 'Bool', default => 0);</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub baz {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub is_dry_run { # required, should return a boolean
+  shift->dry_run
+}</p>
+
+<p>sub on_dry_run { # required, will receive the name of the method and the list of arguments
+  my $self   = shift;
+  my $method = shift;
+  $self->logger("Dry Run method=$method, args: \n", @_);
+}
+```</p>
+
+<p>The code of this role is simple, and we can set the list of the methods as a parameter.</p>
+
+<p>```perl
+package MooseX::Role::DryRunnable;
+use MooseX::Role::Parameterized;</p>
+
+<p>parameter methods => (
+  traits  => ['Array'],
+  is      => 'ro',
+  isa     => 'ArrayRef[Str]',
+  default => sub { [] },
+  handles => { all_methods => 'elements' },
+);</p>
+
+<p>role {
+  my $p = shift;</p>
+
+<p>  requires 'is_dry_run';
+  requires 'on_dry_run';</p>
+
+<p>  foreach my $method ($p->all_methods){</p>
+
+<pre><code>around $method =&gt; sub { 
+    my $code  = shift;
+    my $self  = shift;
+
+    $self-&gt;is_dry_run() 
+      ? $self-&gt;on_dry_run($method,@_) 
+      : $self-&gt;$code(@_)  
+  }
+</code></pre>
+
+<p>  }
+};</p>
+
+<p>1;
+```</p>
+
+<p>I can extend the original role to provide a basic version of <code>is_dry_run</code> and <code>on_dry_run</code> for my set of Moose classes and write less code, overriding if I need something more specific for some class. And this is how we can deal with Aspect Oriented Programming in Perl, using Moose.</p>
+
+<p>But this is not the only way to do this. I can use <a href="https://metacpan.org/module/Monkey::Patch">Monkey::Patch</a> or  <a href="https://metacpan.org/module/Aspect">Aspect</a> to add the same behavior, there are many good options to do the same thing.</p>
+
+<p>And there are many applications of this technique. If we identify a good reason to change the behavior of some class in runtime, like activate some modules or features (based on configuration, timedate, environment variables, etc), we can do something like this.</p>
+]]></content>
+  </entry>
+  
+</feed>

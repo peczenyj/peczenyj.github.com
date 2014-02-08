@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Analise Orientada a Objetos com Java - Parte 1 - Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="Estes dias eu me deparei com um problema bem interessante: uma forma de atribuir professores a disciplinas por meio de um sistema feito em Java. Já &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/2007/11/17/analise-orientada-objetos-com-java/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/2007/11/17/analise-orientada-objetos-com-java/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Analise Orientada a Objetos com Java - Parte 1">
+<meta property="og:description" value="">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2007/11/17/analise-orientada-objetos-com-java/">
+
+
+<meta property="twitter:title" value="Analise Orientada a Objetos com Java - Parte 1">
+<meta property="twitter:description" value="">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Analise Orientada a Objetos Com Java - Parte 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-11-17T16:02:00-02:00" pubdate data-updated="true">Nov 17<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+Estes dias eu me deparei com um problema bem interessante: uma forma de atribuir professores a disciplinas por meio de um sistema feito em Java. <br /><br />Já aviso, estou tentando aprender e achei este exemplo interessante. Este post é uma tentativa de análise orientada à objetos feita de forma progressiva, comentários são bem vindos.<br /><br />A primeira proposta foram 2 matrizes bidimensionais, uma com os professores disponíveis naquele dia e outra com as turmas, distribuidas ao longo de uma semana. Eu logo percebi que isso podia ser um problema de modelagem, pois se vc vai utilizar matrizes, paineis, interface textual ou seja lá o que for, isto é apenas uma camada - <span style="font-weight:bold;">a visão</span>. Um modelo muito mais rico pode ser criado, vejamos este exemplo em Java:<br /><br /><pre><code>class Professor{}<br />class Disciplina{}<br />class Turma{<br /> Disciplina disciplina;<br /> Professor  professor;<br />}<br />public class Main{<br /> public static void main(String[] args) {<br />  Professor  oseias     = new Professor();<br />  Disciplina matematica = new Disciplina();<br />  Turma matA = new Turma();<br />  <br />  matA.disciplina = matematica;<br />  matA.professor  = oseias;<br /> }<br />}</code></pre><br /><br />A minha classe <span style="font-weight:bold;">Main </span>mostra como seriam as operações sobre estas 3 classes. Basicamente eu tenho uma classe <span style="font-weight:bold;">Professor</span>, uma classe <span style="font-weight:bold;">Disciplina </span>e uma classe <span style="font-weight:bold;">Turma</span>. Se vc observarem qualquer instituição de ensino vão perceber que uma turma tem-um professor e tem-uma disciplina associados (<span style="font-style:italic;">composição</span>).<br /><br />Percebam também que eu não fui até uma escola ou universidade e fiquei horas levantando requisitos, criado diagramas uml ou documentos no word - apenas criei uma casca inicial de código (cheio de problemas por sinal). Também não me importo, ainda, com nenhum aspecto <span style="font-style:italic;">temporal</span>. Sem falar que esta escola todos os professores podem dar qualquer disciplina - agora vamos implementar direito.<br /><br />Vejamos&#8230; uma turma não troca de disciplina facilmente, mas de professor sim. Faz sentido, então, ter um setter de professor e um construtor que receba uma disciplina. Outra coisa, eu não defini nada nas outras classes, então está na hora de definir 2 atributos : id (numérico) e nome (String). Vou diferenciar os objetos pelo código, isto é, o seu id, e o nome será utilizado como descrição. Vou sobreescrever os métodos equals e toString.<br /><br />Como o nome desses objetos é importante, vou coloca-los no construtor também (assim como o id).<br /><br /><pre><code>class Professor{<br /> long id;<br /> private String nome;<br /> public Professor(long id,String nome){<br />  this.id = id;<br />  this.nome = nome;<br /> }<br /> public long getId(){ return id; }<br /> public String toString(){ return this.nome ; }<br /> public boolean equals(Object o){<br />  boolean test = false;<br /><br />  if (!(o instanceof Professor))<br />   test = super.equals(o);<br />  else <br />   test = ((Professor) o).getId() == this.id; <br />  return test;<br /> } <br />}<br />class Disciplina{<br /> long id;<br /> private String nome;<br /> public Disciplina(long id,String nome){<br />  this.id = id;<br />  this.nome = nome;<br /> }<br /> public long getId(){ return id; }<br /> public String toString(){ return this.nome ; }<br /> public boolean equals(Object o){<br />  boolean test = false;<br /><br />  if (!(o instanceof Disciplina))<br />   test = super.equals(o);<br />  else <br />   test = ((Disciplina) o).getId() == this.id; <br />  return test;<br /> }<br />}<br />class Turma{<br /> long id;<br /> private String nome;<br /> private Disciplina disciplina;<br /> private Professor  professor;<br /> public Turma(long id, String nome,Disciplina disciplina){<br />  this.id = id;<br />  this.nome = nome;<br />  this.disciplina = disciplina;<br /> }<br /> public void setProfessor(Professor  professor){<br />  this.professor = professor;<br /> }<br /> public long getId(){ return id; }<br /> public String toString(){ <br />  return this.nome + " [" + this.disciplina <br />         + "] c/ " + this.professor ; <br /> }<br /> public boolean equals(Object o){<br />  boolean test = false;<br /><br />  if (!(o instanceof Turma))<br />   test = super.equals(o);<br />  else <br />   test = ((Turma) o).getId() == this.id; <br />  return test;<br /> } <br />}<br />public class Main {<br /> public static void main(String[] args) {<br />  /* objetos bem comportados */<br />  Professor  oseias     = new Professor(1L,"Oseias");<br />  Disciplina matematica = new Disciplina(1L,"Matematica");<br />  Turma matA = new Turma(1L,"Matematica A", matematica);<br />  matA.setProfessor(oseias); <br />  <br />  System.out.println("Professor  " + oseias);    <br />  System.out.println("Disciplina " + matematica);  <br />  System.out.println("Turma      " + matA);<br />  <br />  /* objetos mal comportados <br />   * Sujeitos a NullPointerException    */<br />  Professor juca = new Professor(2L,null);<br />  Disciplina calculo = new Disciplina(2L,null);<br />  Turma matB = new Turma(2L,"Matematica B", null);<br />  matB.setProfessor(null); // nem precisava mas...<br />  Turma matC = new Turma(3L,"Matematica C",calculo);  <br />  Turma matD = new Turma(4L,"Matematica D",calculo);<br />  matD.setProfessor(juca);<br />  <br />  System.out.println("Juca?   " + juca);<br />  System.out.println("Calculo?" + calculo);<br />  System.out.println("matB?   " + matB);  <br />  System.out.println("matC?   " + matC);<br />  System.out.println("matD?   " + matD);<br /> }<br />}</pre></code><br /><br />Mas que raios eu estou fazendo? veja a saída desse programa:<br /><br /><pre>Professor  Oseias<br />Disciplina Matematica<br />Turma      Matematica A [Matematica] c/ Oseias<br />Juca?   null<br />Calculo?null<br />matB?   Matematica B [null] c/ null<br />matC?   Matematica C [null] c/ null<br />matD?   Matematica D [null] c/ null</pre><br /><br />Qual o significado? Bom&#8230; eu tenho uma forma razoavel de representar um professor, disciplina e turma, porém não é pratico, o construtor está gigante e, em muitas situações, eu posso ter parâmetros nulos, o que pode ser uma fonte de problemas. Existem muitas formas de refatorar estas classes, eu nem toquei no <a href="http://blog.caelum.com.br/2006/09/04/ensinando-que-e-o-hashcode/">HashCode</a>, enfim, tem muito pano pra manga. <br /><br />Apresento a vcs o desenvolvimento em etapas, iterativo. Eu estou chutando requisitos aos poucos, é verdade, mas eu entrego um codigo testável e completo e cada ciclo. Com os usuarios testando esse código (nesse caso, uma API, mas enfim&#8230;)  eu obtenho um feedback interessante. O que vc acha?</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>NetWalker</div>
+<div class='content'>
+Saudações, sir Peczenyj. :)<BR/>Muito boa a abordagem da análise.<BR/>Java, como sempre, usual e prático no que diz respeito a conceitos de orientação a objeto (a não ser herança múlt&#8230; ops, heim? alguém disse algo? ah bom&#8230; :D ). <BR/>Pois bem, quero ver a segunda parte pra descobrir o que pretende com esses construtores.<BR/>No mais, já que Professores e Disciplinas são apenas referenciados em Turmas, e têm a sua existência independente destas, ainda acredito que a relação seria uma Agregação. E não Composição, como citou.<BR/>Voltando&#8230; Vc descreveu o problema como possuindo o objetivo de atribuir professores às disciplinas. Tem alguma restrição ou regra geral que o problema define e pretende seguir (disponibilidade, horários, etc)? Ou continuará o foco em relacionar professores e disciplinas sem maiores restrições?<BR/>Então é isso, continue o bom trabalho de sempre.<BR/>Abraço.<BR/>Até +.</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcio</div>
+<div class='content'>
+Eu acho que você deveria usar um problema mais complexo como exemplo e ver se isso realmente funciona. Seu exemplo é bem simples e todo mundo conhece o domínio (estou deduzindo que você estudou e fez faculdade :))<BR/><BR/>Acho que não é necessário coletar todos os requisitos possíveis e modelar todos os detalhes do sistema, mas é quase obrigatório um estudo do domínio e um design, nem que seja um rascunho, do sistema. Os outros detalhes surgirão com a implementação. :)<BR/><BR/>[]&#8217;s</div>
+</div>
+</div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-11-17T16:02:00-02:00" pubdate data-updated="true">Nov 17<span>th</span>, 2007</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2007/11/17/analise-orientada-objetos-com-java/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2007/11/17/analise-orientada-objetos-com-java/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/11/08/nascimentos/" title="Previous Post: Nascimentos">&laquo; Nascimentos</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/11/28/evento-tchelinux-nesse-sbado/" title="Next Post: Evento Tchelinux nesse Sábado">Evento Tchelinux nesse Sábado &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

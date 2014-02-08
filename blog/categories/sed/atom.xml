@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: sed | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/sed/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Manipulando logs com AWK e SED]]></title>
+    <link href="http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed/"/>
+    <updated>2008-04-26T14:41:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed</id>
+    <content type="html"><![CDATA[<div class='post'>
+Eis que a lista de <a href="http://br.groups.yahoo.com/group/shell-script/">shell script</a> traz um bom desafio.<br /><br /><cite>Galera, tenho o seguinte log.:<br /><br />AAAA-------------campo_1-------------campo_2-----campo_3----campo_4---------- <br />teste_1 371508787 371547453 38666 testetesteteste<br /><br />BBBB-------------campo_1-------------campo_2-----campo_3----campo_4---------- <br />teste_2 4625081503 4651313710 26232207 testetesteteste<br /><br />Estou a tentar usar o awk com a seguinte função : <br />awk '$1~"teste_" {print $5";"$4}' teste > teste_.csv<br /><br />a funcao busca realmente o que desejo:<br />$5 $4<br />testetesteteste 38666<br />testetesteteste 6232207<br /><br />porem,, gostaria que seprasse da forma:<br /><br />AAAA------------- <br />testetesteteste 38666 <br />BBBB------------- <br />testetesteteste 26232207 <br /><br />Alguém tem uma dica de como fazer?</cite><br /><br />Ah... o bom e velho <span style="font-weight:bold;">SED</span> pode resolver isso<br /><br /><code>$ sed -rn '/(^[^-]+-+).*/{s//\1/;h};<br />/^teste_/{s/.* ([^ ]+) +([^ ]+$)/\2 \1/;x;p;g;p}' arquivo.log<br />AAAA-------------<br />testetesteteste 38666<br />BBBB-------------<br />testetesteteste 26232207</code><br /><br />Ok, ok, ta muito complicado, mas veja só:<br /><br /><code>$ sed -rn '/^[^-]+-+/h;/^teste_/{x;p;g;p}' arquivo.log <br />AAAA-------------campo_1-------------campo_2-----campo_3----campo_4----------<br />teste_1 371508787 371547453 38666 testetesteteste<br />BBBB-------------campo_1-------------campo_2-----campo_3----campo_4----------<br />teste_2 4625081503 4651313710 26232207 testetesteteste</code><br /><br />Vamos explicar<br />1) a opção -n serve para informar ao sed "imprima apenas quando eu mandar"<br />2) a opção -p serve para utilizar expressões regulares extendidas<br />(assim não preciso escapar o quantificador + , que significa "um ou<br />mais vezes", assim como os parentesis, para informar os grupos).<br /><br />Eu fiz uma sacanagem. o comando h quarda o padrão num espaço chamado espaço reserva, tipo uma memória do sed, sobreescrevendo. Assim no espaço reserva eu tenho a ultima ocorrencia de uma linha do tipo,  ^[^-]+-+      ,que traduzindo significa: tudo o que começa com um ou varios caracteres diferentes de -, seguidos de um ou varios - (no caso<br />do AAAA------------- ... ).<br /><br />Agora, quando eu encontro uma linha que começa com teste_ eu:<br /><br />x) troco essa linha com a linha que esta na memória (a atual<br />'teste_...' vai, outra volta).<br />p) imprimo a linha que veio (AAAA---------- ...)<br />g) pego a linha da memória (teste_...)<br />p) imprimo a linha cachorrona<br /><br />Só que não fica como vc quer. Ai vc precisa fazer a sacanagem:<br /><br /><span style="font-style:italic;">se uma linha NÃO tem o que eu quero, então eu a manipulo habilmente<br />até que ela chegue ao que eu quero</span><br /><br />Eu poderia ter usado varias tecnicas mas... uma vez com sed, podemos continuar nele.<br /><br /><code>$ sed -rn '/(^[^-]+-+).*/{s//\1/;h};<br />/^teste_/{s/.* ([^ ]+) +([^ ]+$)/\2 \1/;x;p;g;p}' arquivo.log</code><br /><br />eu transformei a primera ER em  (minha_ER).* -- ou seja, criei um <span style="font-style:italic;">grupo</span> para o que me interessa. basta fazer:<br /><br /><code>s/(minha_ER).*/\1/</code><br /><br />para que toda a linha seja reduzida ao que a minha ER casa. em outras palavras, eu apaguei o resto da linha.<br /><br />na outra eu fui mais sacana pois eu tenho 2 grupos e troco toda a linha pelos grupos, na ordem inversa. coisa de quem toma muito café e não tem escrupulos.<br /><br />Vamos ver a versão <span style="font-weight:bold;">AWK</span>?<br /><br /><code>$ awk '/^[^-]+-+/{match($0,/^[^-]+-+/); x=substr($0,1,RLENGTH)}<br />/^teste_/{print x,"\n"$5,$4}' arquivo.log<br />AAAA-------------<br />testetesteteste 38666<br />BBBB-------------<br />testetesteteste 26232207</code><br /><br />x, nesse caso, armazena aquele pedaço da linha anterior, que eu descobri o que é via match. match procura uma expressão regular numa string, nesse caso em $0, e seta um valor na variavel RLENGTH, que é onde a expressão acaba. basta pegar essa parte da string e guardar na variavel x, que sera lida depois.<br /><br />Aqui fala um pouco dessas duas funções: <a href="http://people.cs.uu.nl/piet/docs/nawk/nawk_92.html">http://people.cs.uu.nl/piet/docs/nawk/nawk_92.html</a><br /><br />Eu poderia ter resolvido dessa forma também<br /><code>$ awk '/^[^-]+-+/{sub(/-[^-]+.*$/,"-");x=$0} <br />/^teste_/{print x,"\n"$5,$4}' arquivo.log<br />AAAA-------------<br />testetesteteste 38666<br />BBBB-------------<br />testetesteteste 26232207</code><br /><br />Entretanto aqui eu faço uma substituição grosseira do resto da linha que tem o AAAA------... por -, abusando do .* (e o fato dele ser guloso). Parece mais simples, mas está sujeito à falhas, embora não consigo pensar em nenhuma situação que seja possivem demonstrar.<br /><br />AWK & SED são ferramentas sensacionais para esse tipo de problema ;-)</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>blpsilva</div>
+<div class='content'>
+Impressive, to say the least :)<BR/><BR/>Acho que chegou a hora de limpar a minha ferrugem e reler o Advanced Bash Scripting Guide.<BR/><BR/>You produce some quite nice pearls inside the shell ;)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+grep + awk + sed:<BR/><BR/>$ grep -B 1 teste_ arquivo.log | \<BR/>awk '/teste_/{print $5,$4; next} 1' | \<BR/>sed -r '/^--$/d;s/(^[^-]+-+)[^-].*/\1/'<BR/><BR/>AAAA-------------<BR/>testetesteteste 38666<BR/>BBBB-------------<BR/>testetesteteste 26232207</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,710 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable - Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="A &#8216;dry run&#8217; is a testing process where the effects of a possible failure are intentionally mitigated. For example, an aerospace company &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable">
+<meta property="og:description" value="">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">
+
+
+<meta property="twitter:title" value="Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable">
+<meta property="twitter:description" value="">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Adding a 'Dry Run' Capability to Your Moose Class With MooseX::Role::DryRunnable</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-07T09:55:00-03:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A &#8216;dry run&#8217; is a testing process where the effects of a possible failure are intentionally mitigated. For example, an aerospace company may conduct a &#8220;dry run&#8221; test of a jet&#8217;s new pilot ejection seat while the jet is parked on the ground, rather than while it is in flight. Or, in software development, we can change the behavior of some methods in order to test, like avoid change data into a database (logging the action instead).</p>
+
+<p>There are many ways to implement this capability. For example, we can add an explicity return in each method and test some condition. I will show some options in this article and we will find how to use the module <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a> in our Moose classes (Perl).</p>
+
+<p>One simple example in Perl, reading from an environment variable <code>DRY_RUN</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p>In this example, the <code>bar</code> method change something in the database and my test is very simple, like a simple diff between log files. To test my application in dry run (to test in the product environment, for example, without a big risk), we can do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">bash</span><span class="nv">$</span> <span class="nv">DRY_RUN</span><span class="o">=</span><span class="mi">1</span> <span class="o">./</span><span class="k">my</span><span class="o">-</span><span class="n">application</span><span class="o">.</span><span class="n">pl</span> <span class="o">--</span><span class="n">other</span><span class="o">-</span><span class="n">options</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sounds good, for large systems, with a good number of modules, it can be a problem. For example, the method <code>bar</code> has two or three responsabilities: logging the parameters, doing the original job and do nothing if we are in the <code>dry run</code> state. This method is doing a lot of things, and I have the same code in multiple places. Lets think about reuse of this code, using OO principles.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">FooBase</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">base</span> <span class="s">&#39;FooBase&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$self</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="nn">SUPER::</span><span class="n">bar</span><span class="p">(</span><span class="nv">@_</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it is interesting: my Foo class has just one job: dispatch (or not) the method call to FooBase (who knows our business rule). But we still have the problem of the same code in multiple places. Lets try to solve this with Aspect Oriented Programming, using Moose.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">Moose</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">baz</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">around</span> <span class="p">[</span> <span class="sx">qw(bar baz)</span> <span class="p">]</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$orig</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">my</span> <span class="nv">$self</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">$orig</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Moose is a complete object system for Perl 5. Consider any modern object-oriented language (which Perl 5 definitely isn&#8217;t). It provides keywords for attribute declaration, object construction, inheritance, and maybe more. In this example, we can use the Method Modifier <code>around</code> and we can inject this new piece of code in one or more methods. But we still need add this hook in each class, this is why I create the <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<p>Moose has a great number of features, like Roles. Roles have two primary purposes: as interfaces, and as a means of code reuse. In our example we can do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">DryRunnable</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nn">Moose::</span><span class="n">Role</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">requires</span> <span class="s">&#39;in_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="n">requires</span> <span class="s">&#39;on_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">Moose</span><span class="p">;</span>
+</span><span class='line'><span class="n">with</span> <span class="s">&#39;DryRunnable&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">baz</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">is_dry_run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">on_dry_run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">around</span> <span class="p">[</span> <span class="sx">qw(bar baz)</span> <span class="p">]</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$orig</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">my</span> <span class="nv">$self</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">is_dry_run</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">?</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">on_dry_run</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">:</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">$orig</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, the role DryRunnable provides the basic infrastructure to add the dry run capability. Instead ask direclty to an environment variable I&#8217;m asking to a method ( <code>is_dry_run</code> ), and instead only log / return nothing we call another method to do this ( <code>on_dry_run</code> ). Using this kind of pattern it is easy to inject the correct <code>around</code> statement using, for example, <a href="https://metacpan.org/module/MooseX::Role::Parameterized">MooseX::Role::Parameterized</a>. With a parameterized role, we can set the list of methods in a Objected Oriented way, with more code reuse and less copy/paste. This is the base of <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">Moose</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">with</span> <span class="s">&#39;MooseX::Role::DryRunnable&#39;</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">methods</span> <span class="o">=&gt;</span> <span class="p">[</span> <span class="sx">qw(bar baz)</span> <span class="p">]</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">has</span> <span class="n">dry_run</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">is</span> <span class="o">=&gt;</span> <span class="s">&#39;ro&#39;</span><span class="p">,</span> <span class="n">isa</span> <span class="o">=&gt;</span> <span class="s">&#39;Bool&#39;</span><span class="p">,</span> <span class="n">default</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">baz</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">is_dry_run</span> <span class="p">{</span> <span class="c1"># required, should return a boolean</span>
+</span><span class='line'>  <span class="nb">shift</span><span class="o">-&gt;</span><span class="n">dry_run</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">on_dry_run</span> <span class="p">{</span> <span class="c1"># required, will receive the name of the method and the list of arguments</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$self</span>   <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$method</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">(</span><span class="s">&quot;Dry Run method=$method, args: \n&quot;</span><span class="p">,</span> <span class="nv">@_</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code of this role is simple, and we can set the list of the methods as a parameter.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">MooseX::Role::</span><span class="n">DryRunnable</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nn">MooseX::Role::</span><span class="n">Parameterized</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parameter</span> <span class="n">methods</span> <span class="o">=&gt;</span> <span class="p">(</span>
+</span><span class='line'>  <span class="n">traits</span>  <span class="o">=&gt;</span> <span class="p">[</span><span class="s">&#39;Array&#39;</span><span class="p">],</span>
+</span><span class='line'>  <span class="n">is</span>      <span class="o">=&gt;</span> <span class="s">&#39;ro&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">isa</span>     <span class="o">=&gt;</span> <span class="s">&#39;ArrayRef[Str]&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">default</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span> <span class="o">[]</span> <span class="p">},</span>
+</span><span class='line'>  <span class="n">handles</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="n">all_methods</span> <span class="o">=&gt;</span> <span class="s">&#39;elements&#39;</span> <span class="p">},</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">role</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$p</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">requires</span> <span class="s">&#39;is_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">requires</span> <span class="s">&#39;on_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">foreach</span> <span class="k">my</span> <span class="nv">$method</span> <span class="p">(</span><span class="nv">$p</span><span class="o">-&gt;</span><span class="n">all_methods</span><span class="p">){</span>
+</span><span class='line'>    <span class="n">around</span> <span class="nv">$method</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>        <span class="k">my</span> <span class="nv">$code</span>  <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">my</span> <span class="nv">$self</span>  <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">is_dry_run</span><span class="p">()</span>
+</span><span class='line'>          <span class="p">?</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">on_dry_run</span><span class="p">(</span><span class="nv">$method</span><span class="p">,</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">:</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">$code</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I can extend the original role to provide a basic version of <code>is_dry_run</code> and <code>on_dry_run</code> for my set of Moose classes and write less code, overriding if I need something more specific for some class. And this is how we can deal with Aspect Oriented Programming in Perl, using Moose.</p>
+
+<p>But this is not the only way to do this. I can use <a href="https://metacpan.org/module/Monkey::Patch">Monkey::Patch</a> or  <a href="https://metacpan.org/module/Aspect">Aspect</a> to add the same behavior, there are many good options to do the same thing.</p>
+
+<p>And there are many applications of this technique. If we identify a good reason to change the behavior of some class in runtime, like activate some modules or features (based on configuration, timedate, environment variables, etc), we can do something like this.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-07T09:55:00-03:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aop/'>AOP</a>, <a class='category' href='/blog/categories/moose/'>Moose</a>, <a class='category' href='/blog/categories/perl/'>Perl</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/" title="Previous Post: Lazy::Bool my first module in CPAN">&laquo; Lazy::Bool my first module in CPAN</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/" title="Next Post: MooseX - a new Ruby DSL for Object Oriented Programming (and much more)">MooseX - a new Ruby DSL for Object Oriented Programming (and much more) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/';
+        var disqus_url = 'http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

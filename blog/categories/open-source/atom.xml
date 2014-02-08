@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Open Source | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Spell Correct in GNU AWK]]></title>
+    <link href="http://pacman.blog.br/blog/2012/12/29/spell-correct-in-gawk/"/>
+    <updated>2012-12-29T03:17:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2012/12/29/spell-correct-in-gawk</id>
+    <content type="html"><![CDATA[<p>Based on <a href="http://norvig.com/spell-correct.html">Peter Norvig Spell Correct</a></p>
+
+<p>``` awk small spell corrector in gawk https://gist.github.com/4404742 link to gist</p>
+
+<h1>Usage: gawk -v word=some_word_to_verify -f spelling.awk [ big.txt [ big2.txt ... ]]</h1>
+
+<h1>Gawk version with 15 lines -- 04/13/2008</h1>
+
+<h1>Author: tiago (dot) peczenyj (at) gmail (dot) com</h1>
+
+<h1>about.me/peczenyj</h1>
+
+<h1>Based on : http://norvig.com/spell-correct.html</h1>
+
+<p>function edits(w,max,candidates,list,        i,j){</p>
+
+<pre><code>   for(i=0;i&lt;  max ;++i) ++list[substr(w,0,i) substr(w,i+2)] # deletes
+   for(i=0;i&lt; max-1;++i) ++list[substr(w,0,i) substr(w,i+2,1) substr(w,i+1,1) substr(w,i+3)] # transposes
+   for(i=0;i&lt;  max ;++i) for(j in alpha) ++list[substr(w,0,i) alpha[j] substr(w,i+2)] # replaces
+   for(i=0;i&lt;= max ;++i) for(j in alpha) ++list[substr(w,0,i) alpha[j] substr(w,i+1)] # inserts
+   for(i in list) if(i in NWORDS) candidates[i] = NWORDS[i] } 
+</code></pre>
+
+<p>function correct(word            ,candidates,i,list,max,temp){</p>
+
+<pre><code>   edits(word,length(word),candidates,list)
+   if (!asort(candidates,temp)) for(i in list) edits(i,length(i),candidates)
+   return (max = asorti(candidates)) ? candidates[max] : word }
+</code></pre>
+
+<p>BEGIN{ if (ARGC == 1) ARGV[ARGC++] = "big.txt" # http://norvig.com/big.txt</p>
+
+<pre><code>   while(++i&lt;=length(x="abcdefghijklmnopqrstuvwxyz")) alpha[i]=substr(x,i,1)
+   IGNORECASE=RS="[^"x"]+" }
+</code></pre>
+
+<p>{      ++NWORDS[tolower($1)]   }</p>
+
+<p>END{   print (word in NWORDS) ? word : "correct("word")=> " correct(tolower(word)) }
+```
+This is my version of the Norvig's Spell Corrector in gnu awk.</p>
+
+<p>Follow the code we can find 2 functions and 3 blocks of code. Awk is a oriented to data flow, I'm always reading something, in this case I read a huge file <a href="http://norvig.com/big.txt">big.txt</a> with many words. It is a good sample of word frequency distributions, the most common words should be present in more number than rare words.</p>
+
+<!-- more -->
+
+
+<p>I can read and store the frequency of the word using this:
+``` awk</p>
+
+<pre><code>{  ++NWORDS[tolower($1)]   }
+</code></pre>
+
+<p>```
+it is a map between the word (in lowercase) and how many times I can find in the text.</p>
+
+<p>But, how I can read one word per time? In awk, $1 is the first field in one register. When I read one text, awk consider each line as a register and each work as a field and I can change this with the Record Separator (RS, new line by default) and Field Separator (FS, one or more space/tabs by default) variables.</p>
+
+<p>I'm using the BEGIN block to setup the script:
+``` awk</p>
+
+<pre><code>BEGIN{ if (ARGC == 1) ARGV[ARGC++] = "big.txt" # http://norvig.com/big.txt
+    while(++i&lt;=length(x="abcdefghijklmnopqrstuvwxyz")) alpha[i]=substr(x,i,1)
+    IGNORECASE=RS="[^"x"]+" }
+</code></pre>
+
+<p>```
+First, if there is no arguments, I add the <a href="http://norvig.com/big.txt">big.txt</a> to read and store in 'NWORDS'.</p>
+
+<p>Second, I create an array 'alpha' with each letter. I'm using the temporary variable x to store the valid sequence of words and change the value of RS to a regular expression who match one (or more) non alpha chars. In awk, string concatenation is very simple:
+``` awk</p>
+
+<pre><code>RS = "[^" x "]+"
+</code></pre>
+
+<p><code>    
+is equivalent to    
+</code> awk</p>
+
+<pre><code>RS = "[^abcdefghijklmnopqrstuvwxyz]+"
+</code></pre>
+
+<p>```
+The variable IGNORECASE, with a non 0 value, change the behavior of regular expressions.</p>
+
+<p>After setup the script and read big.txt (or other file(s)) and create NWORDS map, we execute the END block:
+``` awk</p>
+
+<pre><code>END{   print (word in NWORDS) ? word : "correct("word")=&gt; " correct(tolower(word)) }
+</code></pre>
+
+<p>```   <br/>
+What is 'word'? To run this script we pass this variable directly to the script using -v option.</p>
+
+<pre><code>gawk -v word=some_word_to_verify -f spelling.awk    
+</code></pre>
+
+<p>If this word has no problems I can find in NWORDS, but if i can't find, I call the 'correct' function.
+``` awk</p>
+
+<pre><code>function correct(word            ,candidates,i,list,max,temp){
+   edits(word,length(word),candidates,list)
+   if (!asort(candidates,temp)) for(i in list) edits(i,length(i),candidates)
+   return (max = asorti(candidates)) ? candidates[max] : word }
+</code></pre>
+
+<p>```
+All variables in awk are globals. To create local variables we add in the function signature. It is ugly but it is the only way, and the convention is separate the local variables with many spaces (in this case: candidates, i, list, max and temp).</p>
+
+<p>The function correct call edits and return a unique list with possible correct words OR I call edits again with each 'candidate'. The asort is a portable way to return the size of the array/map and I do not change the original (i use temp). asorti order a map by the value of his indexes to find the maximum value. In this case, max is the size of the array and the last element is the most common word in the map (candidates[max]).</p>
+
+<p>and here is the magic of edits:
+``` awk</p>
+
+<pre><code>function edits(w,max,candidates,list,        i,j){
+   for(i=0;i&lt;  max ;++i) ++list[substr(w,0,i) substr(w,i+2)] # deletes
+   for(i=0;i&lt; max-1;++i) ++list[substr(w,0,i) substr(w,i+2,1) substr(w,i+1,1) substr(w,i+3)] # transposes
+   for(i=0;i&lt;  max ;++i) for(j in alpha) ++list[substr(w,0,i) alpha[j] substr(w,i+2)] # replaces
+   for(i=0;i&lt;= max ;++i) for(j in alpha) ++list[substr(w,0,i) alpha[j] substr(w,i+1)] # inserts
+   for(i in list) if(i in NWORDS) candidates[i] = NWORDS[i] }
+</code></pre>
+
+<p>```
+I'm using w as a mnemonic of word to reduce the size of each statement, specialty in 'transposes'. Here we get the word and try to apply 4 types of operations: deletes, transposes, replaces and inserts (see the <a href="http://norvig.com/spell-correct.html">original article</a> ). If we find, we add copy the value from NWORDS to candidates.</p>
+
+<p>The idea is simple: if I apply all four operations and find one or more candidates in NWORDS, the most probably word will be the most present word in big.txt - QED.</p>
+
+<p>Example:</p>
+
+<pre><code>$ wget http://norvig.com/big.txt
+$ time gawk -v word=reciet -f spelling.awk 
+correct(reciet)=&gt; recite
+
+real 0m4.450s
+user 0m4.351s
+sys 0m0.027s
+</code></pre>
+
+<p>Thanks for your time.</p>
+]]></content>
+  </entry>
+  
+</feed>

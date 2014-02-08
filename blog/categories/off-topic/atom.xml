@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: off-topic | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/off-topic/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CRDS - Conselho Regional de Desenvolvedores de Software]]></title>
+    <link href="http://pacman.blog.br/blog/2008/05/02/crds-conselho-regional-de/"/>
+    <updated>2008-05-02T16:07:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/05/02/crds-conselho-regional-de</id>
+    <content type="html"><![CDATA[<div class='post'>
+Num futuro não muito distante, o carlinhos está desenvolvendo um pequeno sistema de contas a pagar para a <em>Padaria do Manoel</em>. Entretando o seu local de trabalho recebe uma visita de um fiscal do CRDS!<br /><br />- Pronto <br />- Sr Carlos Silva?<br />- É ele.<br />- Meu nome é Teobaldo, sou fiscal do Conselho Regional de Desenvolvedores de Software. Fiquei sabendo que nesse recindo está sendo desenvolvido um "software".<br />- Exato! To desenvolvendo um...<br />- Antes de mais nada, qual a sua formação?<br />- Sou formado em ciências da computação pela faculdade VIVA VIVER, do Acre, na modalidade EAD. Meu trabalho de conclusão foi "um sistema escrito em java para a web 2.0".<br />- Puxa, ultimamente só tem dado essa faculdade. <br />- Po, ela custa 49,99 por mês...<br />- É claro. Continuando, onde está a ART desse sistema?<br />- Bom, é um sistema pequeno, com menos de mil linhas, precisa ART?<br />- Claro, e vc pode imprimir o boleto pelo site da CRDS, não tem desculpas.<br />- Ok. Eu pagarei...<br />- E onde está a documentação do sistema? Cadê o levantamento de requisitos, análise de impacto, análise de riscos, análise...<br />- EI! O meu sistema foi feito utilizando metodologias ágeis! É uma mistura de SCRUM com XP proporcionando um contrato de escopo aberto onde eu tento atender as necessidades do cliente, evitando burocracia, trabalhando em sprints de 15 dias...<br />- Ok, mas o CRDS <strong>exige</strong> essa documentação no template .doc que vc pode baixar do site<br />- Mas q .doc ?? Ta maluco, eu uso openoffice no meu linux.<br />- Linux ?? Vc desenvolve em um sistema operacional não homologado pela CRDS? Se ainda fosse Ubuntu...<br />- Mas Ubuntu é linux.<br />- Chega, se não tem documentação, como vc sabe que o sistema funciona?<br />- Eu uso testes unitários!<br />- Humm... teste precisa de um profissional habilitado em testes.<br />- Mas eu uso JUNIT, veja!<br />- Ei... q java esquisito é esse com esses @ e esses "maior e menor"?<br />- Isso se chama Annotations e Generics! Ta desde o Java 1.5<br />- Desculpe mas o CRDS só permite o uso de Java 1.4.2 que é a versão homologada para o Windows E Ubuntu.<br />- E se eu estivesse usando MacOS ?<br />- MacOS não foi homologado pelo CRDS ainda.<br />- Mas java é multiplataforma!<br />- Certo certo... e o modelo ER?<br />- Eu uso Hibernate para Abstrair o modelo ER..<br />- Hibernate ? Ok, terei que embargar o seu sistema...</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>felipespsousa</div>
+<div class='content'>
+vc dá para um bom comentarista hein petiene!</div>
+</div>
+<div class='comment'>
+<div class='author'>Jonas Ferreira - Thunder-Boy</div>
+<div class='content'>
+Moro, trabalho e me formei em uma faculdade aqui de Rio Branco - Acre, ainda bem que aqui não existem faculdades a este preço, 49.99, se não o conto seria mais real! :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Sensacional hahahaha</div>
+</div>
+<div class='comment'>
+<div class='author'>Guilherme</div>
+<div class='content'>
+Muito bom!</div>
+</div>
+<div class='comment'>
+<div class='author'>tiago_stos</div>
+<div class='content'>
+Hehe, muito bom. Pena que a piada perde um pouco a grança quando lembramos que algo assim pode acontecer aqui em nosso país em pouco tempo.<BR/><BR/>Ta certo, não exatamente desse jeito, talvez até pior...</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Pior q eu esqueci um dialogo: quando o fiscal pergunta sobre os Design Patterns utilizados, mas ficou legal do mesmo jeito :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Isso soa ridículo para qum é da área.<BR/><BR/>Mas vai mandar um senador ler isso aí :-(</div>
+</div>
+<div class='comment'>
+<div class='author'>MagoSabeTudo!!!</div>
+<div class='content'>
+Muito boa essa!<BR/><BR/>Espero que nunca aconteça esse tipo de coisa!!!</div>
+</div>
+<div class='comment'>
+<div class='author'>Cássio Marques</div>
+<div class='content'>
+Muito bom! Essa conseguiu ser mais legal que  a da Tropa de Elite!<BR/>É rir pra não chorar...</div>
+</div>
+<div class='comment'>
+<div class='author'>Elton</div>
+<div class='content'>
+Imagine um post exagerado :-)</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pra descontrair...]]></title>
+    <link href="http://pacman.blog.br/blog/2008/05/02/pra-descontrair/"/>
+    <updated>2008-05-02T14:48:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/05/02/pra-descontrair</id>
+    <content type="html"><![CDATA[<div class='post'>
+<a href="http://4.bp.blogspot.com/_TDd0BWQ-Qes/SBtVFGpuiHI/AAAAAAAAABM/hfcTSKDN2wg/s1600-h/padre.jpg"><img style="cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_TDd0BWQ-Qes/SBtVFGpuiHI/AAAAAAAAABM/hfcTSKDN2wg/s320/padre.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5195840141275334770" /></a><br /><a href="http://charges.uol.com.br/2008/04/30/ronike-e-os-trans-cantam-mulheres"><iframe width="339" height="299" scrolling="no" frameborder="0" src="http://charges.uol.com.br/charge-share/2008/04/30/ronike-e-os-trans-cantam-mulheres/"></iframe></a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Gustavo</div>
+<div class='content'>
+Lancei uma campanha também.. Comente http://www.lichti.eti.br/onde-o-padre-voador-esteve/ por onde o padre ainda vai passar. O melhor comentário vai ganhar um vôo com balões para ajudar o Padre</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A internacionalização do Engodo (2)]]></title>
+    <link href="http://pacman.blog.br/blog/2008/03/12/internacionalizao-do-engodo-2/"/>
+    <updated>2008-03-12T14:37:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/03/12/internacionalizao-do-engodo-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Excelente artigo do Olavo de Carvalho:<br /><br /><a href="http://www.olavodecarvalho.org/semana/080310dc.html">A internacionalização do Engodo (2)</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>La Batalema Pitonisto</div>
+<div class='content'>
+Gostei do texto, só achei um tanto tendencioso.<BR/><BR/>Enquanto realmente muitas reclamações contra o filme veem de esquerdistas alienados, fãs das FARCs e de ONGs corruptas, o artigo peca pelo exagero na direção contrária, claramente fascista e contra a ação das ONGs.<BR/><BR/>Se alguém vai comentar sobre esses assuntos não precisa concordar com as FARCs, mas precisa entender sua existência; não precisa achar que toda ONG é boazinha, mas julgar todas por algumas é um erro similar.<BR/><BR/>Mesmo a atual postura direitista contra as drogas é tendenciosa e prejudicial ao bem comum.<BR/><BR/>Para opinar sobre qualquer assunto é preciso avaliar o máximo de variáveis envolvidas possível e tentar entender todos os lados &ndash; veja bem, entender, não concordar. Assim como o sr. Foley foi tendencioso contra o filme, o Olavo foi tendencioso a favor do facismo.<BR/><BR/>[]'s<BR/>Cacilhas, La Batalema</div>
+</div>
+<div class='comment'>
+<div class='author'>La Batalema Pitonisto</div>
+<div class='content'>
+Gostei do texto, só achei um tanto tendencioso.<BR/><BR/>Enquanto realmente muitas reclamações contra o filme veem de esquerdistas alienados, fãs das FARCs e de ONGs corruptas, o artigo peca pelo exagero na direção contrária, claramente fascista e contra a ação das ONGs.<BR/><BR/>Se alguém vai comentar sobre esses assuntos não precisa concordar com as FARCs, mas precisa entender sua existência; não precisa achar que toda ONG é boazinha, mas julgar todas por algumas é um erro similar.<BR/><BR/>Mesmo a atual postura direitista contra as drogas é tendenciosa e prejudicial ao bem comum.<BR/><BR/>Para opinar sobre qualquer assunto é preciso avaliar o máximo de variáveis envolvidas possível e tentar entender todos os lados &ndash; veja bem, entender, não concordar. Assim como o sr. Foley foi tendencioso contra o filme, o Olavo foi tendencioso a favor do facismo.<BR/><BR/>[]'s<BR/>Cacilhas, La Batalema</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+A beleza da democracia é poder concordar com ele :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Andre Almeida</div>
+<div class='content'>
+Será que ele vai juntando várias besteiras pra por tudo junto num artigo só?<BR/>Porque pra conseguir dizer tanta besteira junta só se esforçando, e muito!</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pra bom entendedor...]]></title>
+    <link href="http://pacman.blog.br/blog/2008/03/10/pra-bom-entendedor/"/>
+    <updated>2008-03-10T14:07:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/03/10/pra-bom-entendedor</id>
+    <content type="html"><![CDATA[<div class='post'>
+<img src="http://imgs.xkcd.com/comics/real_programmers.png"/><br /><br />Fonte: <a href="http://xkcd.com/378/">http://xkcd.com/378/</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Antonio Carlos Silveira</div>
+<div class='content'>
+Excelente :-) o Phillip deve se identificar bem com esta tira</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Escher em Lego]]></title>
+    <link href="http://pacman.blog.br/blog/2008/02/27/escher-em-lego/"/>
+    <updated>2008-02-27T11:03:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/02/27/escher-em-lego</id>
+    <content type="html"><![CDATA[<div class='post'>
+Sensacional:<br /><img src='http://www.gravestmor.com/strips/escher%20lego.jpg'/></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+DCC?</div>
+</div>
+<div class='comment'>
+<div class='author'>Pesquisador</div>
+<div class='content'>
+muito legal!<BR/>você é do dcc?<BR/><BR/><A HREF="http://www.trofia.com" REL="nofollow" TITLE="Ir para o site Trofia.com">Trofia.com</A></div>
+</div>
+<div class='comment'>
+<div class='author'>Andre</div>
+<div class='content'>
+Muuuuuuito bom...<BR/><BR/>Se publicar um passo-a-passo eu até compro lego pra fazer igual... :D</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Que nerdisse!!!</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

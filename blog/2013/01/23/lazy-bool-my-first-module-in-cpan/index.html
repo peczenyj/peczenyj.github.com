@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lazy::Bool my first module in CPAN - Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="Lazy::Bool is my first module in CPAN (The Comprehensive Perl Archive Network). It is a simple module (only 60 lines) and few methods/operators but &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Lazy::Bool my first module in CPAN">
+<meta property="og:description" value="">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">
+
+
+<meta property="twitter:title" value="Lazy::Bool my first module in CPAN">
+<meta property="twitter:description" value="">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Lazy::Bool My First Module in CPAN</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-23T20:15:00-02:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="https://metacpan.org/release/Lazy-Bool">Lazy::Bool</a> is my first module in <a href="http://www.cpan.org/">CPAN</a> (The Comprehensive Perl Archive Network). It is a simple module (only 60 lines) and few methods/operators but can be useful in some situation. The source code can be found in my <a href="https://github.com/peczenyj/Lazy-Bool">github</a>.</p>
+
+<h2>Example</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">use</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nn">Test::</span><span class="n">More</span> <span class="n">tests</span><span class="o">=&gt;</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$a</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$b</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$x</span>  <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="n">sub</span><span class="p">{</span> <span class="nv">$a</span> <span class="o">&gt;</span> <span class="nv">$b</span> <span class="p">});</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$false</span> <span class="o">=</span> <span class="nn">Lazy::Bool::</span><span class="n">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">my</span> <span class="nv">$result</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">|</span> <span class="nv">$false</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span> <span class="o">!</span> <span class="p">(</span> <span class="nv">$false</span> <span class="o">&amp;</span> <span class="o">!</span> <span class="nv">$false</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># now the expressions will be evaluate</span>
+</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span>    <span class="s">&quot;complex expression should be true&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="o">!!</span> <span class="nv">$x</span> <span class="p">,</span>  <span class="s">&quot;double negation of true value should be true&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="o">!!!</span> <span class="nv">$false</span><span class="p">,</span> <span class="s">&quot;truple negation of false value should be true&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p>Sometimes we have expensive operations in our code (like uses lots of CPU, Memory, etc). We can wait until the last second to evaluate this kind of expressions if we can. Imagine an imaginary video processing module and we need check many parameters to validate one file like: size, format, codec, extension, etc. It is easy to fetch the size of one file but read the file to fetch some informations can be expensive (we have I/O, etc). We can avoid one expensive process if the size of the file is not ok (like more than the limit, or less than 1 Kb). Of course we can write the validation subroutine thinking in this scenario or&#8230; we can use my Lazy::Bool!</p>
+
+<h2>How it works</h2>
+
+<p>In perl we can overload many operators using the pragma <a href="http://perldoc.perl.org/overload.html">overload</a>. One of this operators is the &#8216;bool&#8217;, used for type conversion. Perl has a small set of data types (scalar, array, hash, subroutine, etc) but one scalar can be used as a text, number or boolean (the context is important). If we use one scalar in boolean context, we can control like this.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="n">overload</span>
+</span><span class='line'>  <span class="s">&#39;bool&#39;</span> <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="n">_to_bool</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">_to_bool</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1"># return some boolean value</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To create an instance of Lazy::Bool we need to use the <a href="http://perldoc.perl.org/functions/bless.html">bless</a> keyword. I can bless any reference (normally we use a hashref to simulate the internal state of the object) and the semantic of the method calling is similar to Python: the first argument is the class or object.</p>
+
+<p>For this module I&#8217;m blessing a reference to a subroutine. It is essential for be lazy as much as we can. For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">new</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$klass</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$code</span>  <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="nb">bless</span> <span class="nv">$code</span><span class="p">,</span> <span class="nv">$klass</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">sub </span><span class="nf">_to_bool</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">shift</span><span class="o">-&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">my</span> <span class="nv">$false</span> <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;I am laaaaazy\n&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="mi">0</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The shift keyword just return the first argument and remove it from the array. All subroutines in Perl receive just one array with all parameters. If I want to call a subroutine and pass more than one array I need to use references. Strange? Maybe, it is a simple way to work with multiple parameters and do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">sub </span><span class="nf">foo</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1"># do something</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">wrap_foo</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1"># before</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$x</span> <span class="o">=</span> <span class="n">foo</span><span class="p">(</span><span class="nv">@_</span><span class="p">);</span>  <span class="c1"># in some cases we can use goto (like recursion)</span>
+</span><span class='line'>  <span class="c1"># after</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">return</span> <span class="nv">$x</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In my module I have a blessed reference for a subroutine. I will evaluate the value only in boolean context. Sounds good! But If I want to build one complex expression using or, and, not?</p>
+
+<p>I can&#8217;t override the &amp;&amp; and || BUT I can override the bit operators &amp;, | and !, to build complex objects.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">use</span> <span class="n">overload</span>
+</span><span class='line'>  <span class="s">&#39;&amp;&#39;</span>    <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="n">_and</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">_and</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$a</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$b</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>      <span class="nv">$a</span><span class="o">-&gt;</span><span class="n">_to_bool</span> <span class="o">&amp;</span> <span class="nv">$b</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">my</span> <span class="nv">$x</span> <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="c1"># my complex expression 1</span>
+</span><span class='line'><span class="p">}</span> <span class="p">);</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$y</span> <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="c1"># my complex expression 2</span>
+</span><span class='line'><span class="p">}</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># The variable $z is a Lazy::Bool too. </span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$z</span> <span class="o">=</span> <span class="nv">$x</span> <span class="o">&amp;</span> <span class="nv">$y</span><span class="p">;</span>  <span class="c1"># CAUTION: will be evaluated if you use &amp;&amp; </span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;ok&quot;</span> <span class="k">if</span> <span class="nv">$z</span><span class="p">;</span> <span class="c1"># now will evaluate the entire expression</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And you can do the same with | and ! operators.</p>
+
+<p>There are two helper methods, true and false, to return lazy values of true and false (1 and 0).</p>
+
+<h2>TODO</h2>
+
+<p>Unfortunately this module is a beta version and it is not ready to production. I need to think in two details:</p>
+
+<p>I need to implement:</p>
+
+<ul>
+<li>a shortcut in and / or operations</li>
+<li>a cache to prevent evaluate the same expression twice</li>
+</ul>
+
+
+<p>But I don&#8217;t know what is the best way to do this. I&#8217;m using &amp; and | operators similar to logical and/or but &amp;/| does not have any shortcut. Maybe I can put a huge observation in the documentation about this.</p>
+
+<p>The question about cache is interesting. In some cases I can&#8217;t &#8216;memoize&#8217; the result. I have two options:</p>
+
+<ul>
+<li>create another class like Lazu::Bool::Memoized to do this, or</li>
+<li>add an extra parameter in the contructor, like cached => 1</li>
+</ul>
+
+
+<p>I&#8217;m very interesting in your opinion! Please give me some feedback :)</p>
+
+<h3>UPDATE</h3>
+
+<p>From version 0.03 there all boolean expression now supports shortcut and there is a new class, Lazy::Bool::Cached who memoize the value of the expression.</p>
+
+<h2>How to install</h2>
+
+<p>To install this module is simple:</p>
+
+<pre><code>bash$ cpan Lazy::Bool
+</code></pre>
+
+<h2>Final Considerations</h2>
+
+<p>I try to do this module in Ruby and I realize it is not possible <a href="http://stackoverflow.com/questions/14444975/how-to-create-an-object-who-act-as-a-false-in-ruby/">see here</a>. In Ruby we have only two &#8220;false&#8221; values: nil and false. And it is HARD CODED in the code. I can&#8217;t extend the FalseClass (in fact I can but if I do this I loose the &#8216;new&#8217;). I have no options to do this transparent to the user.</p>
+
+<p>The same thing in Java: I have the Boolean wrapper class but it is final. But I can emulate the same thing in Python using the <code>__nonzero__</code> special method like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyBooleanClass</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span class='line'>      <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="c"># Just to simplify the example</span>
+</span><span class='line'>      
+</span><span class='line'><span class="n">t</span> <span class="o">=</span> <span class="n">MyBooleanClass</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="n">MyBooleanClass</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">assert</span> <span class="n">t</span><span class="p">,</span> <span class="s">&quot;should be true&quot;</span>
+</span><span class='line'><span class="k">assert</span> <span class="ow">not</span> <span class="n">f</span><span class="p">,</span> <span class="s">&quot;should be false&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Build a dynamic proxy to one real object can be very helpful in many situations. You can find this in Hibernate (the Java ORM solution) if you choose working with Lazy Initialization.</p>
+
+<p>Perl, Python, Java, Ruby or PHP: each language has some advantages to do something. I can&#8217;t choose one language just based on one aspect. We need to consider the community, the environment, tools, etc. Perl is a good choice for software development in general (web, desktop, backend services) but it is not the only language capable to do X. We need to think about many aspects to decide one (or more) for our next project and be happy.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-23T20:15:00-02:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/perl/'>Perl</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/22/schwartzian-transform/" title="Previous Post: Schwartzian transform">&laquo; Schwartzian transform</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/" title="Next Post: Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/';
+        var disqus_url = 'http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

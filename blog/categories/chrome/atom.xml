@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Chrome | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/chrome/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Chrome: o browser da google]]></title>
+    <link href="http://pacman.blog.br/blog/2008/09/02/chrome-o-browser-da-google/"/>
+    <updated>2008-09-02T16:48:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/09/02/chrome-o-browser-da-google</id>
+    <content type="html"><![CDATA[<div class='post'>
+As noticias apareceram em todas os sites especializados: o google estaria lançando hoje uma novidade chamada chrome, um browser baseado em Webkit disponivel por enquanto para Windows XP e Vista.<br /><br />Até um <a href="http://www.google.com/googlebooks/chrome/">gibi</a> foi disponibilizado, então esperando até as 4 PM consegui fazer o download em uma maquina virtual e pude testa-lo um pouco.<br /><br />A performance parece ser muito boa, apesar da virtualização. Não observei travamentos ou comportamentos estranhos (como os que ocorrem no Safari para Windows). O visual e as tabs são realmente práticas, com muita área para ver o site e icones intuitivos.<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697182/" title="primeira_impressao by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3226/2822697182_2d26579398.jpg" width="500" height="374" alt="primeira_impressao" /></a><br /><br />Bem interessante é o gerenciador de tarefas, (Controlar Pagina Atual > Desenvolvedor) onde podemos ver o consumo de cpu, memória e rede de cada aba (que rodam como processos independentes).<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697178/" title="gerenciador_tarefas by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3040/2822697178_a150abe1fc.jpg" width="500" height="377" alt="gerenciador_tarefas" /></a><br /><br />E também temos acesso a informações de memória bem detalhadas (infelizmente estáticas, gostaria que houvesse algo como o top do unix, quem sabe no futuro...).<br /><a href="http://www.flickr.com/photos/25513475@N05/2822697176/" title="chrome_memory by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3048/2822697176_fbbb8e2688.jpg" width="500" height="374" alt="chrome_memory" /></a>]<br /><br />O histórico é limpo e muito bonito<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697170/" title="chrome_historico by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3099/2822697170_3f5a9469a0.jpg" width="500" height="376" alt="chrome_historico" /></a><br /><br />E um recurso que eu gostei bastante do novo Opera, mas com uma nova roupagem: ao abrir uma nova aba temos uma pagina com os favoritos e snapshots das paginas.<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697164/" title="chrome_abas by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3114/2822697164_05a9ce10db.jpg" width="500" height="377" alt="chrome_abas" /></a><br /><br />Por fim, basta instalar com um clique o plugin flash para navegar no Youtube ou Globo Videos<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697168/" title="chrome_globo_videos by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3036/2822697168_242b7a4e5d.jpg" width="500" height="374" alt="chrome_globo_videos" /></a><br /><br />Outras coisas que percebi: a pergunta para salvar as senhas dos sites é muito mais discreta, aparecendo acima do site após o login (não é aquele alert que surge do nada). O Gmail parece ter uma boa performance e o gtalk funcionou sem maiores problemas. Com 6 abas o consumo de memória foi de 144408k - e ainda podemos comparar com outros browsers abertos!<br /><br />Sinto falta de usar '/' para fazer pesquisas na pagina (quem usa Vim entende disso) mas o Ctrl + F funciona bem. Para configurar o tamanho da fonte basta usar Ctrl + (mais) e Ctrl - (menos) para alterar o tamanho do texto, Ctrl 0 para voltar ao normal. E, a mais interessante, não há necessidade de um campo de texto para pesquisas rapidas ao google ou outro buscador: basta digitar os termos no lugar da url (bem intuitivo, aliás). O download de algum arquivo é simples e bonito também.<br /><br />Bom, até então eu gostei, só aguardo a versão para Linux e quero por as mãos no tão falado codigo fonte logo-logo :)<br /><br />Link para download: <a href="http://gears.google.com/chrome"> http://gears.google.com/chrome </a><br /><br />Edit: o Chrome tem o mesmo problema que o Firefox tinha para gerenciar senhas: ele mostra a senha sem pudor algum:<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822070365/" title="Senhas by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3268/2822070365_c3594ac41b.jpg" width="500" height="390" alt="Senhas" /></a><br /><br />Poderia ter um recurso mais seguro como o da <a href="http://br.mozdev.org/firefox/senha-mestra">senha mestra</a> do Firefox, parece que não pensaram (tanto) na nossa privacidade. Quem sabe no futuro isso não será corrigido?</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Guilherme Garnier</div>
+<div class='content'>
+Fala Pac. Também estou achando o Chrome bem legal. Mas a maioria desses detalhes que você citou já existem no Firefox. Ex: a pergunta pra salvar senhas no topo da tela, os atalhos para pesquisar e para mudar o tamanho do texto, pesquisa no google digitando direto na URL. E tem um plugin pra mostrar as snapshots como no Opera.</div>
+</div>
+<div class='comment'>
+<div class='author'>Lauro Cesar</div>
+<div class='content'>
+Aqui tá rápido e estável. Ah e gastando até menos memória que o Firefox (se bem, que essa estória de que cada tab é um processo às vezes engana a gente...) <BR/>Enfim, parece muito bom mesmo!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Valeu, Wagner, estou lutando para baixar os fontes! <BR/><BR/>Não lembrava que a memorização da senha tinha mudado no FF3, hehe.</div>
+</div>
+<div class='comment'>
+<div class='author'>leoburla</div>
+<div class='content'>
+Também achei 144Mb bem pesado... Mas vou dar uma olhada na parada. Parece ser muito boa! Um abraço.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+144 megas pra 6 abas é um pouco salgado heim. Que abas você foram essas?</div>
+</div>
+<div class='comment'>
+<div class='author'>Wagner Mezaroba</div>
+<div class='content'>
+Legal, estou baixando o fonte pra Linux por aqui:<BR/><BR/>http://dev.chromium.org/developers/how-tos/build-instructions-linux#TOC-Getting-the-code<BR/><BR/>Tá bem lento, mas passou da primeira etapa. <BR/><BR/>Em relação a memorização de senha, no FF 3 não abre nenhuma janela tb. Só aparece uma barra encima (que não interrompe o fluxo de navegação).<BR/><BR/><BR/>Falou!</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

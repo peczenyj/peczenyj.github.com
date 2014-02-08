@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tchelinux | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/tchelinux/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Evento Tchelinux nesse Sábado]]></title>
+    <link href="http://pacman.blog.br/blog/2007/11/28/evento-tchelinux-nesse-sbado/"/>
+    <updated>2007-11-28T14:14:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2007/11/28/evento-tchelinux-nesse-sbado</id>
+    <content type="html"><![CDATA[<div class='post'>
+Nerds do Sul!<br /><br />Sábado (1 de dezembro) haverá mais uma edição do Tchelinux, dessa vez em Porto Alegre.<br /><br />Será um dia cheio de palestras de workshops, ao custo de 2 kilos de alimentos não pereciveis.<br /><br /><a href="http://www.tchelinux.org/2007/">http://www.tchelinux.org/2007/</a><br /><br />Inclusive eu irei ministrar uma palestra sobre AWK/SED no começo da tarde. Destaco também a palestra do Carlos Santos sobre "A História do Unix".<br /><br />Enfim, um dia cheio de Ubuntu, Python, KDE, Kernel, BSD e muito mais!<br /><br />Apareçam!</div>
+
+]]></content>
+  </entry>
+  
+</feed>

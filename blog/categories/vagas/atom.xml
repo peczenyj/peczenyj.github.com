@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Vagas | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/vagas/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vagas Abertas!]]></title>
+    <link href="http://pacman.blog.br/blog/2007/09/18/vagas-abertas/"/>
+    <updated>2007-09-18T09:58:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/09/18/vagas-abertas</id>
+    <content type="html"><![CDATA[<div class='post'>
+Pessoal, trago aqui pelo menos 5 oportunidades de ingressar em uma das maiores empresas de tecnologia do mundo. O ambiente de trabalho é excelente, as condições são muito boas e existem muitas possibilidades de crescimento. Todas as vagas são para trabalhar em Porto Alegre/RS.<br /><br /><span style="font-weight:bold;">Desenvolvedor C# - 3 vagas</span><br />Experiência em desenvolvimento/programação de SW em C# e .Net<br />Conhecimentos sobre UML e OO e design patterns<br />Conhecimentos sobre XML e XPATH<br />Inglês avançado/fluente<br /><br /><span style="font-weight:bold;">Desenvolvedor/Testador - 2 vagas</span><br />Experiência na área de teste de software<br />Conhecimento de WebServices e protocolos SOAP e HTTP<br />Conhecimento de XML, XPATH e alguma linguagem Script<br />Experiência em OO<br />Inglês fluente<br /><br />É claro, caso alguem queira ingressar na área de informática, eu sugiro que pense nessa vaga:<br /><span style="font-weight:bold;">Testador de Software</span><br />Experiência na área de teste de software<br />Conhecimentos em Banco de Dados e SQL (select, update, insert,delete)<br /><br />Aos interessados enviar email com currículo para tiago (.) peczenyj (at) gmail (.) com</div>
+
+]]></content>
+  </entry>
+  
+</feed>

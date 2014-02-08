@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Bases Numericas em Bash - Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="Com Bash, podemos representar números nas mais variadas bases, desde 2 até 64 usando o operador # como no exemplo abaixo:X=101 for BASE in 2 8 10 16 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/2007/07/12/bases-numericas-em-bash/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/2007/07/12/bases-numericas-em-bash/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Bases Numericas em Bash">
+<meta property="og:description" value="">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2007/07/12/bases-numericas-em-bash/">
+
+
+<meta property="twitter:title" value="Bases Numericas em Bash">
+<meta property="twitter:description" value="">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Bases Numericas Em Bash</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-07-12T11:49:00-03:00" pubdate data-updated="true">Jul 12<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+Com Bash, podemos representar números nas mais variadas bases, desde <a href="http://en.wikipedia.org/wiki/Base2">2</a> até <a href="en.wikipedia.org/wiki/Base64">64</a> usando o operador # como no exemplo abaixo:<pre><code><br />X=101 <br />for BASE in 2 8 10 16 32 64 ; do <br />    echo "$X na base $BASE eh $(( ${BASE}#${X} ))" # conversao pra decimal<br />done<br />101 na base 2 eh 5<br />101 na base 8 eh 65<br />101 na base 10 eh 101<br />101 na base 16 eh 257<br />101 na base 32 eh 1025<br />101 na base 64 eh 4097 <br /><br />echo $((16#FF)) $((32#V))<br />255 31<br /><br />echo $((64#z))  $((64#Z))  $((64#@))  $((64#_)) # atenção nos 2 ultimos!<br />35 61 62 63<br /></code></pre><br />Além de ser possível usar a notação de octal e hexa do C (iniciar a expressão com 0 e 0x, respectivamente)<pre><code>echo $((10)) $(( 010 )) $(( 0x10 )) $((10 + 010 + 0x10))<br />10 8 16 34<code></pre><br />Bastante útil para pequenas conversões. Agora se quisermos converter um numero de uma base qualquer para outra, o nosso amigo <span style="font-weight:bold;">bc</span> pode servir:<br /><br /><pre></code>bc <<< 'ibase = 8 ; obase = 16 ; 1027'<br />2A3</code></pre><br />Onde ibase é a base de entrada (input) e a obase é a de saída (output). A diferença fica nas bases muito altas (32 ou 64) onde não são usados os caracteres minúsculos, maiusculos e especiais.<br /><br />Esta dica foi tirada do <a href="http://tldp.org/LDP/abs/abs-guide.pdf">Advanced Bash Scripting Guide</a>.<br /><br /><!-- INICIO DO CODIGO DO CONTADOR DE VISITAS 2W.COM.BR --><br /><img src="http://www.2w.com.br/imgcontador.php?p=e3ca6d6d" alt="Contador de visitas" border=0><br /><!-- FIM DO CODIGO DO CONTADOR DE VISITAS 2W.COM.BR --></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Ola!<BR/><BR/>Se vc prestar atenção eu coloquei um comentário que informava a conversão para a base decimal pois achei q, se colocasse o &#8216;na base 10&#8217; no final de cada linha poderia ficar um pouco poluido. Pelo visto ficou é confuso.<BR/><BR/>agora, 101 em hexa é 257 sim, uma vez  que 100 significaria, nesse caso, 1 x 16^2 &#8211; 256. Vou postar mais sobre o assunto ai e vai vamos chegar a um consenso ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>naoliv</div>
+<div class='content'>
+Hum&#8230; comentando com um amigo meu eu acho que você quis dizer:<BR/><BR/>101 na base 2 eh 5 na base 10<BR/><BR/>101 na base 8 eh 65 na base 10<BR/><BR/>101 na base 10 eh 101 na base 10<BR/><BR/>101 na base 16 eh 257 na base 10<BR/><BR/>101 na base 32 eh 1025 na base 10<BR/><BR/>101 na base 64 eh 4097 na base 10<BR/><BR/>Faltou os &#8220;na base 10&#8221; :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>naoliv</div>
+<div class='content'>
+Isso tá certo?<BR/>Como que o número pode ser 5 na base 2? (se só existem os caracteres 0 e 1)<BR/><BR/>101 em hexa (base 16), por exemplo, é 65 e não 257.<BR/><BR/>Ou eu entendi errado o seu post?</div>
+</div>
+</div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-07-12T11:49:00-03:00" pubdate data-updated="true">Jul 12<span>th</span>, 2007</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/shell/'>Shell</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2007/07/12/bases-numericas-em-bash/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2007/07/12/bases-numericas-em-bash/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/07/12/sindicato-dos-messias/" title="Previous Post: Sindicato dos Messias">&laquo; Sindicato dos Messias</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/07/12/printf-format-specifications-quick/" title="Next Post: Printf Format Specifications Quick Reference">Printf Format Specifications Quick Reference &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

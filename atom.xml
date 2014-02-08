@@ -1,0 +1,1562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MooseX - a new Ruby DSL for Object Oriented Programming (and much more)]]></title>
+    <link href="http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/"/>
+    <updated>2014-02-07T20:13:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more</id>
+    <content type="html"><![CDATA[<p>MooseX is a postmodern object DSL for Ruby <a href="https://travis-ci.org/peczenyj/MooseX"><img src="https://travis-ci.org/peczenyj/MooseX.png" alt="Build Status" /></a> <a href="http://badge.fury.io/rb/moosex"><img src="https://badge.fury.io/rb/moosex.png" alt="Gem Version" /></a></p>
+
+<p>This is a DSL for object creation, aspects, method delegation and much more. It is based on Perl Moose and Moo, two important modules who add a better way of Object Orientation development (and I enjoy A LOT). Using a declarative stype, using Moose/Moo you can create attributes, methods, the entire constructor and much more. But I can&#8217;t find something similar in Ruby world, so I decide port a small subset of Moose to create a powerfull DSL for object construction.</p>
+
+<p>Of course, there is few similar projects in ruby like</p>
+
+<ul>
+<li><a href="https://github.com/solnic/virtus">Virtus</a></li>
+<li><a href="http://edgeguides.rubyonrails.org/active_record_validations.html">Active Record Validations</a></li>
+</ul>
+
+
+<p>But the objetive of MooseX is different: this is a toolbox to create Classes based on DSL, with unique features like</p>
+
+<ul>
+<li>method delegation ( see &#8216;handles&#8217;)</li>
+<li>lazy attributes</li>
+<li>roles</li>
+<li>parameterized roles</li>
+<li>composable type check</li>
+<li>events</li>
+</ul>
+
+
+<p>and much more.</p>
+
+<p>This rubygem is based on this modules:</p>
+
+<ul>
+<li><a href="http://search.cpan.org/~ether/Moose-2.1204/lib/Moose.pm">Perl Moose</a></li>
+<li><a href="http://search.cpan.org/~ether/Moose-2.1204/lib/Moose.pm">Perl Moo</a></li>
+<li><a href="http://search.cpan.org/~mateu/MooX-Types-MooseLike-0.25/lib/MooX/Types/MooseLike/Base.pm">MooX::Types::MooseLike::Base</a></li>
+<li><a href="http://search.cpan.org/~winter/MooseX-Event-v0.2.0/lib/MooseX/Event.pm">MooseX::Event</a></li>
+<li><a href="http://search.cpan.org/~sartak/MooseX-Role-Parameterized-1.02/lib/MooseX/Role/Parameterized/Tutorial.pod">MooseX::Role::Parameterized</a></li>
+</ul>
+
+
+<p>See also:</p>
+
+<ul>
+<li><a href="https://code.google.com/p/joose-js/">Joose</a>, a javascript port of Moose.</li>
+<li><a href="http://en.wikipedia.org/wiki/Perl_6#Object-oriented_programming">Perl 6</a> Perl 6 OO programming style.</li>
+</ul>
+
+
+<p>Why MooseX? Because the namespace MooseX/MooX is open to third-party projects/plugins/extensions. You can upgrade your Moo(se) class using other components if you want. And there is one gem called &#8216;moose&#8217; :/</p>
+
+<p>THIS MODULE IS EXPERIMENTAL YET! BE CAREFUL!</p>
+
+<p>Talk is cheap. Show me the code!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;moosex&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Point</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">MooseX</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">is</span><span class="p">:</span> <span class="ss">:rw</span><span class="p">,</span>      <span class="c1"># read-write (mandatory)</span>
+</span><span class='line'>    <span class="n">isa</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span> <span class="c1"># should be Integer</span>
+</span><span class='line'>    <span class="n">default</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>   <span class="c1"># default value is 0 (constant)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has</span> <span class="n">y</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">is</span><span class="p">:</span> <span class="ss">:rw</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">isa</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">default</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">},</span> <span class="c1"># you should specify a lambda</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">clear!</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span> <span class="mi">0</span>     <span class="c1"># to run with type-check you must</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">y</span><span class="o">=</span> <span class="mi">0</span>     <span class="c1"># use the setter instad @x=</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># now you have a generic constructor</span>
+</span><span class='line'><span class="n">p1</span>  <span class="o">=</span> <span class="no">Point</span><span class="o">.</span><span class="n">new</span>                       <span class="c1"># x and y will be 0</span>
+</span><span class='line'><span class="n">p2</span>  <span class="o">=</span> <span class="no">Point</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="n">x</span><span class="p">:</span>  <span class="mi">5</span> <span class="p">)</span>              <span class="c1"># y will be 0</span>
+</span><span class='line'><span class="n">p3</span>  <span class="o">=</span> <span class="no">Point</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="n">x</span><span class="p">:</span>  <span class="mi">5</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">4</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h2>Installation</h2>
+
+<p>Add this line to your application&#8217;s Gemfile:</p>
+
+<pre><code>gem 'moosex'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install moosex
+</code></pre>
+
+<p>You need ruby 2.0.x or superior.</p>
+
+<h2>Description</h2>
+
+<p>MooseX is an extension of Ruby object system. The main goal of MooseX is to make Ruby Object Oriented programming easier, more consistent, and less tedious. With MooseX you can think more about what you want to do and less about the mechanics of OOP. It is a port of Moose/Moo from Perl to Ruby world.</p>
+
+<p>Read more about Moose on http://moose.iinteractive.com/en/</p>
+
+<h2>Motivation</h2>
+
+<p>It is fun</p>
+
+<h2>Usage</h2>
+
+<p>You just need include the MooseX module in your class and start to describe the attributes with our DSL. This module will inject one smart constructor, acessor and other necessary methods.</p>
+
+<p>Instead the normal way of add accessors, constructor, validation, etc</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:bar</span><span class="p">,</span> <span class="ss">:baz</span><span class="p">,</span> <span class="ss">:bam</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">bar</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">baz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bam</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="o">[</span><span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">bam</span><span class="o">].</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">is_a?</span> <span class="nb">Integer</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">raise</span> <span class="s2">&quot;you should use only Integers to build Foo&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="vi">@bar</span> <span class="o">=</span> <span class="n">bar</span>
+</span><span class='line'>    <span class="vi">@baz</span> <span class="o">=</span> <span class="n">baz</span>
+</span><span class='line'>    <span class="vi">@bam</span> <span class="o">=</span> <span class="n">bam</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>you can do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">MooseX</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has</span> <span class="o">[</span><span class="ss">:bar</span><span class="p">,</span> <span class="ss">:baz</span><span class="p">,</span> <span class="ss">:bam</span><span class="o">]</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">is</span><span class="p">:</span> <span class="ss">:rw</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">isa</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">default</span><span class="p">:</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it ( http://github.com/peczenyj/MooseX/fork )</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request Push to the branch (<code>git push origin my-new-feature</code>)</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable]]></title>
+    <link href="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/"/>
+    <updated>2013-04-07T09:55:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable</id>
+    <content type="html"><![CDATA[<p>A &#8216;dry run&#8217; is a testing process where the effects of a possible failure are intentionally mitigated. For example, an aerospace company may conduct a &#8220;dry run&#8221; test of a jet&#8217;s new pilot ejection seat while the jet is parked on the ground, rather than while it is in flight. Or, in software development, we can change the behavior of some methods in order to test, like avoid change data into a database (logging the action instead).</p>
+
+<p>There are many ways to implement this capability. For example, we can add an explicity return in each method and test some condition. I will show some options in this article and we will find how to use the module <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a> in our Moose classes (Perl).</p>
+
+<p>One simple example in Perl, reading from an environment variable <code>DRY_RUN</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p>In this example, the <code>bar</code> method change something in the database and my test is very simple, like a simple diff between log files. To test my application in dry run (to test in the product environment, for example, without a big risk), we can do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">bash</span><span class="nv">$</span> <span class="nv">DRY_RUN</span><span class="o">=</span><span class="mi">1</span> <span class="o">./</span><span class="k">my</span><span class="o">-</span><span class="n">application</span><span class="o">.</span><span class="n">pl</span> <span class="o">--</span><span class="n">other</span><span class="o">-</span><span class="n">options</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sounds good, for large systems, with a good number of modules, it can be a problem. For example, the method <code>bar</code> has two or three responsabilities: logging the parameters, doing the original job and do nothing if we are in the <code>dry run</code> state. This method is doing a lot of things, and I have the same code in multiple places. Lets think about reuse of this code, using OO principles.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">FooBase</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">base</span> <span class="s">&#39;FooBase&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$self</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="nn">SUPER::</span><span class="n">bar</span><span class="p">(</span><span class="nv">@_</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it is interesting: my Foo class has just one job: dispatch (or not) the method call to FooBase (who knows our business rule). But we still have the problem of the same code in multiple places. Lets try to solve this with Aspect Oriented Programming, using Moose.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">Moose</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">baz</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">around</span> <span class="p">[</span> <span class="sx">qw(bar baz)</span> <span class="p">]</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$orig</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">my</span> <span class="nv">$self</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">$orig</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Moose is a complete object system for Perl 5. Consider any modern object-oriented language (which Perl 5 definitely isn&#8217;t). It provides keywords for attribute declaration, object construction, inheritance, and maybe more. In this example, we can use the Method Modifier <code>around</code> and we can inject this new piece of code in one or more methods. But we still need add this hook in each class, this is why I create the <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<p>Moose has a great number of features, like Roles. Roles have two primary purposes: as interfaces, and as a means of code reuse. In our example we can do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">DryRunnable</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nn">Moose::</span><span class="n">Role</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">requires</span> <span class="s">&#39;in_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="n">requires</span> <span class="s">&#39;on_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">Moose</span><span class="p">;</span>
+</span><span class='line'><span class="n">with</span> <span class="s">&#39;DryRunnable&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">baz</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">is_dry_run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">on_dry_run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">around</span> <span class="p">[</span> <span class="sx">qw(bar baz)</span> <span class="p">]</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$orig</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">my</span> <span class="nv">$self</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">is_dry_run</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">?</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">on_dry_run</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">:</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">$orig</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, the role DryRunnable provides the basic infrastructure to add the dry run capability. Instead ask direclty to an environment variable I&#8217;m asking to a method ( <code>is_dry_run</code> ), and instead only log / return nothing we call another method to do this ( <code>on_dry_run</code> ). Using this kind of pattern it is easy to inject the correct <code>around</code> statement using, for example, <a href="https://metacpan.org/module/MooseX::Role::Parameterized">MooseX::Role::Parameterized</a>. With a parameterized role, we can set the list of methods in a Objected Oriented way, with more code reuse and less copy/paste. This is the base of <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">Moose</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">with</span> <span class="s">&#39;MooseX::Role::DryRunnable&#39;</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">methods</span> <span class="o">=&gt;</span> <span class="p">[</span> <span class="sx">qw(bar baz)</span> <span class="p">]</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">has</span> <span class="n">dry_run</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">is</span> <span class="o">=&gt;</span> <span class="s">&#39;ro&#39;</span><span class="p">,</span> <span class="n">isa</span> <span class="o">=&gt;</span> <span class="s">&#39;Bool&#39;</span><span class="p">,</span> <span class="n">default</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">baz</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">is_dry_run</span> <span class="p">{</span> <span class="c1"># required, should return a boolean</span>
+</span><span class='line'>  <span class="nb">shift</span><span class="o">-&gt;</span><span class="n">dry_run</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">on_dry_run</span> <span class="p">{</span> <span class="c1"># required, will receive the name of the method and the list of arguments</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$self</span>   <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$method</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">(</span><span class="s">&quot;Dry Run method=$method, args: \n&quot;</span><span class="p">,</span> <span class="nv">@_</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code of this role is simple, and we can set the list of the methods as a parameter.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">MooseX::Role::</span><span class="n">DryRunnable</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nn">MooseX::Role::</span><span class="n">Parameterized</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parameter</span> <span class="n">methods</span> <span class="o">=&gt;</span> <span class="p">(</span>
+</span><span class='line'>  <span class="n">traits</span>  <span class="o">=&gt;</span> <span class="p">[</span><span class="s">&#39;Array&#39;</span><span class="p">],</span>
+</span><span class='line'>  <span class="n">is</span>      <span class="o">=&gt;</span> <span class="s">&#39;ro&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">isa</span>     <span class="o">=&gt;</span> <span class="s">&#39;ArrayRef[Str]&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">default</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span> <span class="o">[]</span> <span class="p">},</span>
+</span><span class='line'>  <span class="n">handles</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="n">all_methods</span> <span class="o">=&gt;</span> <span class="s">&#39;elements&#39;</span> <span class="p">},</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">role</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$p</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">requires</span> <span class="s">&#39;is_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">requires</span> <span class="s">&#39;on_dry_run&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">foreach</span> <span class="k">my</span> <span class="nv">$method</span> <span class="p">(</span><span class="nv">$p</span><span class="o">-&gt;</span><span class="n">all_methods</span><span class="p">){</span>
+</span><span class='line'>    <span class="n">around</span> <span class="nv">$method</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>        <span class="k">my</span> <span class="nv">$code</span>  <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">my</span> <span class="nv">$self</span>  <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">is_dry_run</span><span class="p">()</span>
+</span><span class='line'>          <span class="p">?</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="n">on_dry_run</span><span class="p">(</span><span class="nv">$method</span><span class="p">,</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">:</span> <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">$code</span><span class="p">(</span><span class="nv">@_</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I can extend the original role to provide a basic version of <code>is_dry_run</code> and <code>on_dry_run</code> for my set of Moose classes and write less code, overriding if I need something more specific for some class. And this is how we can deal with Aspect Oriented Programming in Perl, using Moose.</p>
+
+<p>But this is not the only way to do this. I can use <a href="https://metacpan.org/module/Monkey::Patch">Monkey::Patch</a> or  <a href="https://metacpan.org/module/Aspect">Aspect</a> to add the same behavior, there are many good options to do the same thing.</p>
+
+<p>And there are many applications of this technique. If we identify a good reason to change the behavior of some class in runtime, like activate some modules or features (based on configuration, timedate, environment variables, etc), we can do something like this.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lazy::Bool my first module in CPAN]]></title>
+    <link href="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/"/>
+    <updated>2013-01-23T20:15:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan</id>
+    <content type="html"><![CDATA[<p><a href="https://metacpan.org/release/Lazy-Bool">Lazy::Bool</a> is my first module in <a href="http://www.cpan.org/">CPAN</a> (The Comprehensive Perl Archive Network). It is a simple module (only 60 lines) and few methods/operators but can be useful in some situation. The source code can be found in my <a href="https://github.com/peczenyj/Lazy-Bool">github</a>.</p>
+
+<h2>Example</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">use</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nn">Test::</span><span class="n">More</span> <span class="n">tests</span><span class="o">=&gt;</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$a</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$b</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$x</span>  <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="n">sub</span><span class="p">{</span> <span class="nv">$a</span> <span class="o">&gt;</span> <span class="nv">$b</span> <span class="p">});</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$false</span> <span class="o">=</span> <span class="nn">Lazy::Bool::</span><span class="n">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">my</span> <span class="nv">$result</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">|</span> <span class="nv">$false</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span> <span class="o">!</span> <span class="p">(</span> <span class="nv">$false</span> <span class="o">&amp;</span> <span class="o">!</span> <span class="nv">$false</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># now the expressions will be evaluate</span>
+</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span>    <span class="s">&quot;complex expression should be true&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="o">!!</span> <span class="nv">$x</span> <span class="p">,</span>  <span class="s">&quot;double negation of true value should be true&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="o">!!!</span> <span class="nv">$false</span><span class="p">,</span> <span class="s">&quot;truple negation of false value should be true&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p>Sometimes we have expensive operations in our code (like uses lots of CPU, Memory, etc). We can wait until the last second to evaluate this kind of expressions if we can. Imagine an imaginary video processing module and we need check many parameters to validate one file like: size, format, codec, extension, etc. It is easy to fetch the size of one file but read the file to fetch some informations can be expensive (we have I/O, etc). We can avoid one expensive process if the size of the file is not ok (like more than the limit, or less than 1 Kb). Of course we can write the validation subroutine thinking in this scenario or&#8230; we can use my Lazy::Bool!</p>
+
+<h2>How it works</h2>
+
+<p>In perl we can overload many operators using the pragma <a href="http://perldoc.perl.org/overload.html">overload</a>. One of this operators is the &#8216;bool&#8217;, used for type conversion. Perl has a small set of data types (scalar, array, hash, subroutine, etc) but one scalar can be used as a text, number or boolean (the context is important). If we use one scalar in boolean context, we can control like this.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="n">overload</span>
+</span><span class='line'>  <span class="s">&#39;bool&#39;</span> <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="n">_to_bool</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">_to_bool</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1"># return some boolean value</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To create an instance of Lazy::Bool we need to use the <a href="http://perldoc.perl.org/functions/bless.html">bless</a> keyword. I can bless any reference (normally we use a hashref to simulate the internal state of the object) and the semantic of the method calling is similar to Python: the first argument is the class or object.</p>
+
+<p>For this module I&#8217;m blessing a reference to a subroutine. It is essential for be lazy as much as we can. For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">new</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$klass</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$code</span>  <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="nb">bless</span> <span class="nv">$code</span><span class="p">,</span> <span class="nv">$klass</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">sub </span><span class="nf">_to_bool</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">shift</span><span class="o">-&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">my</span> <span class="nv">$false</span> <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="k">print</span> <span class="s">&quot;I am laaaaazy\n&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="mi">0</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The shift keyword just return the first argument and remove it from the array. All subroutines in Perl receive just one array with all parameters. If I want to call a subroutine and pass more than one array I need to use references. Strange? Maybe, it is a simple way to work with multiple parameters and do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">sub </span><span class="nf">foo</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1"># do something</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">wrap_foo</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1"># before</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$x</span> <span class="o">=</span> <span class="n">foo</span><span class="p">(</span><span class="nv">@_</span><span class="p">);</span>  <span class="c1"># in some cases we can use goto (like recursion)</span>
+</span><span class='line'>  <span class="c1"># after</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">return</span> <span class="nv">$x</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In my module I have a blessed reference for a subroutine. I will evaluate the value only in boolean context. Sounds good! But If I want to build one complex expression using or, and, not?</p>
+
+<p>I can&#8217;t override the &amp;&amp; and || BUT I can override the bit operators &amp;, | and !, to build complex objects.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">use</span> <span class="n">overload</span>
+</span><span class='line'>  <span class="s">&#39;&amp;&#39;</span>    <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="n">_and</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">_and</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$a</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$b</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>      <span class="nv">$a</span><span class="o">-&gt;</span><span class="n">_to_bool</span> <span class="o">&amp;</span> <span class="nv">$b</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">my</span> <span class="nv">$x</span> <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="c1"># my complex expression 1</span>
+</span><span class='line'><span class="p">}</span> <span class="p">);</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$y</span> <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="k">sub </span><span class="p">{</span>
+</span><span class='line'>  <span class="c1"># my complex expression 2</span>
+</span><span class='line'><span class="p">}</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># The variable $z is a Lazy::Bool too. </span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$z</span> <span class="o">=</span> <span class="nv">$x</span> <span class="o">&amp;</span> <span class="nv">$y</span><span class="p">;</span>  <span class="c1"># CAUTION: will be evaluated if you use &amp;&amp; </span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;ok&quot;</span> <span class="k">if</span> <span class="nv">$z</span><span class="p">;</span> <span class="c1"># now will evaluate the entire expression</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And you can do the same with | and ! operators.</p>
+
+<p>There are two helper methods, true and false, to return lazy values of true and false (1 and 0).</p>
+
+<h2>TODO</h2>
+
+<p>Unfortunately this module is a beta version and it is not ready to production. I need to think in two details:</p>
+
+<p>I need to implement:</p>
+
+<ul>
+<li>a shortcut in and / or operations</li>
+<li>a cache to prevent evaluate the same expression twice</li>
+</ul>
+
+
+<p>But I don&#8217;t know what is the best way to do this. I&#8217;m using &amp; and | operators similar to logical and/or but &amp;/| does not have any shortcut. Maybe I can put a huge observation in the documentation about this.</p>
+
+<p>The question about cache is interesting. In some cases I can&#8217;t &#8216;memoize&#8217; the result. I have two options:</p>
+
+<ul>
+<li>create another class like Lazu::Bool::Memoized to do this, or</li>
+<li>add an extra parameter in the contructor, like cached => 1</li>
+</ul>
+
+
+<p>I&#8217;m very interesting in your opinion! Please give me some feedback :)</p>
+
+<h3>UPDATE</h3>
+
+<p>From version 0.03 there all boolean expression now supports shortcut and there is a new class, Lazy::Bool::Cached who memoize the value of the expression.</p>
+
+<h2>How to install</h2>
+
+<p>To install this module is simple:</p>
+
+<pre><code>bash$ cpan Lazy::Bool
+</code></pre>
+
+<h2>Final Considerations</h2>
+
+<p>I try to do this module in Ruby and I realize it is not possible <a href="http://stackoverflow.com/questions/14444975/how-to-create-an-object-who-act-as-a-false-in-ruby/">see here</a>. In Ruby we have only two &#8220;false&#8221; values: nil and false. And it is HARD CODED in the code. I can&#8217;t extend the FalseClass (in fact I can but if I do this I loose the &#8216;new&#8217;). I have no options to do this transparent to the user.</p>
+
+<p>The same thing in Java: I have the Boolean wrapper class but it is final. But I can emulate the same thing in Python using the <code>__nonzero__</code> special method like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyBooleanClass</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span class='line'>      <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="c"># Just to simplify the example</span>
+</span><span class='line'>      
+</span><span class='line'><span class="n">t</span> <span class="o">=</span> <span class="n">MyBooleanClass</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="n">MyBooleanClass</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">assert</span> <span class="n">t</span><span class="p">,</span> <span class="s">&quot;should be true&quot;</span>
+</span><span class='line'><span class="k">assert</span> <span class="ow">not</span> <span class="n">f</span><span class="p">,</span> <span class="s">&quot;should be false&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Build a dynamic proxy to one real object can be very helpful in many situations. You can find this in Hibernate (the Java ORM solution) if you choose working with Lazy Initialization.</p>
+
+<p>Perl, Python, Java, Ruby or PHP: each language has some advantages to do something. I can&#8217;t choose one language just based on one aspect. We need to consider the community, the environment, tools, etc. Perl is a good choice for software development in general (web, desktop, backend services) but it is not the only language capable to do X. We need to think about many aspects to decide one (or more) for our next project and be happy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Schwartzian transform]]></title>
+    <link href="http://pacman.blog.br/blog/2013/01/22/schwartzian-transform/"/>
+    <updated>2013-01-22T16:00:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2013/01/22/schwartzian-transform</id>
+    <content type="html"><![CDATA[<p>I will show in this post one of the most useful things that I learn in Perl: the famous Schwartzian transform. With examples in Ruby</p>
+
+<blockquote><p>In computer science, the Schwartzian transform is a Perl programming idiom used to improve the efficiency of sorting a list of items. This idiom is appropriate for comparison-based sorting when the ordering is actually based on the ordering of a certain property (the key) of the elements, where computing that property is an intensive operation that should be performed a minimal number of times. The Schwartzian Transform is notable in that it does not use named temporary arrays.</p><footer><strong>Wikipedia</strong> <cite><a href='http://en.wikipedia.org/wiki/Schwartzian_transform'>en.wikipedia.org/wiki/&hellip;</a></cite></footer></blockquote>
+
+
+
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># some expensive calculation...</span>
+</span><span class='line'>  <span class="n">x</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="k">end</span>    
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">sort</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">foo</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=&gt;</span> <span class="n">foo</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, foo are called 12 times. With +5 more elements in this array we jump to 52 calls. If foo is very expensive it is a waste of cpu. What we can do? Memoize is an option but I need to add an extra gem in my project. The solution is&#8230; Schwartzian transform!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># some expensive calculation...</span>
+</span><span class='line'>  <span class="n">x</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="k">end</span>    
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">original</span><span class="o">|</span>
+</span><span class='line'>  <span class="o">[</span><span class="n">original</span><span class="p">,</span> <span class="n">foo</span><span class="p">(</span><span class="n">original</span><span class="p">)</span><span class="o">]</span>  <span class="c1"># add the original and pre-calculated value</span>
+</span><span class='line'><span class="p">}</span><span class="o">.</span><span class="n">sort</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">a</span><span class="o">.</span><span class="n">last</span> <span class="o">&lt;=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">last</span>          <span class="c1"># perform comparation</span>
+</span><span class='line'><span class="p">}</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">x</span><span class="o">.</span><span class="n">first</span>                    <span class="c1"># extract the original, drop the pre-calculated value</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case we use the double of memory (to store the original and foo(original)) but we call foo only 5 times.</p>
+
+<p>We can use this pattern to solve other problems, sort is just one of them. Every time when we have one expensive calculation and we call this many times, maybe we can solve using this technique.</p>
+
+<p>Now, look at this code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># some expensive calculation...</span>
+</span><span class='line'>  <span class="n">x</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="k">end</span>    
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">foo</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Using sort_by we can use the power of Schwartzian transform for many cases if our sort is based on a simple comparation.</p>
+
+<p>The original version, in perl</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">@sorted</span> <span class="o">=</span> <span class="nb">map</span>  <span class="p">{</span> <span class="nv">$_</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">}</span>
+</span><span class='line'>          <span class="nb">sort</span> <span class="p">{</span> <span class="nv">$a</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">cmp</span> <span class="nv">$b</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+</span><span class='line'>          <span class="nb">map</span>  <span class="p">{</span> <span class="p">[</span><span class="nv">$_</span><span class="p">,</span> <span class="n">foo</span><span class="p">(</span><span class="nv">$_</span><span class="p">)]</span> <span class="p">}</span>
+</span><span class='line'>               <span class="nv">@unsorted</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Other languagens has some kind of support like <a href="http://dlang.org/">D</a> 2.0, with schwartzSort function. You can find an example in PHP <a href="http://gregheo.com/blog/php/schwartzian-transform/">Here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Codility Equi Task Solution in Modern Perl]]></title>
+    <link href="http://pacman.blog.br/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/"/>
+    <updated>2013-01-10T12:32:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2013/01/10/codility-equi-task-solution-in-modern-perl</id>
+    <content type="html"><![CDATA[<p><a href="http://codility.com">Codility</a> is one of the most common services used to apply test codes (for job applications, for example). <a href="http://codility.com/demo/take-sample-test/">Here</a> you can find a task sample to pratice before try the real test. The present sample is the <a href="http://blog.codility.com/2011/03/solutions-for-task-equi.html">Equi Task</a>, and the propose is very simple.</p>
+
+<p>Imagine an array with N elements. There is a P value (0 &lt;= P &lt;= N) who solve the problem below?</p>
+
+<pre><code>A[0] + A[1] + ... + A[P−1] = A[P+1] + ... + A[N−2] + A[N−1].
+</code></pre>
+
+<p>In other words, where is the equilibrium index of this array?</p>
+
+<p>For example, consider the following array A consisting of N = 7 elements:</p>
+
+<pre><code>A[0] = -7   A[1] =  1   A[2] = 5
+A[3] =  2   A[4] = -4   A[5] = 3
+A[6] =  0
+</code></pre>
+
+<p>P = 3 is an equilibrium index of this array, because:</p>
+
+<pre><code>A[0] + A[1] + A[2] = A[4] + A[5] + A[6]
+</code></pre>
+
+<p>The task is build one subroutine called equi who will receive the array should return the value of P, or -1 if there is no equilibrium index.</p>
+
+<p>Easy? Well, there is another challenge: create a O(n) solution.</p>
+
+<p>Here is my solution in Perl:</p>
+
+<!-- more -->
+
+
+<div><script src='https://gist.github.com/4502025.js'></script>
+<noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;https://github.com/gist/4502025&quot;&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</code></pre></noscript></div>
+
+
+<p>Using Perl 5.10 or superior, you can run the code and see the result</p>
+
+<pre>
+1..4
+ok 1 - example
+ok 2 - simple
+ok 3 - trivial
+ok 4 - single
+</pre>
+
+
+<p>I&#8217;m using two new features: the defined-or operator and state variables.</p>
+
+<p>The defined-or is like a regular logic or BUT consider only undefined values as &#8216;false&#8217;. Instead doing this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="p">(</span><span class="nb">defined</span> <span class="nv">$p</span><span class="p">)?</span> <span class="nv">$p</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+you can do only</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">$p</span> <span class="sr">//</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   <br/>
+0 is a valid value for P, but 0 is false for boolean operations. For example, te code below fails:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">$p</span> <span class="o">||</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+the test &#8216;single&#8217;, where I have only one element.</p>
+
+<p>The List::Util first subroutine is similar to grep, we can pass a block and an array, and we evaluate the block for each element of the array until the block returns a true value, then stops. If I can&#8217;t find anything, the subroutine return undef.</p>
+
+<p>Another feature is the state variable. Instead do this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">$pivot</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$p</span> <span class="o">=</span> <span class="n">first</span> <span class="p">{</span> <span class="o">...</span> <span class="p">;</span> <span class="nv">$pivot</span>  <span class="o">=</span> <span class="nv">$A</span><span class="p">[</span><span class="nv">$_</span><span class="p">];</span> <span class="o">...</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We just declare the state variable</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">$pivot</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">$p</span> <span class="o">=</span> <span class="n">first</span> <span class="p">{</span> <span class="n">state</span> <span class="nv">$pivot</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">...</span> <span class="p">;</span> <span class="nv">$pivot</span>  <span class="o">=</span> <span class="nv">$A</span><span class="p">[</span><span class="nv">$_</span><span class="p">];</span> <span class="o">...</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+In this case, $pivot is a state variable. The keyword state declares a lexically scoped variable, just like my. However, those variables will never be reinitialized, contrary to lexical variables that are reinitialized each time their enclosing block is entered.</p>
+
+<p>And sum returns the sum of all elements of this array.</p>
+
+<p><img src="http://pacman.blog.br/images/codility.png"></p>
+
+<p>I think now is easy to read and understand the code. Perl is not difficult to read, we just need practice.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Spell Correct in GNU AWK]]></title>
+    <link href="http://pacman.blog.br/blog/2012/12/29/spell-correct-in-gawk/"/>
+    <updated>2012-12-29T03:17:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2012/12/29/spell-correct-in-gawk</id>
+    <content type="html"><![CDATA[<p>Based on <a href="http://norvig.com/spell-correct.html">Peter Norvig Spell Correct</a></p>
+
+<figure class='code'><figcaption><span>small spell corrector in gawk</span><a href='https://gist.github.com/4404742'>link to gist</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="c1"># Usage: gawk -v word=some_word_to_verify -f spelling.awk [ big.txt [ big2.txt ... ]]</span>
+</span><span class='line'><span class="c1"># Gawk version with 15 lines -- 04/13/2008</span>
+</span><span class='line'><span class="c1"># Author: tiago (dot) peczenyj (at) gmail (dot) com</span>
+</span><span class='line'><span class="c1">#         about.me/peczenyj</span>
+</span><span class='line'><span class="c1"># Based on : http://norvig.com/spell-correct.html</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">edits</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">max</span><span class="p">,</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">list</span><span class="p">,</span>        <span class="nx">i</span><span class="p">,</span><span class="nx">j</span><span class="p">){</span>
+</span><span class='line'>       <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span>  <span class="nx">max</span> <span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)]</span> <span class="c1"># deletes</span>
+</span><span class='line'>       <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span> <span class="nx">max</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">3</span><span class="p">)]</span> <span class="c1"># transposes</span>
+</span><span class='line'>       <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span>  <span class="nx">max</span> <span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="k">for</span><span class="p">(</span><span class="nx">j</span> <span class="o">in</span> <span class="nx">alpha</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="nx">alpha</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)]</span> <span class="c1"># replaces</span>
+</span><span class='line'>       <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;=</span> <span class="nx">max</span> <span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="k">for</span><span class="p">(</span><span class="nx">j</span> <span class="o">in</span> <span class="nx">alpha</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="nx">alpha</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="c1"># inserts</span>
+</span><span class='line'>       <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">in</span> <span class="nx">list</span><span class="p">)</span> <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">in</span> <span class="nx">NWORDS</span><span class="p">)</span> <span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">NWORDS</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">correct</span><span class="p">(</span><span class="nx">word</span>            <span class="p">,</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="nx">list</span><span class="p">,</span><span class="nx">max</span><span class="p">,</span><span class="nx">temp</span><span class="p">){</span>
+</span><span class='line'>       <span class="nx">edits</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span><span class="kr">length</span><span class="p">(</span><span class="nx">word</span><span class="p">),</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">list</span><span class="p">)</span>
+</span><span class='line'>       <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">asort</span><span class="p">(</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">temp</span><span class="p">))</span> <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">in</span> <span class="nx">list</span><span class="p">)</span> <span class="nx">edits</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="kr">length</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span><span class="nx">candidates</span><span class="p">)</span>
+</span><span class='line'>       <span class="k">return</span> <span class="p">(</span><span class="nx">max</span> <span class="o">=</span> <span class="nx">asorti</span><span class="p">(</span><span class="nx">candidates</span><span class="p">))</span> <span class="err">?</span> <span class="nx">candidates</span><span class="p">[</span><span class="nx">max</span><span class="p">]</span> <span class="err">:</span> <span class="nx">word</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">BEGIN</span><span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nb">ARGC</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="nb">ARGV</span><span class="p">[</span><span class="nb">ARGC</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;big.txt&quot;</span> <span class="c1"># http://norvig.com/big.txt</span>
+</span><span class='line'>       <span class="k">while</span><span class="p">(</span><span class="o">++</span><span class="nx">i</span><span class="o">&lt;=</span><span class="kr">length</span><span class="p">(</span><span class="nx">x</span><span class="o">=</span><span class="s2">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><span class="p">))</span> <span class="nx">alpha</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">=</span><span class="kr">substr</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>       <span class="nb">IGNORECASE</span><span class="o">=</span><span class="nb">RS</span><span class="o">=</span><span class="s2">&quot;[^&quot;</span><span class="nx">x</span><span class="s2">&quot;]+&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">{</span>      <span class="o">++</span><span class="nx">NWORDS</span><span class="p">[</span><span class="kr">tolower</span><span class="p">(</span><span class="o">$</span><span class="mi">1</span><span class="p">)]</span>   <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">END</span><span class="p">{</span>   <span class="kr">print</span> <span class="p">(</span><span class="nx">word</span> <span class="o">in</span> <span class="nx">NWORDS</span><span class="p">)</span> <span class="err">?</span> <span class="nx">word</span> <span class="err">:</span> <span class="s2">&quot;correct(&quot;</span><span class="nx">word</span><span class="s2">&quot;)=&gt; &quot;</span> <span class="nx">correct</span><span class="p">(</span><span class="kr">tolower</span><span class="p">(</span><span class="nx">word</span><span class="p">))</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+This is my version of the Norvig&#8217;s Spell Corrector in gnu awk.</p>
+
+<p>Follow the code we can find 2 functions and 3 blocks of code. Awk is a oriented to data flow, I&#8217;m always reading something, in this case I read a huge file <a href="http://norvig.com/big.txt">big.txt</a> with many words. It is a good sample of word frequency distributions, the most common words should be present in more number than rare words.</p>
+
+<!-- more -->
+
+
+<p>I can read and store the frequency of the word using this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="p">{</span>  <span class="o">++</span><span class="nx">NWORDS</span><span class="p">[</span><span class="kr">tolower</span><span class="p">(</span><span class="o">$</span><span class="mi">1</span><span class="p">)]</span>   <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+it is a map between the word (in lowercase) and how many times I can find in the text.</p>
+
+<p>But, how I can read one word per time? In awk, $1 is the first field in one register. When I read one text, awk consider each line as a register and each work as a field and I can change this with the Record Separator (RS, new line by default) and Field Separator (FS, one or more space/tabs by default) variables.</p>
+
+<p>I&#8217;m using the BEGIN block to setup the script:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="nx">BEGIN</span><span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nb">ARGC</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="nb">ARGV</span><span class="p">[</span><span class="nb">ARGC</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;big.txt&quot;</span> <span class="c1"># http://norvig.com/big.txt</span>
+</span><span class='line'>      <span class="k">while</span><span class="p">(</span><span class="o">++</span><span class="nx">i</span><span class="o">&lt;=</span><span class="kr">length</span><span class="p">(</span><span class="nx">x</span><span class="o">=</span><span class="s2">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><span class="p">))</span> <span class="nx">alpha</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">=</span><span class="kr">substr</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="nb">IGNORECASE</span><span class="o">=</span><span class="nb">RS</span><span class="o">=</span><span class="s2">&quot;[^&quot;</span><span class="nx">x</span><span class="s2">&quot;]+&quot;</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First, if there is no arguments, I add the <a href="http://norvig.com/big.txt">big.txt</a> to read and store in &#8216;NWORDS&#8217;.</p>
+
+<p>Second, I create an array &#8216;alpha&#8217; with each letter. I&#8217;m using the temporary variable x to store the valid sequence of words and change the value of RS to a regular expression who match one (or more) non alpha chars. In awk, string concatenation is very simple:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="nb">RS</span> <span class="o">=</span> <span class="s2">&quot;[^&quot;</span> <span class="nx">x</span> <span class="s2">&quot;]+&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   <br/>
+is equivalent to</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="nb">RS</span> <span class="o">=</span> <span class="s2">&quot;[^abcdefghijklmnopqrstuvwxyz]+&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+The variable IGNORECASE, with a non 0 value, change the behavior of regular expressions.</p>
+
+<p>After setup the script and read big.txt (or other file(s)) and create NWORDS map, we execute the END block:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="nx">END</span><span class="p">{</span>   <span class="kr">print</span> <span class="p">(</span><span class="nx">word</span> <span class="o">in</span> <span class="nx">NWORDS</span><span class="p">)</span> <span class="err">?</span> <span class="nx">word</span> <span class="err">:</span> <span class="s2">&quot;correct(&quot;</span><span class="nx">word</span><span class="s2">&quot;)=&gt; &quot;</span> <span class="nx">correct</span><span class="p">(</span><span class="kr">tolower</span><span class="p">(</span><span class="nx">word</span><span class="p">))</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   <br/>
+What is &#8216;word&#8217;? To run this script we pass this variable directly to the script using -v option.</p>
+
+<pre><code>gawk -v word=some_word_to_verify -f spelling.awk    
+</code></pre>
+
+<p>If this word has no problems I can find in NWORDS, but if i can&#8217;t find, I call the &#8216;correct&#8217; function.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="kd">function</span> <span class="nx">correct</span><span class="p">(</span><span class="nx">word</span>            <span class="p">,</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="nx">list</span><span class="p">,</span><span class="nx">max</span><span class="p">,</span><span class="nx">temp</span><span class="p">){</span>
+</span><span class='line'>   <span class="nx">edits</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span><span class="kr">length</span><span class="p">(</span><span class="nx">word</span><span class="p">),</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">list</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">asort</span><span class="p">(</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">temp</span><span class="p">))</span> <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">in</span> <span class="nx">list</span><span class="p">)</span> <span class="nx">edits</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="kr">length</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span><span class="nx">candidates</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">return</span> <span class="p">(</span><span class="nx">max</span> <span class="o">=</span> <span class="nx">asorti</span><span class="p">(</span><span class="nx">candidates</span><span class="p">))</span> <span class="err">?</span> <span class="nx">candidates</span><span class="p">[</span><span class="nx">max</span><span class="p">]</span> <span class="err">:</span> <span class="nx">word</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+All variables in awk are globals. To create local variables we add in the function signature. It is ugly but it is the only way, and the convention is separate the local variables with many spaces (in this case: candidates, i, list, max and temp).</p>
+
+<p>The function correct call edits and return a unique list with possible correct words OR I call edits again with each &#8216;candidate&#8217;. The asort is a portable way to return the size of the array/map and I do not change the original (i use temp). asorti order a map by the value of his indexes to find the maximum value. In this case, max is the size of the array and the last element is the most common word in the map (candidates[max]).</p>
+
+<p>and here is the magic of edits:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="kd">function</span> <span class="nx">edits</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">max</span><span class="p">,</span><span class="nx">candidates</span><span class="p">,</span><span class="nx">list</span><span class="p">,</span>        <span class="nx">i</span><span class="p">,</span><span class="nx">j</span><span class="p">){</span>
+</span><span class='line'>   <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span>  <span class="nx">max</span> <span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)]</span> <span class="c1"># deletes</span>
+</span><span class='line'>   <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span> <span class="nx">max</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">3</span><span class="p">)]</span> <span class="c1"># transposes</span>
+</span><span class='line'>   <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span>  <span class="nx">max</span> <span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="k">for</span><span class="p">(</span><span class="nx">j</span> <span class="o">in</span> <span class="nx">alpha</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="nx">alpha</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)]</span> <span class="c1"># replaces</span>
+</span><span class='line'>   <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;=</span> <span class="nx">max</span> <span class="p">;</span><span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="k">for</span><span class="p">(</span><span class="nx">j</span> <span class="o">in</span> <span class="nx">alpha</span><span class="p">)</span> <span class="o">++</span><span class="nx">list</span><span class="p">[</span><span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="nx">alpha</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="kr">substr</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="c1"># inserts</span>
+</span><span class='line'>   <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">in</span> <span class="nx">list</span><span class="p">)</span> <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">in</span> <span class="nx">NWORDS</span><span class="p">)</span> <span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">NWORDS</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+I&#8217;m using w as a mnemonic of word to reduce the size of each statement, specialty in &#8216;transposes&#8217;. Here we get the word and try to apply 4 types of operations: deletes, transposes, replaces and inserts (see the <a href="http://norvig.com/spell-correct.html">original article</a> ). If we find, we add copy the value from NWORDS to candidates.</p>
+
+<p>The idea is simple: if I apply all four operations and find one or more candidates in NWORDS, the most probably word will be the most present word in big.txt - QED.</p>
+
+<p>Example:</p>
+
+<pre><code>$ wget http://norvig.com/big.txt
+$ time gawk -v word=reciet -f spelling.awk 
+correct(reciet)=&gt; recite
+
+real 0m4.450s
+user 0m4.351s
+sys 0m0.027s
+</code></pre>
+
+<p>Thanks for your time.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[hello]]></title>
+    <link href="http://pacman.blog.br/blog/2012/12/29/hello/"/>
+    <updated>2012-12-29T02:26:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2012/12/29/hello</id>
+    <content type="html"><![CDATA[<p>Hello World!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mudando de endereço]]></title>
+    <link href="http://pacman.blog.br/blog/2009/01/03/mudando-de-endereo/"/>
+    <updated>2009-01-03T16:22:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2009/01/03/mudando-de-endereo</id>
+    <content type="html"><![CDATA[<div class='post'>
+Foram centenas de posts desde que comecei a usar o blogspot como valvula de escape.<br /><br />Agora adquiri um domínio próprio e estou usando o wordpress como engine de blog, com MediaWiki para salvar os posts mais importantes daqui.<br /><br />Atualizem os seus feeds: <a href="http://pacman.blog.br">pacman.blog.br</a>, estou desativando este site. Obrigado a todos pela audiência :)</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Novas Distribuições Linux]]></title>
+    <link href="http://pacman.blog.br/blog/2008/12/22/novas-distribuies-linux/"/>
+    <updated>2008-12-22T14:44:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2008/12/22/novas-distribuies-linux</id>
+    <content type="html"><![CDATA[<div class='post'>
+Diariamente eu leio noticias sobre novas distribuições, brasileiras ou internacionais.<br /><br />Até que ponto isso é <span style="font-style:italic;">realmente</span> necessário? Não seria melhor tentar focar em uma das excelentes distribuições que existem hoje em dia ou então tentar ajudar a manutenção de pacotes ou mesmo traduzir documentação?<br /><br />Acho que produzir uma distribuição é um bom aprendizado, porém produzir algo que sera dificil de manter e atualizar pode ser bem penoso.</div>
+<!-- more --> 
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Vitor Pellegrino</div>
+<div class='content'>
+@pacman<BR/><BR/>Aqui em casa funcionou. Quando chegou o novo micro aqui em casa, eu instalei o ubuntu e falei para a minha mãe (ultra-leiga, diga-se por sinal) que era a versão nova do Windows. <BR/><BR/>Ela está usando o Ubuntu a alguns meses e está se virando super bem :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Um experimento interessante é vc instalar o ubuntu ou outra distribuição dizendo que é uma nova versão do windows e deixar o pessoal utilizar por umas horas. Vão dizer que &#8220;agora ficou bom&#8221;, &#8220;é bem rapido&#8221;, etc :)</div>
+</div>
+<div class='comment'>
+<div class='author'>JOSIAS RAMOS</div>
+<div class='content'>
+Concordo com você Tiago, acho que fui muito duro. Eu mesmo demorei um pouco para aderir ao linux, e olha que era na época bem mais difícil. Agora eu não deixo-o de jeito nenhum.<BR/>A divulgação está muito boa, mas para o usuários leigos mesmo, que apenas usam o PC para coisas triviais, esses é que tem que serem tratados com carinho por nós da comunidade GNU/Linux, e não esculaxados em fóruns como eu mesmo já presenciei.<BR/>Mas nada muda o fato de que poucas distros poderosas seriam bem melhores, tanto para a divulgação quanto para o desenvolvimento do que várias distros que quase ninguem usa.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Josias, eu acho que vai alem.<BR/><BR/>Existe um grupo de interfaces gráficas que tentam copiar ou imitar o windows. Ao meu ver é interessante para ajudar na transição de usuarios de uma plataforma para a outra, da mesma forma que o cygwin me ajuda a usar o XP sem dar ls no prompt de comando.<BR/><BR/>Porém outras interfaces seguem outras ideias, e essa é uma riqueza sensacional do mundo linux/bsd, open source em geral. Interfaces como o fluxbox, window maker, enlightenment, cada uma com um propósito diferente. Temos muitos problemas ainda pela frente e precisamos de alguns focos no mundo open-source. Um deles é a divulgação que, com tantos blogs, planets, listas e foruns acho que estamos no caminho certo, porém ainda existem iniciativas isoladas para transmitir conhecimento como as palestras do Tchelinux, as install fests, etc.<BR/><BR/>Uma hora chegaremos lá!</div>
+</div>
+<div class='comment'>
+<div class='author'>JOSIAS RAMOS</div>
+<div class='content'>
+É verdade, deveríamos pensar em fortalecer boas distros, desenvolvendo o Linux para desktops. Um amigo me disse que não ia mais usar o Linux que eu dei para ele pois não conseguiu usar algumas ferramentas que só tem no Windows. Temos que admitir que o Windows ainda domina os desktops por causa dos aplicativos e sua interface gráfica bem mais amigável, para programadores e entendidos não é nada de mais trabalhar com o Linux, eu amo, mais para usuários finais, pessoas que querem apenas um PC para se divertir, entrar no MSN, criar textos no Word, entre outras coisas, vão ter dificuldades em interagir com o Linux.<BR/>Ainda há programadores que, por ter aprendido algo, pensam que já nasceram sabendo, e não ajudam novos usuários, que às vezes são mal-tratados e decepcionam ainda mais com o Linux.<BR/>Espero que posssamos nos juntar para criar e desenvolver aplicativos para desktops, ou o Linux vai ficar sendo conhecido como o sistema operacional para servidores, com usuários programadores e administradores.</div>
+</div>
+<div class='comment'>
+<div class='author'>Guilherme Chapiewski</div>
+<div class='content'>
+Outro dia mesmo falei no Twitter: <A HREF="http://twitter.com/gchapiewski/status/1072862864" REL="nofollow">as pessoas adoram re-inventar a roda</A>.<BR/><BR/>Re-inventar a roda é pura perda de tempo, a não ser que se tenha uma necessidade extremamente específica (o que normalmente não é o caso).<BR/><BR/>[ ]s, gc</div>
+</div>
+<div class='comment'>
+<div class='author'>Rodrigo Kumpera</div>
+<div class='content'>
+Boa parte da motivação de novas distros é dar foco em um conjunto específico de pacotes ou configurações.<BR/><BR/>Agora se as pessoas soubessem como é fácil resolver esse problema.<BR/><BR/>Para construir pacotes trivialmente basta usar o build service do OpenSuse, que permite empacotar para os principais formatos e distros. <BR/><BR/>http://build.opensuse.org/<BR/><BR/>Uma vez com os pacotes em mãos, juntar todos eles em uma distro com Suse Studio é razoavelmente simples.<BR/><BR/>http://studio.suse.com/<BR/><BR/>Criar distros inteiras é um esforço descomunal, custa, no mínimo, uma dúzia  de engenheiros em tempo integral só para  juntar os pedaços e, no final, entregar algo que não é melhor que as principais existentes.</div>
+</div>
+<div class='comment'>
+<div class='author'>Kroiner</div>
+<div class='content'>
+Fiz um post uns dias atrás em meu blog tratando exatamente este assunto. Na minha opinião está meio exagerado o número de novas distros. A partir disso estou mandando um e-mail para cada nova distribuição que aparece perguntando os diferenciais entre esta distribuição e as distribuições efetivadas na comunidade. O e-mail, obviamente, é educado e mostra interesse pelos projetos, apenas questionando-os. Já mandei para 4 distros que apareceram novas versões entre esta e a semana passada e até agora nenhum projeto me deu algum retorno. Estou esperando até o final do ano e depois colocarei um parecer dessa pseudo-pesquisa se é que alguma vai me responder.<BR/><BR/>Tonismar<BR/>kroiner.wordpress.com</div>
+</div>
+<div class='comment'>
+<div class='author'>Victor Bogado</div>
+<div class='content'>
+A verdade é que não é necessário, pode até ser um processo &#8220;legal&#8221; pelo aprendizado e pode até ser que o criador acredite realmente que está criando algo realmente util para a humanidade. <BR/><BR/>A verdade porém é que 99% destas distros, e sim eu acabei de inventar este numero, terão a sorte de não ter mais que um ou dois usuários. Pois fazer uma distribuição que sobreviva ter milhares, ou até mesmo milhões de usuários é dificil e acaba por forçar o distribuidor a fazer decisões arbritárias que provavelmente irão trazer a ira de uma boa porcentagem destes usuários dos quais quem sabe um ou dois não resolvem se juntar e criar a sua própria distro e&#8230;</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tirando o Mofo]]></title>
+    <link href="http://pacman.blog.br/blog/2008/11/24/tirando-o-mofo/"/>
+    <updated>2008-11-24T19:26:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2008/11/24/tirando-o-mofo</id>
+    <content type="html"><![CDATA[<div class='post'>
+Fiquei uns dias sem postar, hehe.<br /><br />Tive pouco tempo livre, afinal além de pegar alguns projetos novos (e ter que aprender muito no processo) ainda tem a faculdade, que agora chega ao fim do semestre com algumas provas.<br /><br />Nesse tempo também participei de alguns eventos legais, a começar pelo <a href="http://www.temporealeventos.com.br/?area=116">workshop de design patterns</a> ministrado pelo <a href="http://www.bruceeckel.com/">Bruce Eckel</a> (Thinking in Java, Thinking in C++). Foram 3 dias imerso em um mundo de orientação a objetos com exemplos em Java e Python. O Bruce é um cara muito bacana, tive a oportunidade de conversar bastante com ele e descobri que tinhamos algo em comum: uma graduação em física incompleta (chegamos a conclusão que não foi um tempo perdido pois aprendemos a resolver problemas, ou pelo menos demorar bastante tempo até desistir). Também tive a oportunidade de participar de um <a href="http://www.dojosp.org/">Coding Dojo</a> onde resolvemos o problema da notação de trits (ao contrário, diga-se de passagem) usando Haskell. A ideia do Dojo é sensacional!<br /><br />Também participei da <a href="http://pyconbrasil.com.br/">PyConBrasil 2008</a>. Foi um evento muito bom, excelente organização, sem falar que a sessão aberta com o Bruce sobre os rumos do Python foi o ponto forte, que surgiu totalmente do acaso. Python é uma linguagem muito interessante, com uma comunidade consideravel. Quem não usa python devido a indentação obrigatória do código usa um dos argumentos mais ridículos possiveis :)<br /><br />Outro evento sensacional foi o workshop de <a href="http://blog.fragmental.com.br/2008/10/08/domain-driven-design-agile-fechando-malas/">Domain-Driven Design</a> ministrado pelo Philip Calçado na <a href="http://www.caelum.com.br/">Caelum/RJ</a>. DDD é sobre comunicação, um ponto essencial no desenvolvimento de software nos dias de hoje. O Phillip foi responsavel, ainda que indiretamente, pela minha vinda a globo.com, porém só agora pudemos tomar aquele chopp e conversar sem ter 12 horas de diferença.<br /><br />Sabado passado começou o curso on-line e intensivo de <a href="http://blog.egenial.com.br/?p=192">BDD on Rails com RSpec</a> ministrado pelo <a href="http://www.dtsato.com/">Danilo Sato</a> pela eGenial. Esta valendo a pena, pois parte daquela premissa que sempre defendi que temos que testar o nosso código e, para isso, existem varias abordagens e frameworks.<br /><br />Estou preparando outros posts, devo atualizar este blog em breve.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Roger Leite</div>
+<div class='content'>
+Legal Peczenyj!<BR/>Também participei do workshop de DDD, aqui em Sampa.<BR/><BR/>Sucesso!</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fear, uncertainty and doubt]]></title>
+    <link href="http://pacman.blog.br/blog/2008/10/24/fear-uncertainty-and-doubt/"/>
+    <updated>2008-10-24T11:02:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2008/10/24/fear-uncertainty-and-doubt</id>
+    <content type="html"><![CDATA[<div class='post'>
+Fear, uncertainty and doubt (ou simplesmente <a href="http://en.wikipedia.org/wiki/FUD_factor">FUD</a>) não é algo novo. Volta e meia alguma instituição ou candidato a utiliza de forma a enfraquecer o(s) seu(s) adversário(s), geralmente os projetos open-source são vitimas frequentes.<br /><br />Hoje, no Rio de Janeiro haverá o ultimo debate entre os candidatos a prefeito. Não sou de usar blog técnico como meio de propaganda politica porém não posso ficar de braços cruzados enquanto um candidato utiliza FUD, Boatos e Mentiras. <a href="http://porumbrasildecente.blogspot.com/2008/10/boataria-contra-gabeira.html">Aqui</a> e <a href="http://porumbrasildecente.blogspot.com/2008/10/mais-um-boato-da-campanha-de-paes.html">aqui</a> vemos alguns exemplos extremamente baixos, que qualquer pessoa com um minimo de instrução deveria perceber. Até quando isso será permitido? E o TRE? E os panfletos apócrifos apreendidos? <br /><br />Felizmente o outro candidato, cujo partido possui uma cor verde interessante, não responde na mesma moeda pois seria facil usar coisas <a href="http://congressoemfoco.ig.com.br/Noticia.aspx?id=25124">desse tipo</a>, mas que não acrescentam nada. <br /><br />Realmente a melhor forma de se proteger do FUD é informando a população, cobrando das autoridades cabíveis e destacando o quão antiético é esse tipo de abordagem. Felizmente cada cidade tem o prefeito que merece.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>ju-ju</div>
+<div class='content'>
+Tá na hora de atualizar, né? :)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Muito bom!<BR/>Dia 26, vou votar 43!</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Chrome: o browser da google]]></title>
+    <link href="http://pacman.blog.br/blog/2008/09/02/chrome-o-browser-da-google/"/>
+    <updated>2008-09-02T16:48:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/09/02/chrome-o-browser-da-google</id>
+    <content type="html"><![CDATA[<div class='post'>
+As noticias apareceram em todas os sites especializados: o google estaria lançando hoje uma novidade chamada chrome, um browser baseado em Webkit disponivel por enquanto para Windows XP e Vista.<br /><br />Até um <a href="http://www.google.com/googlebooks/chrome/">gibi</a> foi disponibilizado, então esperando até as 4 PM consegui fazer o download em uma maquina virtual e pude testa-lo um pouco.<br /><br />A performance parece ser muito boa, apesar da virtualização. Não observei travamentos ou comportamentos estranhos (como os que ocorrem no Safari para Windows). O visual e as tabs são realmente práticas, com muita área para ver o site e icones intuitivos.<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697182/" title="primeira_impressao by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3226/2822697182_2d26579398.jpg" width="500" height="374" alt="primeira_impressao" /></a><br /><br />Bem interessante é o gerenciador de tarefas, (Controlar Pagina Atual > Desenvolvedor) onde podemos ver o consumo de cpu, memória e rede de cada aba (que rodam como processos independentes).<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697178/" title="gerenciador_tarefas by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3040/2822697178_a150abe1fc.jpg" width="500" height="377" alt="gerenciador_tarefas" /></a><br /><br />E também temos acesso a informações de memória bem detalhadas (infelizmente estáticas, gostaria que houvesse algo como o top do unix, quem sabe no futuro&#8230;).<br /><a href="http://www.flickr.com/photos/25513475@N05/2822697176/" title="chrome_memory by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3048/2822697176_fbbb8e2688.jpg" width="500" height="374" alt="chrome_memory" /></a>]<br /><br />O histórico é limpo e muito bonito<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697170/" title="chrome_historico by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3099/2822697170_3f5a9469a0.jpg" width="500" height="376" alt="chrome_historico" /></a><br /><br />E um recurso que eu gostei bastante do novo Opera, mas com uma nova roupagem: ao abrir uma nova aba temos uma pagina com os favoritos e snapshots das paginas.<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697164/" title="chrome_abas by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3114/2822697164_05a9ce10db.jpg" width="500" height="377" alt="chrome_abas" /></a><br /><br />Por fim, basta instalar com um clique o plugin flash para navegar no Youtube ou Globo Videos<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822697168/" title="chrome_globo_videos by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3036/2822697168_242b7a4e5d.jpg" width="500" height="374" alt="chrome_globo_videos" /></a><br /><br />Outras coisas que percebi: a pergunta para salvar as senhas dos sites é muito mais discreta, aparecendo acima do site após o login (não é aquele alert que surge do nada). O Gmail parece ter uma boa performance e o gtalk funcionou sem maiores problemas. Com 6 abas o consumo de memória foi de 144408k - e ainda podemos comparar com outros browsers abertos!<br /><br />Sinto falta de usar &#8216;/&#8217; para fazer pesquisas na pagina (quem usa Vim entende disso) mas o Ctrl + F funciona bem. Para configurar o tamanho da fonte basta usar Ctrl + (mais) e Ctrl - (menos) para alterar o tamanho do texto, Ctrl 0 para voltar ao normal. E, a mais interessante, não há necessidade de um campo de texto para pesquisas rapidas ao google ou outro buscador: basta digitar os termos no lugar da url (bem intuitivo, aliás). O download de algum arquivo é simples e bonito também.<br /><br />Bom, até então eu gostei, só aguardo a versão para Linux e quero por as mãos no tão falado codigo fonte logo-logo :)<br /><br />Link para download: <a href="http://gears.google.com/chrome"> http://gears.google.com/chrome </a><br /><br />Edit: o Chrome tem o mesmo problema que o Firefox tinha para gerenciar senhas: ele mostra a senha sem pudor algum:<br /><br /><a href="http://www.flickr.com/photos/25513475@N05/2822070365/" title="Senhas by grande_uosh, on Flickr"><img src="http://farm4.static.flickr.com/3268/2822070365_c3594ac41b.jpg" width="500" height="390" alt="Senhas" /></a><br /><br />Poderia ter um recurso mais seguro como o da <a href="http://br.mozdev.org/firefox/senha-mestra">senha mestra</a> do Firefox, parece que não pensaram (tanto) na nossa privacidade. Quem sabe no futuro isso não será corrigido?</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Guilherme Garnier</div>
+<div class='content'>
+Fala Pac. Também estou achando o Chrome bem legal. Mas a maioria desses detalhes que você citou já existem no Firefox. Ex: a pergunta pra salvar senhas no topo da tela, os atalhos para pesquisar e para mudar o tamanho do texto, pesquisa no google digitando direto na URL. E tem um plugin pra mostrar as snapshots como no Opera.</div>
+</div>
+<div class='comment'>
+<div class='author'>Lauro Cesar</div>
+<div class='content'>
+Aqui tá rápido e estável. Ah e gastando até menos memória que o Firefox (se bem, que essa estória de que cada tab é um processo às vezes engana a gente&#8230;) <BR/>Enfim, parece muito bom mesmo!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Valeu, Wagner, estou lutando para baixar os fontes! <BR/><BR/>Não lembrava que a memorização da senha tinha mudado no FF3, hehe.</div>
+</div>
+<div class='comment'>
+<div class='author'>leoburla</div>
+<div class='content'>
+Também achei 144Mb bem pesado&#8230; Mas vou dar uma olhada na parada. Parece ser muito boa! Um abraço.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+144 megas pra 6 abas é um pouco salgado heim. Que abas você foram essas?</div>
+</div>
+<div class='comment'>
+<div class='author'>Wagner Mezaroba</div>
+<div class='content'>
+Legal, estou baixando o fonte pra Linux por aqui:<BR/><BR/>http://dev.chromium.org/developers/how-tos/build-instructions-linux#TOC-Getting-the-code<BR/><BR/>Tá bem lento, mas passou da primeira etapa. <BR/><BR/>Em relação a memorização de senha, no FF 3 não abre nenhuma janela tb. Só aparece uma barra encima (que não interrompe o fluxo de navegação).<BR/><BR/><BR/>Falou!</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Despedida do Antonio]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/29/despedida-do-antonio/"/>
+    <updated>2008-08-29T21:13:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/29/despedida-do-antonio</id>
+    <content type="html"><![CDATA[<div class='post'>
+Esta foi a ultima semana do <a href="http://www.acarlos.com.br/blog">Antonio</a> na <a href="http://videos.globo.com">globo.com</a>. A despedida foi em grande estilo, com direito a galeria gourmet. Fica o exemplo e a saudade desse grande colega.<br /><br />Em clima de festa com direito a montinho e tudo:<br /><object width="425" height="319"><param name="movie" value="http://qik.com/swfs/qik_player.swf?streamname=1711b365461b4d31873bd2a7d043fff7&vid=245068&playback=false&polling=false&user=gchapiewski&displayname=gchapiewski&safelink=gchapiewski&userlock=true&islive=&username=anonymous" ></param><param name="wmode" value="transparent" ></param><param name="allowScriptAccess" value="always" ><embed src="http://qik.com/swfs/qik_player.swf?streamname=1711b365461b4d31873bd2a7d043fff7&vid=245068&playback=false&polling=false&user=gchapiewski&displayname=gchapiewski&safelink=gchapiewski&userlock=true&islive=&username=anonymous" type="application/x-shockwave-flash" wmode="transparent" width="425" height="319" allowScriptAccess="always"></embed></object><br /><br />Fico feliz por ter surpreendido do Antonio nesses poucos meses que trabalhei com ele, agora os desafios são outros (aka Expurgo&#8230;)!<br /><br />Toninho, boa sorte no Yahoo!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Antonio Carlos Silveira</div>
+<div class='content'>
+Pac, Boa sorte para vc tb e continue assim&#8230; You are in the right path!</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SQL Injection - A fina arte de criar paginas realmente inseguras]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/25/sql-injection/"/>
+    <updated>2008-08-25T13:11:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/25/sql-injection</id>
+    <content type="html"><![CDATA[<div class='post'>
+Este post diz tudo:<br /><img src="http://imgs.xkcd.com/comics/exploits_of_a_mom.png"/><br />
+<!-- more --> 
+<br />Por mais que existam alertas sobre os perigos de <a href="http://en.wikipedia.org/wiki/SQL_injection">SQL Injection</a>, muita gente resolve ignorar e criar sistemas cujas consultas ao banco de dados são feitas através de concatenações de strings com os dados oriundos do usuário.<br /><br />Uma das primeiras coisas que aprendi quando trabalhava como testador foi tentar este código em telas de login:<br /><br /><code>' or '1' ='1<code><br /><br />Imagine que o impacto dessa belezinha em uma query como esta:<br /><br /><code>"SELECT USUARIO FROM TABELA WHERE USUARIO = '" + usuario + "' AND SENHA = '" + senha + "'"</code><br />temos, então:<br /><br /><code>SELECT USUARIO FROM TABELA WHERE USUARIO = 'qqCoisa' AND SENHA = '' or '1' ='1'</code><br /><br />Consegui efetuar o login devido a extrema <b>preguiça</b> do desenvolvedor que nunca se interessou em estudar um pouco de segurança, muito menos sabe o que é um <b>prepared statement</b>. Isso no melhor dos casos, posso querer inserir um DROP TABLE da vida facilmente, pois o sistema está, literalmente, de pernas abertas.<br /><br />Recentemente um colega testou esse tipo de ataque contra um site de uma <span style="font-style:italic;">instituição</span> por curiosidade. Ele conseguiu obter um arquivo contento a senha e o IP do banco de dados e conseguiu acessa-lo, perceberam o perigo?<br /><br />Sinceramente? Se eu vejo um site que cai nesse truque eu não sinto pena. Não vou zoar ou fazer algo maléfico, as vezes até tento avisar, mas não sei se vale a pena: ou o sistema custou muito barato ou custou muito caro, foi produzido por uma consultoria que lucou 1980% em cima do salario do estágiario e que, por mais documentos que tenham produzido não conseguiram fazer algo básico: um site seguro contra hackers que estudam pela Wikipedia.<br /><br />Se o seu site não pode receber aspas simples, duplas ou %, tenha MUITO medo, pois alguem VAI fazer algo em breve&#8230;</div>
+
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Marcio</div>
+<div class='content'>
+Muito bom o post!</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcio</div>
+<div class='content'>
+muito bom o post!</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Essa tirinha do xkcd é uma das melhores.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Brincar com SQLInjection é divertido&#8230; principalmente em dias de tédio.</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Closures em Java - Parte 2]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/11/closures-em-java-parte-2/"/>
+    <updated>2008-08-11T10:48:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/11/closures-em-java-parte-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Ainda sobre a Closures do java 7, agora será possivel fazer isso:<br /><br /><pre><code>public class A {<br />        public static void main(String args[]) {<br />            @Shared int acumulador = 0;<br /><br />            {int => int } xxx  = { int i =>  acumulador += i; i};<br /><br />            System.out.println(xxx.invoke(1));<br />            System.out.println(xxx.invoke(2));<br />            System.out.println(xxx.invoke(3));<br />            System.out.println("o valor do acumulador eh " + acumulador );<br /><br />        }<br />}</code></pre><br /><br />Só eu estou achando divertido?<br /><br /><a href="http://gafter.blogspot.com/2008/08/java-closures-prototype-feature.html">http://gafter.blogspot.com/2008/08/java-closures-prototype-feature.html</a></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Não dá ideia!!<BR/><BR/>Logo aparece um @Global da vida&#8230; ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+Fiquei com medo que tu falasse que era uma &#8220;variavel global&#8221; <BR/><BR/>hehe</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Martins, sem o @Shared o codigo compila mas gera um warning. É uma marcação que a variavel é compartilhada com outra closure ou bloco de código.</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+O que que vem a ser aquele @shared?</div>
+</div>
+<div class='comment'>
+<div class='author'>Fabio Nascimento</div>
+<div class='content'>
+Pois é, a única dúvida é como ele faz o autoboxing escondido(leia-se por debaixo dos panos)?<BR/>Mas no geral, tbm estou gostando, vamos ver&#8230; quando chegar a hora do SDK implementar isso de verdade mesmo.<BR/><BR/>Té +</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Closures em Java]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/08/closures-em-java/"/>
+    <updated>2008-08-08T19:23:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/08/closures-em-java</id>
+    <content type="html"><![CDATA[<div class='post'>
+Olha o que vai ter no java 1.7<br /><br /><pre><code>public class A {<br />        public static void main(String args[]) {<br />                exec( { int a, int b => a + b });<br />                exec( { int a, int b => a * b });<br />                exec( { int a, int b => <br />                        System.out.println("closure " + a + ":" + b); <br />                        (a * a) + (b * b) <br />                });<br />        }<br />        public static void exec({ int, int => int } closure){<br />                System.out.println(closure.invoke(3,2));<br />        }<br />}</code></pre><br /><br /><pre>$ java -Xbootclasspath/p:./closures-2008-08-04/lib/closures.jar   A<br />5<br />6<br />closure 3:2<br />13</pre><br /><br />Divertido :)<br /><br />Fonte:<br /><a href="http://guj.com.br/posts/list/99477.java">http://guj.com.br/posts/list/99477.java</a></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Hehehe&#8230; bizarro mesmo sera quando o java tiver suporte a pipes, sinais e outras coisas do mundo shell/C/*nix.<BR/><BR/>Imagina uma classe fazendo um TRAP&#8230; hehehe!</div>
+</div>
+<div class='comment'>
+<div class='author'>La Batalema Pitonisto</div>
+<div class='content'>
+Tenho muito medo disso!<BR/><BR/>[]&#8217;s<BR/>Cacilhas, La Batalema</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Parsing de XML na linguagem ABC]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/08/parsing-de-xml-na-linguagem-abc/"/>
+    <updated>2008-08-08T15:01:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/08/parsing-de-xml-na-linguagem-abc</id>
+    <content type="html"><![CDATA[<div class='post'>
+A maior parte das linguagens de progração em uso pelo mundo tem pelo menos 1024 bibliotecas para trabalhar com arquivos XML. Me espanta saber que muitos querem &#8220;gravar e ler&#8221; arquivos nesse formato mas não fazem ideia do que é um XML!<br /><br />Eis um bom começo:<br /><a href=="http://www.w3schools.com/xml/default.asp">http://www.w3schools.com/xml/default.asp</a><br /><br />Acho que nenhuma linguagem tem mais variações sobre o mesmo tema que Java: http://guj.com.br/artigos.jsp#87031</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testable & Untestable Code]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/08/testable-untestable-code/"/>
+    <updated>2008-08-08T14:29:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/08/testable-untestable-code</id>
+    <content type="html"><![CDATA[<div class='post'>
+Leitura recomendada:<br /><br /><a href="http://misko.hevery.com/2008/07/24/how-to-write-3v1l-untestable-code/">http://misko.hevery.com/2008/07/24/how-to-write-3v1l-untestable-code/</a><br /><a href="http://www.testingreflections.com/node/view/7221">http://www.testingreflections.com/node/view/7221</a></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Guilherme Gall</div>
+<div class='content'>
+Estou achando bem interessante a proposta do TDD. É algo que parece ser importante e que infelizmente não é visto na faculdade. Continue postando sobre isso sempre que é bem legal. Se puder, indique algum livro sobre o assunto.<BR/><BR/>Saudações</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Good, the Bad and the Ugly]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/07/good-bad-and-ugly/"/>
+    <updated>2008-08-07T18:40:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/07/good-bad-and-ugly</id>
+    <content type="html"><![CDATA[<div class='post'>
+Depois de ter visto algumas vezes &#8220;Era uma vez no Oeste&#8221; (com Charles Bronson tocando harmônica), finalmente pude conferir o clássico &#8220;Três Homens em Conflito&#8221; (The Good, the Bad and the Ugly) do mestre Sergio Leone.  <br /><br />Clint Eastwood, Eli Wallach e Lee Van Cleef estão perfeitos nessa história cheia de sangue, traições e a obcessão pela riqueza. As panorâmicas de Leone sobre o desertico velho oeste e a caracterização dos homens embrutecidos daquela época, onde a vida não valia mais do alguns dólares, são majestosas, com direito à mostrar parte da guerra civil americana.<br /><br /><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/hVnoaPPpWog&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/v/hVnoaPPpWog&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="425" height="344"></embed></object><br /><br />Esqueçam aqueles filmes de indios e tiros falsos: são personagens densos, únicos, em um momento diferente da história, com momentos fantásticos (como a cena em que o &#8220;Feio&#8221; monta um revolver com as peças de outros). Sem falar no olhar mortal do &#8220;Olhos de Anjo&#8221; Lee Van Cleef, que passa uma frieza na espinha&#8230;<br /><br />- &#8220;When you have to shoot, shoot. Don’t talk!&#8221;<br /><br />Sem falar no maravilhoso tema de Ennio Morriconi, clássico absoluto. O estilo Western não é vazio como muitos pensam, basta saber apreciar.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>fpasetto</div>
+<div class='content'>
+Vlw meu velho, finalmente algo q venho engajando meus esforços vem a ser reconhecido&#8230;<BR/><BR/>Abs</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Voltas às Aulas e o Java - parte 2]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/07/voltas-s-aulas-e-o-java-parte-2/"/>
+    <updated>2008-08-07T17:43:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/07/voltas-s-aulas-e-o-java-parte-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Existe o clássico problema de determinar se um aluno passou ou não de ano quando são informados as notas e o número de faltas.<br /><br />Vejamos: <br />1) O número de faltas é acima do permitido?. Aqui entra um <span style="font-weight:bold;">if</span> dos bons com uma comparação numérica, quando um número é maior ou igual a outro.<br />2) A média é basicamente somar as X notas e dividir por X (se for média aritmética). Somar e dividir são operações matemáticas básicas.<br /><br />Uma forma de fazer é:<br /><code> if( numero_de_faltas &gt; maximo_de_faltas_toleradas) {<br />   // reprovado por faltas<br />} else if ( media_do_aluno &lt; media_para_passar ){<br />  // reprovado por nota<br />} <br />// se nem um nem outro, esta aprovado<br /></code><br /><br />O ruim dessa abordagem é que o aluno estar aprovado é uma condição &#8220;que sobra&#8221;. Se passarmos a focar a aprovação do mesmo ficaria assim:<br /><br /><code> if( media_do_aluno &gt;= media_para_passar && numero_de_faltas &lt;= maximo_de_faltas_toleradas) {<br />   // aprovado!<br />} else {<br />  // reprovado!<br />}</code><br /><br />É claro que eu posso que eu posso querer saber o motivo pelo qual o aluno foi reprovado:<br /><br /><code> if( media_do_aluno &gt;= media_para_passar && numero_de_faltas &lt;= maximo_de_faltas_toleradas) {<br />   // aprovado!<br />} else if(numero_de_faltas &gt; maximo_de_faltas_toleradas){<br />   // reprovado pelo número de faltas: ignoro a média.<br />} else {<br />  // aqui só sobra a reprovação por nota, <br />  // basta fazer a tabela-verdade dessas expressões<br />}</code><br /><br />Se o foco do professor for o algoritmo, isso é o que deveria ser analisado. Quem implementa corretamente um método que recebe X notas e um número de faltas e consegue responder a essas perguntas consegue descrever facilmente os casos de teste para verificar se a implementação corresponde ao que se espera.<br /><br />Um programa que tenha algum tipo de interação (seja Swing ou console) ajuda a fazer um macarrão de código, mesclando o algoritmo com o controle de estado dos &#8220;menuzinhos&#8221;. No fim vemos laços de repetição aonde não são necessários, calculo de média errado, etc.<br /><br />Ok, não acho que um marinheiro de primeira viagem devesse começar por JUnit, mas uma com boa noção dos fundamentos da linguagem e evitando a interação desnecessária com o usuario (poderia ser usado até os parâmetros do main), acredito num melhor desempenho. O risco é o aluno acreditar que java  é dificil ou que tudo se resume a getters/setters e gigantescos try/catch&#8217;s onde as exceptions são varridas pra debaixo do tapete. <br /><br />Eu colocaria TDD num segundo momento, mas ai sem perdão, ensinando o caboclo a fazer do jeito certo o quanto antes. O que é dificil se eles conseguem passar sem saber fazer aritmética básica.</div>
+]]></content>
+  </entry>
+  
+</feed>

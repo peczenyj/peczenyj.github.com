@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Funny | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/funny/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Sudo]]></title>
+    <link href="http://pacman.blog.br/blog/2008/07/03/sudo/"/>
+    <updated>2008-07-03T17:35:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/07/03/sudo</id>
+    <content type="html"><![CDATA[<div class='post'>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://imgs.xkcd.com/comics/sandwich.png"><img style="cursor:pointer; cursor:hand;width: 320px;" src="http://imgs.xkcd.com/comics/sandwich.png" border="0" alt="" /></a></div>
+
+]]></content>
+  </entry>
+  
+</feed>

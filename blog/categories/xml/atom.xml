@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: XML | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/xml/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Parsing de XML na linguagem ABC]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/08/parsing-de-xml-na-linguagem-abc/"/>
+    <updated>2008-08-08T15:01:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/08/parsing-de-xml-na-linguagem-abc</id>
+    <content type="html"><![CDATA[<div class='post'>
+A maior parte das linguagens de progração em uso pelo mundo tem pelo menos 1024 bibliotecas para trabalhar com arquivos XML. Me espanta saber que muitos querem "gravar e ler" arquivos nesse formato mas não fazem ideia do que é um XML!<br /><br />Eis um bom começo:<br /><a href=="http://www.w3schools.com/xml/default.asp">http://www.w3schools.com/xml/default.asp</a><br /><br />Acho que nenhuma linguagem tem mais variações sobre o mesmo tema que Java: http://guj.com.br/artigos.jsp#87031</div>
+
+]]></content>
+  </entry>
+  
+</feed>

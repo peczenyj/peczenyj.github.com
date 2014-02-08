@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="Como acessar o twitter a partir de um shell script de apenas 2 linhas? Fácil#!/bin/bashlinks -dump http://m.twitter.com/${1} | tac | sed -n '/\*/,$p &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/page/16/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/page/16/index.html">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Peczenyj's Blog">
+<meta property="og:description" value="My personal blog with cool stuff">
+ 
+<meta property="og:image" value="http://pacman.blog.br/images/avatar.png">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/page/16/index.html">
+
+
+<meta property="twitter:title" value="Peczenyj's Blog">
+<meta property="twitter:description" value="My personal blog with cool stuff">
+ 
+<meta property="twitter:image" value="http://pacman.blog.br/images/avatar.png">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/01/29/twitter-shell-script/">Twitter + Shell Script</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-01-29T22:59:00-02:00" pubdate data-updated="true">Jan 29<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div class='post'>
+Como acessar o twitter a partir de um shell script de apenas 2 linhas? Fácil<br /><br /><pre><code>#!/bin/bash<br />links -dump http://m.twitter.com/${1} | tac | sed -n '/\*/,$p' | tac | tail +2</code></pre><br /><br />Basta informar o username a ser impresso:<br /><br /><pre>$./twitter.sh pac_man<br />   Twitter<br /><br />   pac_man pac_man fogo controlado agora. about 1 hour ago<br /><br />   Previous Updates<br />     * minha cozinha pegou fogo. about 4 hours ago<br />     * @gchapiewski To com a cuia, onde se compra a erva (mate)? about 9<br />       hours ago<br />     * @pcalcado alias XYZZY='echo -ne Zork!' about 16 hours ago<br />     * XYZZY about 16 hours ago<br />     * 4 horas pra montar um armario. Pelo menos jantei pizza. 08:36 PM<br />       January 28, 2008<br />     * Odeio fazer mudanc,a! Armario ainda nao ta pronto... 03:41 PM January<br />       28, 2008<br />     * Amanha chega a minha mudanc,a. Terei um pc finalmente. 07:41 PM<br />       January 27, 2008<br />     * Odeio limpar a areia dos gatos. 07:38 PM January 27, 2008<br />     * E ainda tenho q desmontar uma geladeira :/ 12:30 PM January 27, 2008</pre><br /><br />Não consegui fazer com que o links entenda o conjunto de caracteres correto mas&#8230; quebra um galho. Depois vou fazer um que submeta um post :)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>aprendiz</div>
+<div class='content'>
+Fiz algumas pequenas modificações pra ficar mais legal:<BR/><BR/>#!/bin/bash<BR/><BR/>if [ &#8220;$1&#8221; = &#8220;&#8221; ]; then<BR/> echo &#8220;Usage: $0 < twitter-username >&#8220;<BR/>fi<BR/><BR/>links -dump http://m.twitter.com/${1} | tac | sed -n &#8216;/\*/,$p&#8217; | tac | tail -n +2<BR/><BR/>adicionei o Usage, pra daqui uns 6 meses eu nao precisar abrir pra ver o que faz :P<BR/><BR/>e também adicionei ao tail o -n +number pq tail +number ta deprecated na minha versao do tail.<BR/><BR/>Abraços,<BR/>Bruno Carvalho<BR/><BR/>PS: Aguardamos sua primeira aparição aqui na globo.com ! Bem vindo a equipe :)</div>
+</div>
+</div>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/01/28/nada-de-muito-novo/">Nada De Muito Novo.</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-01-28T21:27:00-02:00" pubdate data-updated="true">Jan 28<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div class='post'>
+A mudança chegou hoje. Sexta começa a labuta, até lá tem muita coisa pra desencaixotar.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Thadeu Penna</div>
+<div class='content'>
+Tsc, tsc, tsc, ainda é gaúcho. O cara se muda para o Rio e acha que vai começar a trabalhar na sexta-feira de Carnaval :D))) Nem entrou no clima&#8230;</div>
+</div>
+</div>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/01/20/enquanto-isso-no-rj/">Enquanto Isso, No RJ</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-01-20T16:15:00-02:00" pubdate data-updated="true">Jan 20<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div class='post'>
+Depois de uma semana turbulenta cheguei vivo ao RJ, e continuo até agora.<br /><br />Não tenho muitas novidades além do calos e da ansiedade - e estou sem PC em casa. <br /><br />Logo terei novidades.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>J. F. Mitre</div>
+<div class='content'>
+Eu não sei como lhe dizer isso, meu caro, então vou direto ao ponto: estamos em clima de outono aqui no Rio&#8230;<BR/><BR/>Calor fez nos últimos 15 dias de dezembro passado (que chegou a 42 graus). Agora está suave, não tem nem chego a 40 graus&#8230;</div>
+</div>
+</div>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/01/09/centsimo-post-uma-novidade/">Centésimo Post: Uma Novidade!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-01-09T20:59:00-02:00" pubdate data-updated="true">Jan 9<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div class='post'>
+Um dia eu estava conferindo os sites e blogs do meu bookmark quando vi <a href="http://blog.fragmental.com.br/2007/07/24/contratando-agilistas-retardatarios/">este post</a>. Fiquei impressionado como <span style="font-weight:bold;">tanta </span>coisa fez sentido pra mim.<br /><br />Eu era só um <span style="font-style:italic;">test developer</span> que tinha começado como testador lá em são leopoldo. Vi sistemas serem feitos de todas as formas, principalmente as erradas. E tive <a href="erainfo.blogspot.com">amigos </a>que diziam &#8220;isso não se faz mais, hoje em dia se usa hibernate/struts/webwork/&#8230;&#8221;, q coisa não? <br /><br />Voltando a vaca fria, fui lendo os posts e artigos do Phillip Calçado - assim como os seus posts no GUJ - e fui acordado para a minha verdadeira vocação: <span style="font-style:italic;">programar</span>. Mas quando li <a href="http://blog.fragmental.com.br/2007/08/15/introduzindo-agilidade-num-ambiente/">este post</a> eu criei coragem e enviei um email, extremamente humilde, perguntando o que eu poderia estudar para não fazer feio em uma entrevista na <a href="http://videos.globo.com/">globo.com</a> , afinal eu sabia das minhas limitações e, naquela época, eu estava pensando em tentar a vida lá.<br /><br />Phillip foi super-simpático e conseguiu uma entrevista por telefone. Foi um terror, não estava preparado, eu só queria ter uma idéia, naquela época, do que estudar para conseguir sair da minha função mais reativa, para uma função ativa (o ato de desenvolver o software em si com qualidade e ter orgulho disso). Mas não desisti.<br /><br />Nas minhas férias eu tive 3 entrevistas na globo.com, sendo a última no sábado pela manhã (eu ia voltar para Poa no domingo). Valeu a pena, quando o telefone tocou e o <a href="http://gc.blog.br">Guilherme</a> disse &#8220;e ai, pacman?&#8221; eu gelei.<br /><br />Tinha sido aceito no grupo mais louco e fera que eu já conheci (e olha que eu ja trabalhei com o Porto e com o Casantos). Fui super humilde em todos os momentos, cheguei a acreditar que não iria conseguir em muitos momentos, mas aconteceu.<br /><br />Pena que o Phillip foi para Melbourne, queria te-lo conhecido pessoalmente. Por outro lado, eu sempre poderei ler os seus blogs e posts e poderei contribuir no trabalho que ele começou na WebMedia.<br /><br />Tenho que agradecer a muitas pessoas: Marujo, Marlon, Fernando, James, Marcelo Martins, a galera da HP que me atura a mais de 3 anos e a todos os loucos que me mandam parabéns pelo orkut ou gtalk e que vou sentir falta.<br /><br />&#8220;Trabalhar na Barra da Tijuca, ruim né?&#8221;<br /><br />Poucos sabem das reais dificuldades que eu enfrentei pra chegar ao dia de hoje. E não vou deixar de ser quem eu sou, amigos. Quando ao emprego que eu já tinha conseguido, eu tive que recusar gentilmente.<br /><br />2008 promete :)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>RIC@RDO</div>
+<div class='content'>
+&#8220;&#8230;(e olha que eu ja trabalhei com o Porto e com o Casantos)&#8230;&#8221;<BR/><BR/>hahahahahahahahaha<BR/>Essa foi pra matar Peczenyj!!!!<BR/>E os vovôs continuam aqui aprontando das suas&#8230; :P<BR/><BR/>Abraço amigo!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Marcelo,<BR/><BR/>Essa resposta eu estou esperando do Phillip até hoje. Entretanto o Guilherme Chapiewski me deu algumas boas sugestões, basicamente livros sobre Agile e Domain Design Driven.</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo</div>
+<div class='content'>
+Olá,<BR/><BR/>Também cheguei até o seu blog através do Fragmental. Fiquei muito curioso em saber qual foi a resposta do Phillip Calçado sobre o que se deve estudar para não fazer feio em uma entrevista na Globo.com.<BR/><BR/>Parabéns pela conquista<BR/><BR/>Marcelo</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Seja bem vindo a equipe pacman!</div>
+</div>
+<div class='comment'>
+<div class='author'>Luis Eduardo Bohrer da Silva</div>
+<div class='content'>
+Gostaria de dar os parabéns Peczenyj.<BR/>Também cheguei aqui, através do framental.<BR/><BR/>Via seus comentários no GUJ mas não sabia que éramos conterrâneos, mas agora já está indo embora.<BR/>Enfim parabéns pelo esforço, pois tudo isso é fruto dele.<BR/>Estarei acompanhando o Blog.<BR/>Valeu.</div>
+</div>
+<div class='comment'>
+<div class='author'>Roger</div>
+<div class='content'>
+Parabéns Peczenyj !<BR/>Quando comecei a ler o post e vi as referências a posts do Fragmental, GC &#8230; já pensei: &#8220;Não acredito que o cara conseguiu um trampo lá !&#8221;<BR/>O ambiente lá parece ser muito legal, eu também sonho com uma oportunidade dessas, se por acaso souber de algum lugar desse em Sampa mando meu cv na hora. Enquanto isso continuo estudando &#8220;coisas inúteis&#8221; como TDD, Scrum, XP, DSLs, Ruby &#8230; etc. mesmo sabendo que onde estou nunca vou usar. :-(<BR/>Por sinal acompanho o blog do gc também! Muito bom.<BR/><BR/>Sucesso pra ti merrmão (carioques fluente!)<BR/><BR/>Roger Leite</div>
+</div>
+</div>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/17/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/15/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a &#8216;dry run&#8217; capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

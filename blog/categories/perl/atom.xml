@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Perl | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/perl/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable]]></title>
+    <link href="http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/"/>
+    <updated>2013-04-07T09:55:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable</id>
+    <content type="html"><![CDATA[<p>A 'dry run' is a testing process where the effects of a possible failure are intentionally mitigated. For example, an aerospace company may conduct a "dry run" test of a jet's new pilot ejection seat while the jet is parked on the ground, rather than while it is in flight. Or, in software development, we can change the behavior of some methods in order to test, like avoid change data into a database (logging the action instead).</p>
+
+<p>There are many ways to implement this capability. For example, we can add an explicity return in each method and test some condition. I will show some options in this article and we will find how to use the module <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a> in our Moose classes (Perl).</p>
+
+<p>One simple example in Perl, reading from an environment variable <code>DRY_RUN</code>.</p>
+
+<p>```perl</p>
+
+<p>package Foo;</p>
+
+<p>sub bar {</p>
+
+<pre><code>logger-&gt;debug("Foo::bar @_");
+return if $ENV{'DRY_RUN'};
+...
+</code></pre>
+
+<p>}
+```</p>
+
+<!--more-->
+
+
+<p>In this example, the <code>bar</code> method change something in the database and my test is very simple, like a simple diff between log files. To test my application in dry run (to test in the product environment, for example, without a big risk), we can do this:</p>
+
+<p><code>
+bash$ DRY_RUN=1 ./my-application.pl --other-options
+</code></p>
+
+<p>Sounds good, for large systems, with a good number of modules, it can be a problem. For example, the method <code>bar</code> has two or three responsabilities: logging the parameters, doing the original job and do nothing if we are in the <code>dry run</code> state. This method is doing a lot of things, and I have the same code in multiple places. Lets think about reuse of this code, using OO principles.</p>
+
+<p>```perl</p>
+
+<p>package FooBase;</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>package Foo;
+use base 'FooBase';</p>
+
+<p>sub bar {</p>
+
+<pre><code>logger-&gt;debug("Foo::bar @_");
+return if $ENV{'DRY_RUN'};
+
+my $self = shift;
+$self-&gt;SUPER::bar(@_);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now it is interesting: my Foo class has just one job: dispatch (or not) the method call to FooBase (who knows our business rule). But we still have the problem of the same code in multiple places. Lets try to solve this with Aspect Oriented Programming, using Moose.</p>
+
+<p>```perl
+package Foo;
+use Moose;</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub baz {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>around [ qw(bar baz) ] => sub {</p>
+
+<pre><code>my $orig = shift;
+my $self = shift;
+
+logger-&gt;debug("Foo::bar @_");
+return if $ENV{'DRY_RUN'};
+
+$self-&gt;$orig(@_)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Moose is a complete object system for Perl 5. Consider any modern object-oriented language (which Perl 5 definitely isn't). It provides keywords for attribute declaration, object construction, inheritance, and maybe more. In this example, we can use the Method Modifier <code>around</code> and we can inject this new piece of code in one or more methods. But we still need add this hook in each class, this is why I create the <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<p>Moose has a great number of features, like Roles. Roles have two primary purposes: as interfaces, and as a means of code reuse. In our example we can do this:</p>
+
+<p>```perl
+package DryRunnable;
+use Moose::Role;</p>
+
+<p>requires 'in_dry_run';
+requires 'on_dry_run';</p>
+
+<p>package Foo;
+use Moose;
+with 'DryRunnable';</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub baz {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub is_dry_run {</p>
+
+<pre><code>$ENV{'DRY_RUN'}
+</code></pre>
+
+<p>}</p>
+
+<p>sub on_dry_run {</p>
+
+<pre><code>logger-&gt;debug("Foo::bar @_")
+</code></pre>
+
+<p>}</p>
+
+<p>around [ qw(bar baz) ] => sub {</p>
+
+<pre><code>my $orig = shift;
+my $self = shift;
+
+$self-&gt;is_dry_run()
+    ? $self-&gt;on_dry_run(@_)
+    : $self-&gt;$orig(@_)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>In this example, the role DryRunnable provides the basic infrastructure to add the dry run capability. Instead ask direclty to an environment variable I'm asking to a method ( <code>is_dry_run</code> ), and instead only log / return nothing we call another method to do this ( <code>on_dry_run</code> ). Using this kind of pattern it is easy to inject the correct <code>around</code> statement using, for example, <a href="https://metacpan.org/module/MooseX::Role::Parameterized">MooseX::Role::Parameterized</a>. With a parameterized role, we can set the list of methods in a Objected Oriented way, with more code reuse and less copy/paste. This is the base of <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a>.</p>
+
+<p>```perl
+package Foo;
+use Moose;</p>
+
+<p>with 'MooseX::Role::DryRunnable' => {
+  methods => [ qw(bar baz) ]
+};</p>
+
+<p>has dry_run => (is => 'ro', isa => 'Bool', default => 0);</p>
+
+<p>sub bar {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub baz {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>}</p>
+
+<p>sub is_dry_run { # required, should return a boolean
+  shift->dry_run
+}</p>
+
+<p>sub on_dry_run { # required, will receive the name of the method and the list of arguments
+  my $self   = shift;
+  my $method = shift;
+  $self->logger("Dry Run method=$method, args: \n", @_);
+}
+```</p>
+
+<p>The code of this role is simple, and we can set the list of the methods as a parameter.</p>
+
+<p>```perl
+package MooseX::Role::DryRunnable;
+use MooseX::Role::Parameterized;</p>
+
+<p>parameter methods => (
+  traits  => ['Array'],
+  is      => 'ro',
+  isa     => 'ArrayRef[Str]',
+  default => sub { [] },
+  handles => { all_methods => 'elements' },
+);</p>
+
+<p>role {
+  my $p = shift;</p>
+
+<p>  requires 'is_dry_run';
+  requires 'on_dry_run';</p>
+
+<p>  foreach my $method ($p->all_methods){</p>
+
+<pre><code>around $method =&gt; sub { 
+    my $code  = shift;
+    my $self  = shift;
+
+    $self-&gt;is_dry_run() 
+      ? $self-&gt;on_dry_run($method,@_) 
+      : $self-&gt;$code(@_)  
+  }
+</code></pre>
+
+<p>  }
+};</p>
+
+<p>1;
+```</p>
+
+<p>I can extend the original role to provide a basic version of <code>is_dry_run</code> and <code>on_dry_run</code> for my set of Moose classes and write less code, overriding if I need something more specific for some class. And this is how we can deal with Aspect Oriented Programming in Perl, using Moose.</p>
+
+<p>But this is not the only way to do this. I can use <a href="https://metacpan.org/module/Monkey::Patch">Monkey::Patch</a> or  <a href="https://metacpan.org/module/Aspect">Aspect</a> to add the same behavior, there are many good options to do the same thing.</p>
+
+<p>And there are many applications of this technique. If we identify a good reason to change the behavior of some class in runtime, like activate some modules or features (based on configuration, timedate, environment variables, etc), we can do something like this.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lazy::Bool my first module in CPAN]]></title>
+    <link href="http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/"/>
+    <updated>2013-01-23T20:15:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2013/01/23/lazy-bool-my-first-module-in-cpan</id>
+    <content type="html"><![CDATA[<p><a href="https://metacpan.org/release/Lazy-Bool">Lazy::Bool</a> is my first module in <a href="http://www.cpan.org/">CPAN</a> (The Comprehensive Perl Archive Network). It is a simple module (only 60 lines) and few methods/operators but can be useful in some situation. The source code can be found in my <a href="https://github.com/peczenyj/Lazy-Bool">github</a>.</p>
+
+<h2>Example</h2>
+
+<p>```perl
+use Lazy::Bool;
+use Test::More tests=> 3;
+my $a = 6;
+my $b = 4;
+my $x  = Lazy::Bool->new(sub{ $a > $b });
+my $false = Lazy::Bool::false;</p>
+
+<p>my $result = ($x | $false) &amp; ( ! ( $false &amp; ! $false ) );</p>
+
+<h1>now the expressions will be evaluate</h1>
+
+<p>ok($result,    "complex expression should be true");
+ok(!! $x ,  "double negation of true value should be true");<br/>
+ok(!!! $false, "truple negation of false value should be true");
+```</p>
+
+<!--more-->
+
+
+<p>Sometimes we have expensive operations in our code (like uses lots of CPU, Memory, etc). We can wait until the last second to evaluate this kind of expressions if we can. Imagine an imaginary video processing module and we need check many parameters to validate one file like: size, format, codec, extension, etc. It is easy to fetch the size of one file but read the file to fetch some informations can be expensive (we have I/O, etc). We can avoid one expensive process if the size of the file is not ok (like more than the limit, or less than 1 Kb). Of course we can write the validation subroutine thinking in this scenario or... we can use my Lazy::Bool!</p>
+
+<h2>How it works</h2>
+
+<p>In perl we can overload many operators using the pragma <a href="http://perldoc.perl.org/overload.html">overload</a>. One of this operators is the 'bool', used for type conversion. Perl has a small set of data types (scalar, array, hash, subroutine, etc) but one scalar can be used as a text, number or boolean (the context is important). If we use one scalar in boolean context, we can control like this.</p>
+
+<p>```perl
+package Lazy::Bool;</p>
+
+<p>use overload</p>
+
+<pre><code>'bool' =&gt; \&amp;_to_bool,
+</code></pre>
+
+<p>sub _to_bool {</p>
+
+<pre><code># return some boolean value
+</code></pre>
+
+<p>}
+```</p>
+
+<p>To create an instance of Lazy::Bool we need to use the <a href="http://perldoc.perl.org/functions/bless.html">bless</a> keyword. I can bless any reference (normally we use a hashref to simulate the internal state of the object) and the semantic of the method calling is similar to Python: the first argument is the class or object.</p>
+
+<p>For this module I'm blessing a reference to a subroutine. It is essential for be lazy as much as we can. For example:</p>
+
+<p>```perl
+package Lazy::Bool;</p>
+
+<p>sub new {</p>
+
+<pre><code>my $klass = shift;
+my $code  = shift;
+
+bless $code, $klass;
+</code></pre>
+
+<p>}
+sub _to_bool {</p>
+
+<pre><code>shift-&gt;()
+</code></pre>
+
+<p>}
+...</p>
+
+<p>my $false = Lazy::Bool->new( sub {</p>
+
+<pre><code>print "I am laaaaazy\n"; 
+0 
+</code></pre>
+
+<p>});</p>
+
+<p>```</p>
+
+<p>The shift keyword just return the first argument and remove it from the array. All subroutines in Perl receive just one array with all parameters. If I want to call a subroutine and pass more than one array I need to use references. Strange? Maybe, it is a simple way to work with multiple parameters and do this:</p>
+
+<p>```perl
+sub foo {</p>
+
+<pre><code># do something
+</code></pre>
+
+<p>}</p>
+
+<p>sub wrap_foo {</p>
+
+<pre><code># before
+my $x = foo(@_);  # in some cases we can use goto (like recursion)
+# after
+
+return $x
+</code></pre>
+
+<p>}
+```</p>
+
+<p>In my module I have a blessed reference for a subroutine. I will evaluate the value only in boolean context. Sounds good! But If I want to build one complex expression using or, and, not?</p>
+
+<p>I can't override the &amp;&amp; and || BUT I can override the bit operators &amp;, | and !, to build complex objects.</p>
+
+<p>```perl
+use overload</p>
+
+<pre><code>'&amp;'    =&gt; \&amp;_and;
+</code></pre>
+
+<p>sub _and {</p>
+
+<pre><code>my $a = shift;
+my $b = shift;
+
+Lazy::Bool-&gt;new(sub {
+    $a-&gt;_to_bool &amp; $b
+})
+</code></pre>
+
+<p>}
+...</p>
+
+<p>my $x = Lazy::Bool->new( sub {</p>
+
+<pre><code># my complex expression 1
+</code></pre>
+
+<p>} );
+my $y = Lazy::Bool->new( sub {</p>
+
+<pre><code># my complex expression 2
+</code></pre>
+
+<p>} );</p>
+
+<h1>The variable $z is a Lazy::Bool too.</h1>
+
+<p>my $z = $x &amp; $y;  # CAUTION: will be evaluated if you use &amp;&amp;</p>
+
+<p>print "ok" if $z; # now will evaluate the entire expression
+```</p>
+
+<p>And you can do the same with | and ! operators.</p>
+
+<p>There are two helper methods, true and false, to return lazy values of true and false (1 and 0).</p>
+
+<h2>TODO</h2>
+
+<p>Unfortunately this module is a beta version and it is not ready to production. I need to think in two details:</p>
+
+<p>I need to implement:</p>
+
+<ul>
+<li>a shortcut in and / or operations</li>
+<li>a cache to prevent evaluate the same expression twice</li>
+</ul>
+
+
+<p>But I don't know what is the best way to do this. I'm using &amp; and | operators similar to logical and/or but &amp;/| does not have any shortcut. Maybe I can put a huge observation in the documentation about this.</p>
+
+<p>The question about cache is interesting. In some cases I can't 'memoize' the result. I have two options:</p>
+
+<ul>
+<li>create another class like Lazu::Bool::Memoized to do this, or</li>
+<li>add an extra parameter in the contructor, like cached => 1</li>
+</ul>
+
+
+<p>I'm very interesting in your opinion! Please give me some feedback :)</p>
+
+<h3>UPDATE</h3>
+
+<p>From version 0.03 there all boolean expression now supports shortcut and there is a new class, Lazy::Bool::Cached who memoize the value of the expression.</p>
+
+<h2>How to install</h2>
+
+<p>To install this module is simple:</p>
+
+<pre><code>bash$ cpan Lazy::Bool
+</code></pre>
+
+<h2>Final Considerations</h2>
+
+<p>I try to do this module in Ruby and I realize it is not possible <a href="http://stackoverflow.com/questions/14444975/how-to-create-an-object-who-act-as-a-false-in-ruby/">see here</a>. In Ruby we have only two "false" values: nil and false. And it is HARD CODED in the code. I can't extend the FalseClass (in fact I can but if I do this I loose the 'new'). I have no options to do this transparent to the user.</p>
+
+<p>The same thing in Java: I have the Boolean wrapper class but it is final. But I can emulate the same thing in Python using the <code>__nonzero__</code> special method like this:</p>
+
+<p>```python
+class MyBooleanClass:</p>
+
+<pre><code>def __init__(self, value):
+    self.value = value
+
+def __nonzero__(self):
+    return self.value # Just to simplify the example
+</code></pre>
+
+<p>t = MyBooleanClass(True)
+f = MyBooleanClass(False)</p>
+
+<p>assert t, "should be true"
+assert not f, "should be false"
+```</p>
+
+<p>Build a dynamic proxy to one real object can be very helpful in many situations. You can find this in Hibernate (the Java ORM solution) if you choose working with Lazy Initialization.</p>
+
+<p>Perl, Python, Java, Ruby or PHP: each language has some advantages to do something. I can't choose one language just based on one aspect. We need to consider the community, the environment, tools, etc. Perl is a good choice for software development in general (web, desktop, backend services) but it is not the only language capable to do X. We need to think about many aspects to decide one (or more) for our next project and be happy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Schwartzian transform]]></title>
+    <link href="http://pacman.blog.br/blog/2013/01/22/schwartzian-transform/"/>
+    <updated>2013-01-22T16:00:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2013/01/22/schwartzian-transform</id>
+    <content type="html"><![CDATA[<p>I will show in this post one of the most useful things that I learn in Perl: the famous Schwartzian transform. With examples in Ruby</p>
+
+<p><blockquote><p></p></p><p><p>In computer science, the Schwartzian transform is a Perl programming idiom used to improve the efficiency of sorting a list of items. This idiom is appropriate for comparison-based sorting when the ordering is actually based on the ordering of a certain property (the key) of the elements, where computing that property is an intensive operation that should be performed a minimal number of times. The Schwartzian Transform is notable in that it does not use named temporary arrays.</p></p><p><p></p><footer><strong>Wikipedia</strong> <cite><a href='http://en.wikipedia.org/wiki/Schwartzian_transform'>en.wikipedia.org/wiki/&hellip;</a></cite></footer></blockquote></p>
+
+<!-- more -->
+
+
+<p>``` ruby
+array = 1..5</p>
+
+<p>def foo(x)</p>
+
+<pre><code># some expensive calculation...
+x.to_s
+</code></pre>
+
+<p>end</p>
+
+<p>array.sort { |a,b| foo(a) &lt;=> foo(b) }
+```</p>
+
+<p>In this example, foo are called 12 times. With +5 more elements in this array we jump to 52 calls. If foo is very expensive it is a waste of cpu. What we can do? Memoize is an option but I need to add an extra gem in my project. The solution is... Schwartzian transform!</p>
+
+<p>``` ruby
+array = 1..5</p>
+
+<p>def foo(x)</p>
+
+<pre><code># some expensive calculation...
+x.to_s
+</code></pre>
+
+<p>end</p>
+
+<p>array.map{ |original|</p>
+
+<pre><code>[original, foo(original)]  # add the original and pre-calculated value
+</code></pre>
+
+<p>}.sort { |a,b|</p>
+
+<pre><code>a.last &lt;=&gt; b.last          # perform comparation
+</code></pre>
+
+<p>}.map{|x|</p>
+
+<pre><code>x.first                    # extract the original, drop the pre-calculated value
+</code></pre>
+
+<p>}
+```</p>
+
+<p>In this case we use the double of memory (to store the original and foo(original)) but we call foo only 5 times.</p>
+
+<p>We can use this pattern to solve other problems, sort is just one of them. Every time when we have one expensive calculation and we call this many times, maybe we can solve using this technique.</p>
+
+<p>Now, look at this code:</p>
+
+<p>``` ruby
+array = 1..5</p>
+
+<p>def foo(x)</p>
+
+<pre><code># some expensive calculation...
+x.to_s
+</code></pre>
+
+<p>end</p>
+
+<p>array.sort_by{|x| foo(x) }
+```</p>
+
+<p>Using sort_by we can use the power of Schwartzian transform for many cases if our sort is based on a simple comparation.</p>
+
+<p>The original version, in perl</p>
+
+<p>``` perl
+@sorted = map  { $_->[0] }</p>
+
+<pre><code>      sort { $a-&gt;[1] cmp $b-&gt;[1] }
+      map  { [$_, foo($_)] }
+           @unsorted;
+</code></pre>
+
+<p>```</p>
+
+<p>Other languagens has some kind of support like <a href="http://dlang.org/">D</a> 2.0, with schwartzSort function. You can find an example in PHP <a href="http://gregheo.com/blog/php/schwartzian-transform/">Here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TDD com Perl]]></title>
+    <link href="http://pacman.blog.br/blog/2008/05/02/tdd-com-perl/"/>
+    <updated>2008-05-02T15:00:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/05/02/tdd-com-perl</id>
+    <content type="html"><![CDATA[<div class='post'>
+É possivel fazer Test Driven Development com Perl? Mas claro :)<br /><br />Artigo interessante sobre <a href="http://perldoc.perl.org/Test/More.html">Test::More</a>:<br /><a href="http://www.testingreflections.com/node/view/5333">http://www.testingreflections.com/node/view/5333</a><br /><br />Tutorial bem sucinto:<br /><a href="http://www.wgz.org/chromatic/perl/IntroTestMore.pdf">http://www.wgz.org/chromatic/perl/IntroTestMore.pdf</a><br /><br />Excelente apresentação:<br /><a href="http://wellington.pm.org/archive/200606/tdd/">http://wellington.pm.org/archive/200606/tdd/</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Trabalho que é coisa séria ninguem comenta... ;-)</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

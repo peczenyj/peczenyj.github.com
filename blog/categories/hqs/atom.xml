@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: HQs | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/hqs/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pra bom entendedor...]]></title>
+    <link href="http://pacman.blog.br/blog/2007/07/06/pra-bom-entendedor/"/>
+    <updated>2007-07-06T16:20:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/07/06/pra-bom-entendedor</id>
+    <content type="html"><![CDATA[<div class='post'>
+Coitado do latinha nesse universo amálgama:<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.created.ca/banners/corps_ironlantern.jpg"><img style="cursor:pointer; cursor:hand;width: 400px;" src="http://www.created.ca/banners/corps_ironlantern.jpg" border="0" alt="" /></a></div>
+
+]]></content>
+  </entry>
+  
+</feed>

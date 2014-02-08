@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Erlang | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/erlang/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Erlang é dificil (parte 2)]]></title>
+    <link href="http://pacman.blog.br/blog/2008/06/19/erlang-dificil-parte-2/"/>
+    <updated>2008-06-19T15:15:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/06/19/erlang-dificil-parte-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Agora vamos usar as funções específicas para manipular listas.<br /><br /><pre><code>-module(tut).<br />-export([generate/1]).<br /><br />%%<br />%% Funcao generate(X)<br />%% Quando X for 0, retorna [0]<br />%% Quando X > 0, retorna [X,X-1,...,0]<br />%% Caso contrario retorna [0,1,2,...,abs(X)]<br />%%<br />generate(0) -> [0];<br />generate(L) when integer(L), L > 0 -> <br />        lists:seq(0,L); % cria uma lista de 0 até L<br />generate(L) when integer(L) -> <br />        % vamos reverter a lista?<br />        lists:reverse(generate(-L)).</pre></code><br /><br />Muito mais simples, certo? Veja o teste:<br /><br /><pre>$ erl<br />Erlang (BEAM) emulator version 5.5.5 [source] [async-threads:0] [kernel-poll:false]<br /><br />Eshell V5.5.5  (abort with ^G)<br />1> c(tut). <br />{ok,tut}<br />2> tut:generate(5) ++ tut:generate(-5).<br />[0,1,2,3,4,5,5,4,3,2,1,0]<br />3> </pre><br /><br />O operador ++ une 2 listas :)</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Erlang é dificil?]]></title>
+    <link href="http://pacman.blog.br/blog/2008/06/18/erlang-dificil/"/>
+    <updated>2008-06-18T19:10:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/06/18/erlang-dificil</id>
+    <content type="html"><![CDATA[<div class='post'>
+Erlang é realmente dificil?<br /><br /><pre><code>-module(tut).<br />-export([generate/1]).<br /><br />%%<br />%% Funcao generate(X)<br />%% Quando X for 0, retorna [0]<br />%% Quando X > 0, retorna [X,X-1,...,0]<br />%% Caso contrario retorna [0,1,2,...,abs(X)]<br />%%<br />generate(0) -> [0];<br />generate(L) when integer(L) -> gera_lista(L).<br /><br />gera_lista(L) when L &gt; 0 -> gera_lista_direita(L);<br />gera_lista(L) -> gera_lista_inversa(-L).<br /><br />gera_lista_direita(L) -> gera_lista_direita(L,[]).<br /><br />gera_lista_direita(-1,Z) -> Z;<br />gera_lista_direita( L,Z) -> <br />        %io:format("chamando: gera_lista_direita(~p,Z)~n",[L]),<br />        gera_lista_direita(L - 1,[L | Z]).<br /><br />gera_lista_inversa(L) -> gera_lista_inversa(L,[]).<br /><br />gera_lista_inversa(-1,Z) -> Z;<br />gera_lista_inversa( L,Z) -> gera_lista_inversa(L,0,Z).<br /><br />gera_lista_inversa(-1,_,Z) -> gera_lista_inversa(-1,Z);<br />gera_lista_inversa( L,A,Z) -> <br />        %io:format("chamando: h(~p,~p,Z)~n",[L,A]), <br />        h(L - 1, A + 1,[A | Z]).</pre></code><br /><br />Ok, dessa forma é dificil. Erlang é uma linguagem funcional, ou seja, suas funções seguem um raciocínio matemático e não imperativo. Vc sente o problema quando quer resolver algo iterativo ou utilizar variaveis de qualquer forma.<br /><br />Fiz uma pequena função chamada generate, do modulo tut (de <span style="font-style:italic;">tutorial</span>, uma vez que estou seguindo um). Ela é muito simples, se vc informar 0, ela gera uma lista simples contendo 0. Se vc passar um numero positivo ela gera uma lista de 0 até o número, inclusive. Se o numero for negativo, ele assume que vc quer fazer fazer a lista de forma inversa.<br /><br />Veja só:<br /><pre>$ erlc tut.erl   # compilando o modulo<br />$ erl<br />Erlang (BEAM) emulator version 5.5.5 [source] [async-threads:0] [kernel-poll:false]<br /><br />Eshell V5.5.5  (abort with ^G)<br />1> c(tut).           # carregando o modulo<br />{ok,tut}<br />2> tut:generate(0).  # invocando modulo:funcao(parametros).<br />[0]<br />3> tut:generate(10).<br />[0,1,2,3,4,5,6,7,8,9,10]<br />4> tut:generate(-10).<br />[10,9,8,7,6,5,4,3,2,1,0]<br />5> </pre><br /><br />A função <span style="font-weight:bold;">generate</span> chama a função gera_lista se o parametro passado for um número inteiro.<br />A função <span style="font-weight:bold;">gera_lista</span> chama a função para gerar a lista direita ou inversa, de acordo com o valor do parâmetro.<br /><br />Veja só a simplicidade:<br /><br /><pre><code>gera_lista_direita(L) -> gera_lista_direita(L,[]).<br /><br />gera_lista_direita(-1,Z) -> Z;<br />gera_lista_direita( L,Z) -> <br />        %io:format("chamando: gera_lista_direita(~p,Z)~n",[L]),<br />        gera_lista_direita(L - 1,[L | Z]).</pre></code><br /><br />quando eu chamo gera_lista_direita(10) eu estou, na verdade, chamado a função gera_lista_direita(10,[]), onde eu fico usando uma lista como acumulador.<br /><br />A operação [L | X] pode ser lida como [ elemento | lista ] , ou seja, eu adiciono um elemento em uma lista. gera_lista_direita(10,[]) vai chamar, então, gera_lista_direita(9,[10]), e depois gera_lista_direita(8,[9, 10]), e assim recursivamente até gera_lista_direita(-1,Z), quando eu retorno a lista. Fica claro se removerem os comentários (%) da frente dos io:format, que é a forma de fazer PPADD (Passei Por Aqui Driven Development) em Erlang.<br /><br />Erlang precisa de MUITA pratica, principalmente de quem nunca programou em uma linguagem funcional e fica tentado a fazer coisas 'não ortodoxas' ;-)<br /><br />Ah sim, o google é seu amigo:<br /><br />http://www.dei.isep.ipp.pt/~paf/orgcdocs/Intro_Erlang.pdf</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>anselmo alves</div>
+<div class='content'>
+Para os que quiserem mais informações sobre BDD com Erlang no Giraffas ou até desmistificar o tema, acessem: <A HREF="http://vp.blog.br/" REL="nofollow">2web</A>.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Exatamente. Mas eu bloguei primeiro }-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Mas o negócio não é só fazer BDD com Erlang, é fazer BDD com Erlang no Giraffas! Aí sim o bicho pega. Só conheço uma pessoa no mundo capaz de fazer isso.</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Uma coisa de cada vez.<BR/><BR/>Só depois eu descobri que erlang ja tem todas essas funções no módulo lists -- e deve ser até bem mais rápido.<BR/><BR/>Erlante tem um framework eunit, mas ai fazer BDD com isso são outros 500.</div>
+</div>
+<div class='comment'>
+<div class='author'>Guilherme Garnier</div>
+<div class='content'>
+Legal Pac. Mas vc não explicou como fazer BDD com Erlang no Giraffas...</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

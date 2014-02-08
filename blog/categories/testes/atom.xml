@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Testes | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/testes/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ferramentas de Teste]]></title>
+    <link href="http://pacman.blog.br/blog/2007/11/06/ferramentas-de-teste/"/>
+    <updated>2007-11-06T15:28:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2007/11/06/ferramentas-de-teste</id>
+    <content type="html"><![CDATA[<div class='post'>
+Excelente comparativo de duas ferramentas gratuitas de teste automatizado para interfaces web.<br /><br /><a href="http://mguillem.wordpress.com/2007/10/29/webtest-vs-selenium-webtest-wins-13-5/">http://mguillem.wordpress.com/2007/10/29/webtest-vs-selenium-webtest-wins-13-5/</a><br /><br />Pelo escore final, creio que muitos projetos web poderiam ser beneficiados pela combinação destas duas ferramentas.</div>
+
+]]></content>
+  </entry>
+  
+</feed>

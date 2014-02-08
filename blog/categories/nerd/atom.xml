@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Nerd | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/nerd/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[From Nand to Tetris in 12 Steps]]></title>
+    <link href="http://pacman.blog.br/blog/2007/11/06/from-nand-to-tetris-in-12-steps/"/>
+    <updated>2007-11-06T14:50:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2007/11/06/from-nand-to-tetris-in-12-steps</id>
+    <content type="html"><![CDATA[<div class='post'>
+Otimo vídeo - Google Tech Talks October 10 ,2007<br /><embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId=7654043762021156507&hl=en" flashvars=""> </embed><br /><br />Link direto <a href="http://video.google.com/videoplay?docid=7654043762021156507">aqui</a>.</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Pois é, pena que é bem corrido.</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Ótimo esse vídeo. principalmente para min que estou quebrando cabeça com o funcionamento do MIPS.</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tropa de Elite 2 - Dia de Treinamento Java]]></title>
+    <link href="http://pacman.blog.br/blog/2007/10/07/tropa-de-elite-2-dia-de-treinamento/"/>
+    <updated>2007-10-07T21:22:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/10/07/tropa-de-elite-2-dia-de-treinamento</id>
+    <content type="html"><![CDATA[<div class='post'>
+Seguimos com novos exemplos inspirados na triste realidade da polícia carioca.<br /><br /><pre><code>/*<br />* O Bope foi criado para atuar quando a policia perde o controle<br />* E no rio de janeiro isso acontece com bastante frequencia<br />*/<br />class Bope{      <br /> private String nome; <br /> private int qtdeVitimas = 1; // ja começa bem!<br />  <br /> public Bope(String nome){<br />  this.nome = nome;<br /> }  <br /> // sobrecarga do método ondeTaOBaiano<br /> public void ondeTaOBaiano(Estudante e){<br />    e.sabeVoarEstudante();<br /> }<br /> public void ondeTaOBaiano(Traficante t){<br /> t.levaSacoNaCabeca();<br /> }<br /> // exemplo de método final!<br /> public final Doze encontreiOBaiano(Baiano b){<br /> return b.naCaraNaoQueEhPraNaoEstragarVelorio();<br /> }<br />}<br /><br />public class Treinamento{<br /> public static void main(String [] xxx){<br />  // Apresento o capitão nascimento<br />  Bope instrutor = new Bope("Capitao Nascimento");<br />  try{<br /> // de cada 100 policiais que fazem o curso do Bope,<br /> // so se formam 5, e eu, quando me formei parceiro,   <br /> // eramos apenas 3.  <br />        Turma.tentaFazerCursoBopeCom(capitao);<br />  } catch (PolicialCorruptoEncontrado pce){<br /><br />  } catch (PolicialFracoEncontrado pfe){<br /><br />  } catch (PolicialSemABandoleiraNessaAlturadoCampeonato e){<br /><br />  }<br /> }<br />}</code></pre><br /><br />SEUS FANFARRÕES!<br />VCS TEM 10 <span style="font-weight:bold;">SEGUNDOS </span>PARA COMPLETAR ESSE CÓDIGO!<br /><br />- O zero-dois NÃO está escrevendo!<br />- SEU zero-dois, porque o senhor não escreveu nenhuma linha?<br />- A-a minha IDE não terminou de carregar, senhor...<br />- Agora a sua IDE ja carregou, seu zero-dois?<br />- S-sim senhor...<br />- Então, seu zero-dois, termine o seu programa, senão todos os seus colegas terão que usar o EDIT do MS-DOS até o fim do curso E A CULPA EH DO ZERO-DOIS!<br /><br /> <hr/><br />HOMEM DE PRETO QUAL É A SUA MISSÃO?<br />É APRENDER JAVA SEM PRECISAR DE CERTIFICAÇÃO!<br />HOMEM DE PRETO O QUE É QUE VC FAZ?<br />FAÇO CODIGO FONTE QUE ASSUSTA O SATANÁS!<br /> <hr/><br />Estratégia, do inglês, <a href="http://www.tml.tkk.fi/~pnr/GoF-models/html/Strategy.html">Strategy</a>...<br /><br />- Senhor, o zero-cinco está dormindo...</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Lucas</div>
+<div class='content'>
+Muito bom :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Felipe</div>
+<div class='content'>
+Hahaha muito bom!!</div>
+</div>
+<div class='comment'>
+<div class='author'>Sergio</div>
+<div class='content'>
+Só faltou isso:<BR/><BR/>"Tira esse pin do peito que vc não é desenvolvedor java... vc é muleke!!!"<BR/><BR/>muito bom  esse post</div>
+</div>
+<div class='comment'>
+<div class='author'>gto</div>
+<div class='content'>
+hahaha!!<BR/>Isso vai virar um paradigma logo, logo.<BR/><BR/>"Eu uso OO (orientação a objeto).. Eu uso OE (orientação a eventos)..<BR/><BR/>Eu uso BP! (bope, porra!)"</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Aprendendo Conceitos antes de Sintaxe]]></title>
+    <link href="http://pacman.blog.br/blog/2007/10/04/aprendendo-conceitos-antes-de-sintaxe/"/>
+    <updated>2007-10-04T21:10:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/10/04/aprendendo-conceitos-antes-de-sintaxe</id>
+    <content type="html"><![CDATA[<div class='post'>
+O homem aprende por dois motivos: por gosto ou por necessidade.<br /><br />Depois de passar um semestre brincando com Pascal na era pré-google ( quando não encontravamos uma pagina através do yahoo ou cadê, tentavamos urls aleatórias como www.pascal.org - que era a pagina da família pascal ), tive uma disciplina cujo professor só sabia Fortran e C.<br /><br />Através do <a href="http://en.wikipedia.org/wiki/MOO">MOO</a> descobri o curso on-line da UFMG, e pude dar os primeiros passos em C. Entretanto o foco dessa disciplina não era fazer agenda ou video-locadora - eram programas científicos. Linux, gnuplot, maple... foi um mundo muito divertido.<br /><br />É claro que algumas coisas eu simplesmente não compreendia: os tais dos ponteiros, por exemplo. Era só ver um * que não fosse multiplicação que eu já tinha dor de cabeça. E assim se passaram alguns anos onde eu apenas reproduzia os comandos que tinha aprendido.<br /><br />Anos depois, conversando com o <a href="http://unixmania.blogspot.com/">CaSantos</a> caímos em uma micro-aula de programação. Eis que ele profere sabias palavras: <span style="font-style:italic;">Ao estudar uma linguagem de programação, a primeira coisa que se precisa estudar são os conceitos e, por último, a sua sintaxe</span>.<br /><br />Toda a vez que eu entrava em uma lista de discussão ou forum e via as perguntas dos novatos eu lembrava dessa frase. Coisas como dizer que os arquivos .h do C são bibliotecas, colocar system("pause") pro programa não "fechar do nada" e por ai vai. O tipo da coisa que, quem conhece o conceito, não perguntaria.<br /><br />Por que razão não se ensina os conceitos de uma linguagem logo no começo? Eu só posso pensar que é para os alunos aprenderem de forma intuitiva no começo e resgatar isso mais tarde (talvez em uma cadeira de compiladores, sei lá), mas será que isso acontece? <br /><br />Geralmente o trabalho de fim de semestre dessas cadeiras é um CRUD em C com listagem (ou relatório) de alguma coisa ordenada de uma ou mais formas. Cadastrar alunos ou contas bancárias, salvando em arquivo.<br /><br />Pois bem, se é uma disciplina <span style="font-style:italic;">introdutória</span>, por que raios alguem iria pedir um CRUD?? Meu deus, os alunos mal sabem como compilar o programa, tampouco debuga-lo - No maximo enchem de printf("passei por aqui") - e pedem um programa com 'menu interativo'! Ai o camarada perde metade do tempo fazendo 'menuzinho' com asteriscos ou outro caracter e não consegue implementar a lógica. Quando implementa é aquela maçaroca. O que isso <span style="font-style:italic;">ensina</span>?<br /><br />Eu daria uma sugestão: quer ensinar C ou Java ou Snobol 4, ensine. Mas não peça um programa CRUD cheio de frescura - peça uma biblioteca. De um arquivo header ou uma interface java e diga: implementem essas funções/metodos ai. Eu vou testar o meu programa com essa biblioteca e espero que tudo funcione.<br /><br />videolocadora.h<br /><pre><code>int cadastra_video(char *nome, int preco, int categoria);<br />int cadastra_cliente(char *nome, char *cpf, char *endereco);<br />int aluga_video(...);</code></pre><br /><br />Enfim, não consigo pensar num exemplo melhor. A ideia é introduzir um desenvolvimento em camadas, deixando o aluno pensar em como ele vai gravar, ler e ordenar os dados sem frescuras de tela, ensinando a fazer testes e também a debugar a aplicação.<br /><br />Quer ensinar a fazer telinha? Ensina em outra disciplina, nesse caso ensinando técnicas de design <span style="font-style:italic;">apropriadas</span>. Começando pela linha de comando do unix: como pode um aluno se formar sem nunca ter criado o seu próprio <span style="font-weight:bold;">grep</span>? Criar interfaces com o usuário não é algo facil, requer muito estudo, principalmente de usabilidade.<br /><br />Alias fazer "telinhas" geralmente supõe colocar um programa em um <span style="font-style:italic;">estado</span>. Quem aprende o conceito de maquina de estados no momento que esta fazendo esse cadastro? Posso apostar que esse pessoal não sabe o que é stateless e statefull e o professor nem pensa q isso seja importante (aqui eu lembro da agenda de telefones que eu fiz em pascal).<br /><br />Fica aqui a minha sugestão. Espero que faça sentido :)</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Setf</div>
+<div class='content'>
+Excelente post Tiago. Acredito que os cursos de programação melhorariam muito (especialmente os de C) se utilizassem essa idéia simples de criar uma biblioteca ao invéz de perder tempo criando interfaces que nem ao menos são práticas ou úteis. Um professor poderia já entregar essa interface com o usuário pronta e o aluno implementar as funcionalidades dela. Seria muito mais empolgante.<BR/><BR/>Parabéns novamente pelo post.</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Implementando um Corretor Ortográfico]]></title>
+    <link href="http://pacman.blog.br/blog/2007/08/11/implementando-um-corretor-ortogrfico/"/>
+    <updated>2007-08-11T23:56:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/08/11/implementando-um-corretor-ortogrfico</id>
+    <content type="html"><![CDATA[<div class='post'>
+O maluco do <a href="http://norvig.com/">Peter Norvig</a> (google) publicou no seu site o artigo <a href="http://norvig.com/spell-correct.html">How to Write a Spelling Corrector</a>. Impressionante o que 21 linhas de Python são capazes de fazer!<br /><br /><pre><code>>>> correct('speling')<br />'spelling'<br />>>> correct('korrecter')<br />'corrector'</code></pre><br /><br />Não é atoa que o Google é o que é hoje em dia.</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux para Leigos]]></title>
+    <link href="http://pacman.blog.br/blog/2007/08/11/linux-para-leigos/"/>
+    <updated>2007-08-11T10:45:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/08/11/linux-para-leigos</id>
+    <content type="html"><![CDATA[<div class='post'>
+Vamos analisar a condição de <span style="font-style:italic;">leigo</span>.<br /><br />Eu já vi centenas de <span style="font-style:italic;">leigos</span> que, ao sentar no computador, baixavam músicas, videos e jogos com os mais diversos programas, conectavam no irc, msn, icq, colocavam luzinhas e bichinhos animados para acompanhar o cursor do mouse, trocavam as fontes e os temas, procuravam os mais bizarros jogos, encontravam videos extremamente incomuns (<span style="font-weight:bold;">sem </span>youtube), etc. Para o que <span style="font-weight:bold;">não presta</span>, os <span style="font-style:italic;">leigos </span>tem uma criatividade impressionante!<br /><br />Quando falamos em um sistema pra leigos não precisamos pensar que as usuarios tem preguiça mental. Eles até podem ter, mas aí cabe aos projetistas desafiar e exercitar essa criatividade do mal e tranformar em criatividade do bem. Qualquer pessoa que senta na frente de um browser vai acabar nas paginas mais escabrosas mesmo que não sabia o que é 'google'. Vai me dizer que, nesse caso, a linha de comando é ameaçadora ou difícil?<br /><br />Das duas, uma: ou pensamos em uma camada de software para permitir que um usuario <span style="font-weight:bold;">abstraia</span> o sistema operacional e as configurações (normalmente se faz isso em sistemas "embarcados") e use todos os recursos multimídia e de troca de informação com a facilidade de um pensamento <span style="font-weight:bold;">OU</span> pensamos em sistemas mais inteligentes, com documentação adequada e, com a ajuda da comunidade, divulgamos as informações e conceitos corretos. O Linux só é seguro porque o usuario comum, que <span style="font-weight:bold;">vai</span> fazer besteira, não tem a senha de <span style="font-weight:bold;">root</span>.<br /><br />Não podemos fazer sistemas operacionais à prova de gente sem noção ou que sejam capazes de oferecer tanta intuitividade sem sacrificar a segurança, por exemplo.<br /><br />Puxa, não tem nada mais fácil que usar a linha de comando (ok, sou suspeito pra falar). As pessoas não usam [o shell] pois não tem como acessar o orkut, ver vídeo do youtube, etc, de um jeito bonitinho. Alem de tudo, tá em inglês, ECA. Hoje em dia existem shells para pessoas iniciantes que ajudam, colorem o texto e sugerem mudanças praticas, como o <a href="http://nacaolivre.org/2007/07/12/friendly-interactive-shell-%e2%80%93-shell-interativo-e-amigavel/">fish</a>.<br /><br />É assim que fazemos um sistema pra <span style="font-style:italic;">leigos </span>-- temos que desafia-los a usar a criatividade que normalmente é usada pra criatividade do MAL e mostrar que um PC com linux não é um playstation. Quer usar um browser de verdade e usar o orkut e o youtube? PO! não tem nada mais facil que instalar um ubuntu da vida e clicar no icone do firefox!<br /><br />Não vamos tomar atitudes de forma a não desafiar intelectualmente os usuários. Eles merecem todo o nosso respeito. Agora quem quer que o usuário não pense que faça uma camada de software que abstraia o Sistema Operacional. Existe mercado para ambas as coisas.<br /><br />Entretanto acho mais humano que a gente exercite os cérebros atrofiados dos empurradores de mouse. Há 20 anos as pessoas usavam computadores com 32 kb de RAM e carregavam os jogos de uma fita K7 e ninguem morreu por isso -- pelo contrário desenvolveram <span style="font-style:italic;">skills </span>hoje necessárias em muitos cargos importantes e empresas como algumas multinacionais procuram desesperadamente.</div>
+
+]]></content>
+  </entry>
+  
+</feed>

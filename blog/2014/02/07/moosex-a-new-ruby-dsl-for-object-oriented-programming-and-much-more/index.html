@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Peczenyj's Blog</title>
+  <title>MooseX - a new Ruby DSL for Object Oriented Programming (and much more) - Peczenyj's Blog</title>
   <meta name="author" content="Tiago Peczenyj">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pacman.blog.br/">
+  <link rel="canonical" href="http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -43,23 +43,19 @@
   </script>
 
 
-  <meta property="og:url" value="http://pacman.blog.br/index.html">
+  <meta property="og:url" value="http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">
 <meta property="og:type" content="website" />
 
-<meta property="og:title" value="Peczenyj's Blog">
-<meta property="og:description" value="My personal blog with cool stuff">
- 
-<meta property="og:image" value="http://pacman.blog.br/images/avatar.png">
+<meta property="og:title" value="MooseX - a new Ruby DSL for Object Oriented Programming (and much more)">
+<meta property="og:description" value="">
  
 
   <meta property="twitter:card" value="summary">
-<meta property="twitter:url" value="http://pacman.blog.br/index.html">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">
 
 
-<meta property="twitter:title" value="Peczenyj's Blog">
-<meta property="twitter:description" value="My personal blog with cool stuff">
- 
-<meta property="twitter:image" value="http://pacman.blog.br/images/avatar.png">
+<meta property="twitter:title" value="MooseX - a new Ruby DSL for Object Oriented Programming (and much more)">
+<meta property="twitter:description" value="">
  
 
 
@@ -97,15 +93,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a New Ruby DSL for Object Oriented Programming (and Much More)</a></h1>
+      <h1 class="entry-title">MooseX - a New Ruby DSL for Object Oriented Programming (and Much More)</h1>
     
     
       <p class="meta">
@@ -128,7 +121,7 @@
   </header>
 
 
-  <div class="entry-content"><p>MooseX is a postmodern object DSL for Ruby <a href="https://travis-ci.org/peczenyj/MooseX"><img src="https://travis-ci.org/peczenyj/MooseX.png" alt="Build Status" /></a> <a href="http://badge.fury.io/rb/moosex"><img src="https://badge.fury.io/rb/moosex.png" alt="Gem Version" /></a></p>
+<div class="entry-content"><p>MooseX is a postmodern object DSL for Ruby <a href="https://travis-ci.org/peczenyj/MooseX"><img src="https://travis-ci.org/peczenyj/MooseX.png" alt="Build Status" /></a> <a href="http://badge.fury.io/rb/moosex"><img src="https://badge.fury.io/rb/moosex.png" alt="Gem Version" /></a></p>
 
 <p>This is a DSL for object creation, aspects, method delegation and much more. It is based on Perl Moose and Moo, two important modules who add a better way of Object Orientation development (and I enjoy A LOT). Using a declarative stype, using Moose/Moo you can create attributes, methods, the entire constructor and much more. But I can&#8217;t find something similar in Ruby world, so I decide port a small subset of Moose to create a powerfull DSL for object construction.</p>
 
@@ -238,112 +231,43 @@
 
 
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">Read on &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a &#8216;Dry Run&#8217; Capability to Your Moose Class With MooseX::Role::DryRunnable</a></h1>
-    
-    
-      <p class="meta">
-        
+<h2>Installation</h2>
 
+<p>Add this line to your application&#8217;s Gemfile:</p>
 
+<pre><code>gem 'moosex'
+</code></pre>
 
+<p>And then execute:</p>
 
+<pre><code>$ bundle
+</code></pre>
 
+<p>Or install it yourself as:</p>
 
+<pre><code>$ gem install moosex
+</code></pre>
 
+<p>You need ruby 2.0.x or superior.</p>
 
-  
+<h2>Description</h2>
 
+<p>MooseX is an extension of Ruby object system. The main goal of MooseX is to make Ruby Object Oriented programming easier, more consistent, and less tedious. With MooseX you can think more about what you want to do and less about the mechanics of OOP. It is a port of Moose/Moo from Perl to Ruby world.</p>
 
-<time datetime="2013-04-07T09:55:00-03:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
+<p>Read more about Moose on http://moose.iinteractive.com/en/</p>
 
+<h2>Motivation</h2>
 
-  <div class="entry-content"><p>A &#8216;dry run&#8217; is a testing process where the effects of a possible failure are intentionally mitigated. For example, an aerospace company may conduct a &#8220;dry run&#8221; test of a jet&#8217;s new pilot ejection seat while the jet is parked on the ground, rather than while it is in flight. Or, in software development, we can change the behavior of some methods in order to test, like avoid change data into a database (logging the action instead).</p>
+<p>It is fun</p>
 
-<p>There are many ways to implement this capability. For example, we can add an explicity return in each method and test some condition. I will show some options in this article and we will find how to use the module <a href="https://metacpan.org/module/MooseX::Role::DryRunnable">MooseX::Role::DryRunnable</a> in our Moose classes (Perl).</p>
+<h2>Usage</h2>
 
-<p>One simple example in Perl, reading from an environment variable <code>DRY_RUN</code>.</p>
+<p>You just need include the MooseX module in your class and start to describe the attributes with our DSL. This module will inject one smart constructor, acessor and other necessary methods.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="n">Foo</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">sub </span><span class="nf">bar</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">logger</span><span class="o">-&gt;</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Foo::bar @_&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">if</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">&#39;DRY_RUN&#39;</span><span class="p">};</span>
-</span><span class='line'>  <span class="o">...</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool My First Module in CPAN</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-23T20:15:00-02:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://metacpan.org/release/Lazy-Bool">Lazy::Bool</a> is my first module in <a href="http://www.cpan.org/">CPAN</a> (The Comprehensive Perl Archive Network). It is a simple module (only 60 lines) and few methods/operators but can be useful in some situation. The source code can be found in my <a href="https://github.com/peczenyj/Lazy-Bool">github</a>.</p>
-
-<h2>Example</h2>
+<p>Instead the normal way of add accessors, constructor, validation, etc</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -357,46 +281,67 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">use</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nn">Test::</span><span class="n">More</span> <span class="n">tests</span><span class="o">=&gt;</span> <span class="mi">3</span><span class="p">;</span>
-</span><span class='line'><span class="k">my</span> <span class="nv">$a</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
-</span><span class='line'><span class="k">my</span> <span class="nv">$b</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-</span><span class='line'><span class="k">my</span> <span class="nv">$x</span>  <span class="o">=</span> <span class="nn">Lazy::</span><span class="n">Bool</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="n">sub</span><span class="p">{</span> <span class="nv">$a</span> <span class="o">&gt;</span> <span class="nv">$b</span> <span class="p">});</span>
-</span><span class='line'><span class="k">my</span> <span class="nv">$false</span> <span class="o">=</span> <span class="nn">Lazy::Bool::</span><span class="n">false</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:bar</span><span class="p">,</span> <span class="ss">:baz</span><span class="p">,</span> <span class="ss">:bam</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">my</span> <span class="nv">$result</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">|</span> <span class="nv">$false</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span> <span class="o">!</span> <span class="p">(</span> <span class="nv">$false</span> <span class="o">&amp;</span> <span class="o">!</span> <span class="nv">$false</span> <span class="p">)</span> <span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># now the expressions will be evaluate</span>
-</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span>    <span class="s">&quot;complex expression should be true&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="o">!!</span> <span class="nv">$x</span> <span class="p">,</span>  <span class="s">&quot;double negation of true value should be true&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="n">ok</span><span class="p">(</span><span class="o">!!!</span> <span class="nv">$false</span><span class="p">,</span> <span class="s">&quot;truple negation of false value should be true&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">bar</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">baz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bam</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="o">[</span><span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">bam</span><span class="o">].</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">is_a?</span> <span class="nb">Integer</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">raise</span> <span class="s2">&quot;you should use only Integers to build Foo&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="vi">@bar</span> <span class="o">=</span> <span class="n">bar</span>
+</span><span class='line'>    <span class="vi">@baz</span> <span class="o">=</span> <span class="n">baz</span>
+</span><span class='line'>    <span class="vi">@bam</span> <span class="o">=</span> <span class="n">bam</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>you can do this:</p>
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">MooseX</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has</span> <span class="o">[</span><span class="ss">:bar</span><span class="p">,</span> <span class="ss">:baz</span><span class="p">,</span> <span class="ss">:bam</span><span class="o">]</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">is</span><span class="p">:</span> <span class="ss">:rw</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">isa</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">default</span><span class="p">:</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it ( http://github.com/peczenyj/MooseX/fork )</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request Push to the branch (<code>git push origin my-new-feature</code>)</li>
+</ol>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Read on &rarr;</a>
-    </footer>
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian Transform</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
 
 
 
@@ -408,39 +353,63 @@
   
 
 
-<time datetime="2013-01-22T16:00:00-02:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
-        
-      </p>
+<time datetime="2014-02-07T20:13:00-02:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aop/'>AOP</a>, <a class='category' href='/blog/categories/moosex/'>MooseX</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/" title="Previous Post: Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable">&laquo; Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
 
 
-  <div class="entry-content"><p>I will show in this post one of the most useful things that I learn in Perl: the famous Schwartzian transform. With examples in Ruby</p>
-
-<blockquote><p>In computer science, the Schwartzian transform is a Perl programming idiom used to improve the efficiency of sorting a list of items. This idiom is appropriate for comparison-based sorting when the ordering is actually based on the ordering of a certain property (the key) of the elements, where computing that property is an intensive operation that should be performed a minimal number of times. The Schwartzian Transform is notable in that it does not use named temporary arrays.</p><footer><strong>Wikipedia</strong> <cite><a href='http://en.wikipedia.org/wiki/Schwartzian_transform'>en.wikipedia.org/wiki/&hellip;</a></cite></footer></blockquote>
-
-
-
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/22/schwartzian-transform/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     
@@ -458,7 +427,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a &#8216;dry run&#8217; capability to your Moose class with MooseX::Role::DryRunnable</a>
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
       </li>
     
       <li class="post">
@@ -500,7 +469,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
@@ -530,7 +499,7 @@
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -562,6 +531,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -576,7 +546,10 @@
       var disqus_shortname = 'peczenyj';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/';
+        var disqus_url = 'http://pacman.blog.br/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

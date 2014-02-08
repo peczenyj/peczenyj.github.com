@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Manipulando logs com AWK e SED - Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="Eis que a lista de shell script traz um bom desafio.Galera, tenho o seguinte log.:AAAA&#8212;&#8212;&#8212;&#8212;-campo_1&#8212;&#8212;&#8212;&# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Manipulando logs com AWK e SED">
+<meta property="og:description" value="">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed/">
+
+
+<meta property="twitter:title" value="Manipulando logs com AWK e SED">
+<meta property="twitter:description" value="">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Manipulando Logs Com AWK E SED</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-26T14:41:00-03:00" pubdate data-updated="true">Apr 26<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+Eis que a lista de <a href="http://br.groups.yahoo.com/group/shell-script/">shell script</a> traz um bom desafio.<br /><br /><cite>Galera, tenho o seguinte log.:<br /><br />AAAA&#8212;&#8212;&#8212;&#8212;-campo_1&#8212;&#8212;&#8212;&#8212;-campo_2&#8212;&#8211;campo_3&#8212;-campo_4&#8212;&#8212;&#8212;- <br />teste_1 371508787 371547453 38666 testetesteteste<br /><br />BBBB&#8212;&#8212;&#8212;&#8212;-campo_1&#8212;&#8212;&#8212;&#8212;-campo_2&#8212;&#8211;campo_3&#8212;-campo_4&#8212;&#8212;&#8212;- <br />teste_2 4625081503 4651313710 26232207 testetesteteste<br /><br />Estou a tentar usar o awk com a seguinte função : <br />awk &#8216;$1~&#8221;teste_&#8221; {print $5&#8221;;&#8221;$4}&#8217; teste > teste_.csv<br /><br />a funcao busca realmente o que desejo:<br />$5 $4<br />testetesteteste 38666<br />testetesteteste 6232207<br /><br />porem,, gostaria que seprasse da forma:<br /><br />AAAA&#8212;&#8212;&#8212;&#8212;- <br />testetesteteste 38666 <br />BBBB&#8212;&#8212;&#8212;&#8212;- <br />testetesteteste 26232207 <br /><br />Alguém tem uma dica de como fazer?</cite><br /><br />Ah&#8230; o bom e velho <span style="font-weight:bold;">SED</span> pode resolver isso<br /><br /><code>$ sed -rn '/(^[^-]+-+).*/{s//\1/;h};<br />/^teste_/{s/.* ([^ ]+) +([^ ]+$)/\2 \1/;x;p;g;p}' arquivo.log<br />AAAA-------------<br />testetesteteste 38666<br />BBBB-------------<br />testetesteteste 26232207</code><br /><br />Ok, ok, ta muito complicado, mas veja só:<br /><br /><code>$ sed -rn '/^[^-]+-+/h;/^teste_/{x;p;g;p}' arquivo.log <br />AAAA-------------campo_1-------------campo_2-----campo_3----campo_4----------<br />teste_1 371508787 371547453 38666 testetesteteste<br />BBBB-------------campo_1-------------campo_2-----campo_3----campo_4----------<br />teste_2 4625081503 4651313710 26232207 testetesteteste</code><br /><br />Vamos explicar<br />1) a opção -n serve para informar ao sed &#8220;imprima apenas quando eu mandar&#8221;<br />2) a opção -p serve para utilizar expressões regulares extendidas<br />(assim não preciso escapar o quantificador + , que significa &#8220;um ou<br />mais vezes&#8221;, assim como os parentesis, para informar os grupos).<br /><br />Eu fiz uma sacanagem. o comando h quarda o padrão num espaço chamado espaço reserva, tipo uma memória do sed, sobreescrevendo. Assim no espaço reserva eu tenho a ultima ocorrencia de uma linha do tipo,  ^[^-]+-+      ,que traduzindo significa: tudo o que começa com um ou varios caracteres diferentes de -, seguidos de um ou varios - (no caso<br />do AAAA&#8212;&#8212;&#8212;&#8212;- &#8230; ).<br /><br />Agora, quando eu encontro uma linha que começa com teste_ eu:<br /><br />x) troco essa linha com a linha que esta na memória (a atual<br />&#8216;teste_&#8230;&#8217; vai, outra volta).<br />p) imprimo a linha que veio (AAAA&#8212;&#8212;&#8212;- &#8230;)<br />g) pego a linha da memória (teste_&#8230;)<br />p) imprimo a linha cachorrona<br /><br />Só que não fica como vc quer. Ai vc precisa fazer a sacanagem:<br /><br /><span style="font-style:italic;">se uma linha NÃO tem o que eu quero, então eu a manipulo habilmente<br />até que ela chegue ao que eu quero</span><br /><br />Eu poderia ter usado varias tecnicas mas&#8230; uma vez com sed, podemos continuar nele.<br /><br /><code>$ sed -rn '/(^[^-]+-+).*/{s//\1/;h};<br />/^teste_/{s/.* ([^ ]+) +([^ ]+$)/\2 \1/;x;p;g;p}' arquivo.log</code><br /><br />eu transformei a primera ER em  (minha_ER).* &#8211; ou seja, criei um <span style="font-style:italic;">grupo</span> para o que me interessa. basta fazer:<br /><br /><code>s/(minha_ER).*/\1/</code><br /><br />para que toda a linha seja reduzida ao que a minha ER casa. em outras palavras, eu apaguei o resto da linha.<br /><br />na outra eu fui mais sacana pois eu tenho 2 grupos e troco toda a linha pelos grupos, na ordem inversa. coisa de quem toma muito café e não tem escrupulos.<br /><br />Vamos ver a versão <span style="font-weight:bold;">AWK</span>?<br /><br /><code>$ awk '/^[^-]+-+/{match($0,/^[^-]+-+/); x=substr($0,1,RLENGTH)}<br />/^teste_/{print x,"\n"$5,$4}' arquivo.log<br />AAAA-------------<br />testetesteteste 38666<br />BBBB-------------<br />testetesteteste 26232207</code><br /><br />x, nesse caso, armazena aquele pedaço da linha anterior, que eu descobri o que é via match. match procura uma expressão regular numa string, nesse caso em $0, e seta um valor na variavel RLENGTH, que é onde a expressão acaba. basta pegar essa parte da string e guardar na variavel x, que sera lida depois.<br /><br />Aqui fala um pouco dessas duas funções: <a href="http://people.cs.uu.nl/piet/docs/nawk/nawk_92.html">http://people.cs.uu.nl/piet/docs/nawk/nawk_92.html</a><br /><br />Eu poderia ter resolvido dessa forma também<br /><code>$ awk '/^[^-]+-+/{sub(/-[^-]+.*$/,"-");x=$0} <br />/^teste_/{print x,"\n"$5,$4}' arquivo.log<br />AAAA-------------<br />testetesteteste 38666<br />BBBB-------------<br />testetesteteste 26232207</code><br /><br />Entretanto aqui eu faço uma substituição grosseira do resto da linha que tem o AAAA&#8212;&#8212;&#8230; por -, abusando do .* (e o fato dele ser guloso). Parece mais simples, mas está sujeito à falhas, embora não consigo pensar em nenhuma situação que seja possivem demonstrar.<br /><br />AWK & SED são ferramentas sensacionais para esse tipo de problema ;-)</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>blpsilva</div>
+<div class='content'>
+Impressive, to say the least :)<BR/><BR/>Acho que chegou a hora de limpar a minha ferrugem e reler o Advanced Bash Scripting Guide.<BR/><BR/>You produce some quite nice pearls inside the shell ;)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+grep + awk + sed:<BR/><BR/>$ grep -B 1 teste_ arquivo.log | \<BR/>awk &#8216;/teste_/{print $5,$4; next} 1&#8217; | \<BR/>sed -r &#8216;/^&#8211;$/d;s/(^[^-]+-+)[^-].*/\1/&#8217;<BR/><BR/>AAAA&#8212;&#8212;&#8212;&#8212;-<BR/>testetesteteste 38666<BR/>BBBB&#8212;&#8212;&#8212;&#8212;-<BR/>testetesteteste 26232207</div>
+</div>
+</div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-26T14:41:00-03:00" pubdate data-updated="true">Apr 26<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/shell/'>Shell</a>, <a class='category' href='/blog/categories/awk/'>awk</a>, <a class='category' href='/blog/categories/sed/'>sed</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2008/04/26/manipulando-logs-com-awk-e-sed/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/04/25/sbado-dia-26-de-abril-tem-flisol-na-puc/" title="Previous Post: Sbado dia 26 de Abril tem FLISOL na PUC-Rio !!">&laquo; Sbado dia 26 de Abril tem FLISOL na PUC-Rio !!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/05/02/cdigo-transparente-contas-fechadas/" title="Next Post: Código transparente, contas fechadas ?">Código transparente, contas fechadas ? &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

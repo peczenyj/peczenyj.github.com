@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Javascript | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Building Didier Stevens' SpiderMonkey in Cygwin]]></title>
+    <link href="http://pacman.blog.br/blog/2008/02/02/building-didier-stevens-spidermonkey-in/"/>
+    <updated>2008-02-02T15:26:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2008/02/02/building-didier-stevens-spidermonkey-in</id>
+    <content type="html"><![CDATA[<div class='post'>
+Eu estava quebrando a cabeça até que encontrei <a href="http://pmelson.blogspot.com/2007/12/building-didier-stevens-spidermonkey-in.html">este</a> post.<br /><br />O Paul Melson ensinou de forma facil a compilar o SpiderMonkey para Cygwin: agora posso criar scripts usando javascript standalone.<br /><br />Vantagem: Nenhuma, coisa de nerd :)</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Respostas Claras]]></title>
+    <link href="http://pacman.blog.br/blog/2007/07/05/respostas-claras/"/>
+    <updated>2007-07-05T14:17:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/07/05/respostas-claras</id>
+    <content type="html"><![CDATA[<div class='post'>
+Em exemplo interessante de falta de atenção (inspirado em casos reais):<br /><table id="shazam"><tr><td>Nome</td><td><input text="text" value="Tiago Peczenyj"/></td></tr><tr><td>Idade</td><td><input type="text" value="27"/></td></tr> <tr><td>Opinião</td><td><input size="80" type="text" value="Acho que algumas traduções deveriam ser feitas com cuidado!"/></td></tr></table><br /><input type="button" onclick="javascript:alert('Feito!')" value="Salvar"/><input type="button" onclick="javascript:for(var i=0;i!=3;i++) { document.getElementById('shazam').getElementsByTagName('input')[i].value = ''} " value="Respostas Claras"/></div>
+
+]]></content>
+  </entry>
+  
+</feed>

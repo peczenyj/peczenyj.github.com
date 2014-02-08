@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Jobs | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/jobs/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Oportunidades de Emprego (Porto Alegre)]]></title>
+    <link href="http://pacman.blog.br/blog/2007/07/03/oportunidades-de-emprego-porto-alegre/"/>
+    <updated>2007-07-03T11:22:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/07/03/oportunidades-de-emprego-porto-alegre</id>
+    <content type="html"><![CDATA[<div class='post'>
+Tens <span style="font-weight: bold;">experiência </span>em Java / Oracle / .Net / C / C++ / Javascript / Teste de Software / Gerência de Projetos /Cobol ou Clipper?<br /><br />Procurando <span style="font-weight: bold;">emprego</span> na região de Porto Alegre?<br /><br /><UL><br /><LI>Desenvolvedor C# (2 vagas)</LI><br /><LI>Desenvolvedor de Testes</LI><br /><LI>Analista de Suporte Java</LI><br /><LI>Integrador de Sistemas</LI><br /><LI>Analista de Sistemas</LI><br /><LI>Lider Técnico - Java (mínimo 3 anos de experiência)</LI><br /><LI><span style="font-weight:bold;">Desenvolvedor Java/Oracle</span> (4 anos experiência)</LI><br /><LI><span style="font-weight:bold;">Desenvolvedor Oracle Developer (Forms/Report) </span>(3 anos de experiência)</LI><br /></UL><br />Não perca tempo, envie o seu curriculo atualizado para <a href="mailto:peczenyj.curriculos@gmail.com">mim</a> informando, principalmente, tempo de experiência, certificações e nível de inglês.<br /><br />Sugiro também a leitura deste <a href="http://pythonologia.org/2007/06/07/desempregado-ou-despreparado/ ">post</a> do blog <span style="font-style:italic;">pythonologia</span>. Muito interessante na hora de redigir um currículo ou email para alguma vaga.</div>
+
+]]></content>
+  </entry>
+  
+</feed>

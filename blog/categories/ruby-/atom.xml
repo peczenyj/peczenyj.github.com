@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby, | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/ruby-/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Schwartzian transform]]></title>
+    <link href="http://pacman.blog.br/blog/2013/01/22/schwartzian-transform/"/>
+    <updated>2013-01-22T16:00:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2013/01/22/schwartzian-transform</id>
+    <content type="html"><![CDATA[<p>I will show in this post one of the most useful things that I learn in Perl: the famous Schwartzian transform. With examples in Ruby</p>
+
+<p><blockquote><p></p></p><p><p>In computer science, the Schwartzian transform is a Perl programming idiom used to improve the efficiency of sorting a list of items. This idiom is appropriate for comparison-based sorting when the ordering is actually based on the ordering of a certain property (the key) of the elements, where computing that property is an intensive operation that should be performed a minimal number of times. The Schwartzian Transform is notable in that it does not use named temporary arrays.</p></p><p><p></p><footer><strong>Wikipedia</strong> <cite><a href='http://en.wikipedia.org/wiki/Schwartzian_transform'>en.wikipedia.org/wiki/&hellip;</a></cite></footer></blockquote></p>
+
+<!-- more -->
+
+
+<p>``` ruby
+array = 1..5</p>
+
+<p>def foo(x)</p>
+
+<pre><code># some expensive calculation...
+x.to_s
+</code></pre>
+
+<p>end</p>
+
+<p>array.sort { |a,b| foo(a) &lt;=> foo(b) }
+```</p>
+
+<p>In this example, foo are called 12 times. With +5 more elements in this array we jump to 52 calls. If foo is very expensive it is a waste of cpu. What we can do? Memoize is an option but I need to add an extra gem in my project. The solution is... Schwartzian transform!</p>
+
+<p>``` ruby
+array = 1..5</p>
+
+<p>def foo(x)</p>
+
+<pre><code># some expensive calculation...
+x.to_s
+</code></pre>
+
+<p>end</p>
+
+<p>array.map{ |original|</p>
+
+<pre><code>[original, foo(original)]  # add the original and pre-calculated value
+</code></pre>
+
+<p>}.sort { |a,b|</p>
+
+<pre><code>a.last &lt;=&gt; b.last          # perform comparation
+</code></pre>
+
+<p>}.map{|x|</p>
+
+<pre><code>x.first                    # extract the original, drop the pre-calculated value
+</code></pre>
+
+<p>}
+```</p>
+
+<p>In this case we use the double of memory (to store the original and foo(original)) but we call foo only 5 times.</p>
+
+<p>We can use this pattern to solve other problems, sort is just one of them. Every time when we have one expensive calculation and we call this many times, maybe we can solve using this technique.</p>
+
+<p>Now, look at this code:</p>
+
+<p>``` ruby
+array = 1..5</p>
+
+<p>def foo(x)</p>
+
+<pre><code># some expensive calculation...
+x.to_s
+</code></pre>
+
+<p>end</p>
+
+<p>array.sort_by{|x| foo(x) }
+```</p>
+
+<p>Using sort_by we can use the power of Schwartzian transform for many cases if our sort is based on a simple comparation.</p>
+
+<p>The original version, in perl</p>
+
+<p>``` perl
+@sorted = map  { $_->[0] }</p>
+
+<pre><code>      sort { $a-&gt;[1] cmp $b-&gt;[1] }
+      map  { [$_, foo($_)] }
+           @unsorted;
+</code></pre>
+
+<p>```</p>
+
+<p>Other languagens has some kind of support like <a href="http://dlang.org/">D</a> 2.0, with schwartzSort function. You can find an example in PHP <a href="http://gregheo.com/blog/php/schwartzian-transform/">Here</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

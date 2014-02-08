@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tchelinux 2007 - Chamada de trabalhos]]></title>
+    <link href="http://pacman.blog.br/blog/2007/10/30/tchelinux-2007-chamada-de-trabalhos/"/>
+    <updated>2007-10-30T15:53:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2007/10/30/tchelinux-2007-chamada-de-trabalhos</id>
+    <content type="html"><![CDATA[<div class='post'>
+Seja bem-vindo à chamada de trabalhos do 2º Seminário do Software Livre Tchelinux que irá acontecer dia 1º de Dezembro de 2007 na UFRGS em Porto Alegre, RS. Antes de enviar sua proposta de palestra, recomendamos que leia atenciosamente o regulamento abaixo:<br /><br />Sobre o Temário:<br /><br />A equipe de avaliação de propostas irá selecionar 10 palestras técnicas sobre Software Livre dentro dos seguintes temas:<br /><br />Sistemas Operacionais<br />Desktop baseado em Software Livre<br />Aplicativos Gráficos<br />Jogos e Multimídia<br />Linguagens de programação<br />Ferramentas para desenvolvimento<br />Banco de dados<br />Administração de Sistemas<br />Redes e Segurança da Informação<br /><br />Sobre as Apresentações:<br /><br />- Cada palestrante terá 75 minutos para apresentar seu trabalho <br />- Os recursos disponíveis serão projetor multimídia e micro-computador rodando Ubuntu Gutsy<br />- O palestrante deverá permitir que os slides de sua palestra seja publicada no site do grupo<br />- Não haverá nenhuma remuneração ou reembolso de despesas para palestrantes<br /><br /><a href="http://www.tchelinux.org/papers/">http://www.tchelinux.org/papers/</a><br /><br />Participem!</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux para Leigos]]></title>
+    <link href="http://pacman.blog.br/blog/2007/08/11/linux-para-leigos/"/>
+    <updated>2007-08-11T10:45:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/08/11/linux-para-leigos</id>
+    <content type="html"><![CDATA[<div class='post'>
+Vamos analisar a condição de <span style="font-style:italic;">leigo</span>.<br /><br />Eu já vi centenas de <span style="font-style:italic;">leigos</span> que, ao sentar no computador, baixavam músicas, videos e jogos com os mais diversos programas, conectavam no irc, msn, icq, colocavam luzinhas e bichinhos animados para acompanhar o cursor do mouse, trocavam as fontes e os temas, procuravam os mais bizarros jogos, encontravam videos extremamente incomuns (<span style="font-weight:bold;">sem </span>youtube), etc. Para o que <span style="font-weight:bold;">não presta</span>, os <span style="font-style:italic;">leigos </span>tem uma criatividade impressionante!<br /><br />Quando falamos em um sistema pra leigos não precisamos pensar que as usuarios tem preguiça mental. Eles até podem ter, mas aí cabe aos projetistas desafiar e exercitar essa criatividade do mal e tranformar em criatividade do bem. Qualquer pessoa que senta na frente de um browser vai acabar nas paginas mais escabrosas mesmo que não sabia o que é 'google'. Vai me dizer que, nesse caso, a linha de comando é ameaçadora ou difícil?<br /><br />Das duas, uma: ou pensamos em uma camada de software para permitir que um usuario <span style="font-weight:bold;">abstraia</span> o sistema operacional e as configurações (normalmente se faz isso em sistemas "embarcados") e use todos os recursos multimídia e de troca de informação com a facilidade de um pensamento <span style="font-weight:bold;">OU</span> pensamos em sistemas mais inteligentes, com documentação adequada e, com a ajuda da comunidade, divulgamos as informações e conceitos corretos. O Linux só é seguro porque o usuario comum, que <span style="font-weight:bold;">vai</span> fazer besteira, não tem a senha de <span style="font-weight:bold;">root</span>.<br /><br />Não podemos fazer sistemas operacionais à prova de gente sem noção ou que sejam capazes de oferecer tanta intuitividade sem sacrificar a segurança, por exemplo.<br /><br />Puxa, não tem nada mais fácil que usar a linha de comando (ok, sou suspeito pra falar). As pessoas não usam [o shell] pois não tem como acessar o orkut, ver vídeo do youtube, etc, de um jeito bonitinho. Alem de tudo, tá em inglês, ECA. Hoje em dia existem shells para pessoas iniciantes que ajudam, colorem o texto e sugerem mudanças praticas, como o <a href="http://nacaolivre.org/2007/07/12/friendly-interactive-shell-%e2%80%93-shell-interativo-e-amigavel/">fish</a>.<br /><br />É assim que fazemos um sistema pra <span style="font-style:italic;">leigos </span>-- temos que desafia-los a usar a criatividade que normalmente é usada pra criatividade do MAL e mostrar que um PC com linux não é um playstation. Quer usar um browser de verdade e usar o orkut e o youtube? PO! não tem nada mais facil que instalar um ubuntu da vida e clicar no icone do firefox!<br /><br />Não vamos tomar atitudes de forma a não desafiar intelectualmente os usuários. Eles merecem todo o nosso respeito. Agora quem quer que o usuário não pense que faça uma camada de software que abstraia o Sistema Operacional. Existe mercado para ambas as coisas.<br /><br />Entretanto acho mais humano que a gente exercite os cérebros atrofiados dos empurradores de mouse. Há 20 anos as pessoas usavam computadores com 32 kb de RAM e carregavam os jogos de uma fita K7 e ninguem morreu por isso -- pelo contrário desenvolveram <span style="font-style:italic;">skills </span>hoje necessárias em muitos cargos importantes e empresas como algumas multinacionais procuram desesperadamente.</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Torvalds - A Microsoft simplesmente não me interessa]]></title>
+    <link href="http://pacman.blog.br/blog/2007/08/10/linus-torvalds-microsoft-simplesmente/"/>
+    <updated>2007-08-10T00:53:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/08/10/linus-torvalds-microsoft-simplesmente</id>
+    <content type="html"><![CDATA[<div class='post'>
+<blockquote><br /><span style="font-weight:bold;">Será que Linus Torvalds e a comunidade do software livre podem vencer esta guerra contra as legiões de Bill Gates</span>?<br /><br />Linus Torvalds - Não vejo isso como uma “batalha”. Faço o que faço porque gosto e acho que vale à pena, e não estou nessa por causa de nenhuma cruzada anti-Microsoft. Usei alguns produtos da Microsoft ao longo dos anos, mas nunca nutri uma forte antipatia contra eles. A Microsoft simplesmente não me interessa. E o movimento de código aberto não é um movimento anti-Microsoft, apesar de haver certos grupos que talvez participem devido aos seus sentimentos anti-Microsoft.<br /><br />O código aberto é um modelo sobre como fazer coisas, e eu acredito que este é um jeito muito melhor de fazer as coisas. O código livre vai tomar conta do mercado não por causa de nenhuma “batalha”, mas simplesmente porque jeitos melhores de fazer as coisas eventualmente tomam o lugar de métodos inferiores.<br /><br />Por acaso a “ciência” é uma batalha contra a “ignorância”? Não, a ciência simplesmente é. E ela funciona tão bem que assume o lugar de velhas noções ignorantes. Não precisamos nos preocupar com gatos pretos cruzando a nossa frente, passar por baixo de escadas ou espelhos quebrados, pois hoje sabemos como o mundo funciona, e nos demos conta de que gatos pretos não são mais um sinal de perigo.</blockquote><br />Fonte: <a href="http://idgnow.uol.com.br/mercado/2007/08/09/idgnoticia.2007-07-18.5493239809/paginador/pagina_6">idgnow</a><br /><br />Sem mais palavras...</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Introdução aos Device Drivers no Linux]]></title>
+    <link href="http://pacman.blog.br/blog/2007/07/12/introduo-aos-device-drivers-no-linux/"/>
+    <updated>2007-07-12T17:17:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/07/12/introduo-aos-device-drivers-no-linux</id>
+    <content type="html"><![CDATA[<div class='post'>
+Vamos fazer um /dev/hello_word ?<br /><br />Aprenda a fazer um neste <a href="http://www.linuxdevcenter.com/pub/a/linux/2007/07/05/devhelloworld-a-simple-introduction-to-device-drivers-under-linux.html">fascinante artigo</a> -- nunca se sabe quando será util!</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Paz, Amor & Linux]]></title>
+    <link href="http://pacman.blog.br/blog/2007/07/11/paz-amor-linux/"/>
+    <updated>2007-07-11T16:13:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2007/07/11/paz-amor-linux</id>
+    <content type="html"><![CDATA[<div class='post'>
+Hacker é como Punk, Ateu ou Geek -- um rótulo.<br /><br />Uma hora a mídia fala q ser Hacker é ruim. Outra hora fala q não são Hackers, são os Crackers que são a ameaça. Acho que falta um pouco de romantismo na nossa vida...<br /><br />Proponho uma revolução no mundo digital através do amor. Vamos deixar comentarios no codigo fonte repleto de belas mensagens, poemas e juras de amor eterno. Vamos visitar o apartamento frio e escuro dos nossos amigos mais anti-sociais e levar bolos, café e carinho. Vamos fazer divertidas obras de arte como borboletas e caras-de-gatos com os DVDs do windows vista e distribuir para os nossos amigos.<br /><br />Bigodinho e chifres nas fotos do Bill Gates e Steve Ballmer nunca mais! Vamos colocar coraçõezinhos e flores coloridas e passar muita energia positiva. Sejamos francos e sinceros. Vamos usar de adjetivos angelicais e fala suave para que amor sempre venha a tona.<br /><br />Assim, o codigo fonte sera alvo do nosso tórrido amor. Interfaces apaixonadas e Algoritmos envolventes serão o nosso legado.<br /><br />E assim o <span style="font-weight:bold;">amor </span>triunfa. Nada de esmurrar o teclado. No lugar do café: flores. No lugar do ódio: Linux.</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>pauloriceli</div>
+<div class='content'>
+<B> :) </B></div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

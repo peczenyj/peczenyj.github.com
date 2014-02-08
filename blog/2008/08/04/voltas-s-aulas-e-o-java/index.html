@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Voltas às Aulas e o Java - Peczenyj's Blog</title>
+  <meta name="author" content="Tiago Peczenyj">
+
+  
+  <meta name="description" content="Na época de volta às aulas nas faculdades percebe-se uma grande invasão de alunos desesperados em foruns de informática para resolverem os seus &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Peczenyj's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2150536-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta property="og:url" value="http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" value="Voltas às Aulas e o Java">
+<meta property="og:description" value="">
+ 
+
+  <meta property="twitter:card" value="summary">
+<meta property="twitter:url" value="http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java/">
+
+
+<meta property="twitter:title" value="Voltas às Aulas e o Java">
+<meta property="twitter:description" value="">
+ 
+
+
+<meta property="twitter:site" value="@pac_man">
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Peczenyj's Blog</a></h1>
+  
+    <h2>Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pacman.blog.br" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/contact">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Voltas às Aulas E O Java</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-04T12:20:00-03:00" pubdate data-updated="true">Aug 4<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+Na época de volta às aulas nas faculdades percebe-se uma grande invasão de alunos desesperados em foruns de informática para resolverem os seus execícios. É facil reconhecer um aluno em pânico com o seu primeiro <span style="font-style:italic;">while</span> ou algum exercício sobre Fibonacci: eles não tentam, simplesmente colam o enunciado do problema esperando a resposta pronta.<br /><br />Entretanto tão bizarro quanto são os exercícios propostos: um programa que leia pergunte 2 numeros e retorne a soma, ou um programa para calcular alguma coisa que pergunte ao usuário&#8230; perai, pergunte? Um programa perguntando? Como?<br /><br />Este é o típico programa &#8216;interativo&#8217; com o usuário. Quando não usa a entrada padrão (algo completamente misterioso para boa parte dos alunos), usam algum recurso SWING. Mas sera que ninguem pensa o quão PREJUDICIAL são estes exercícios?<br /><br />Normalmente o aluno se preocupa com a apresentação do mesmo, fazendo frescuras de menuzinhos, asteriscos pra lá e pra cá&#8230; e o algoritmo que é bom nada. Sinceramente: dane-se os menuzinhos. Sabem quantos programas com menuzinhos e que vão perguntar alguma coisa pro usuario vcs vão fazer na vida profissional de vcs? 0! Zero! Nenhum!<br /><br />Existem muitas formas de interação com o usuario, hoje em dia vc pode ter interfaces web, por exemplo. Eu acho que, num primeiro momento, a única interação com o usuario deveria ser escrever na tela. Nada mais que isso se o camarada não sabe o que significa um NullPointerException.<br /><br /><br />Exemplo pratico:<br /><br />- Prepare um diretório para trabalhar (suponho que vc vai usar linux, senão deve ser facil portar este exemplo para outros sistemas operacionais).<br />- Crie um diretorio lib e copie o junit-4.4.jar pra lá (use o google pra baixar esse arquivo, se vc não conseguir saia do curso de informática).<br />- Crie a estrutura abaixo, ainda no diretório de trabalho:<br />src/java<br />src/test<br />- Instale o aplicativo ant (de novo o google te ajuda, alias vc tem algum JDK instalado, certo??).<br />- Crie um arquivo chamado build.xml no diretorio de trabalho.<br />- Baixe o arquivo ant-junit.jar daqui [ http://www.java2s.com/Code/Jar/ANT/Downloadantjunitjar.htm ] e copie o .JAR para ~/.ant/lib (se não existe, crie).<br /><br />Agora vem a proposta: baseado nessa interface:<br /><br /><pre><code>public interface Algoritmo{<br />/* dado um numero, retorna true se for par */        <br />boolean ehPar(int numero);<br />/* calcula o valor absoluto ou modulo de um numero, ex: -1 vira 1, 1 vira 1 */<br />int calculaModulo(int numero);<br />/* calcula algum termo da série de fibonacci: se 0, mostra o primeiro, se 1 mostra o segundo...*/<br />int calculaFibonacci(int elemento);<br />/* calcula o fatorial do numero indicado */<br />long calculaFatorial(int numero);<br />}</code></pre><br /><br />Vais criar uma classe chamada, digamos, SuaClasse que implementa esta interface (percebeu que tudo deve ficar em src/java não é?). Não pense na implementação dessa classe ainda.<br /><br />No diretorio src/test vc vai salvar esta classe:<br /><br /><pre><code>import junit.framework.TestCase;<br /><br />public class AlgoritmoTeste extends TestCase{<br /> Algoritmo algoritmo;<br /> public void setUp(){<br />  algoritmo = new SuaClasse();<br /> }<br /> <br /> public void tearDown(){<br />  algoritmo = null;  <br /> }<br /> <br /> public void testEhPar() throws Exception{<br />  assertTrue("2 deve ser par",algoritmo.ehPar(2));<br />  assertTrue("4 deve ser par",algoritmo.ehPar(4));<br />  assertTrue("6 deve ser par",algoritmo.ehPar(6));<br />  <br />  assertTrue("1 NAO deve ser par",!algoritmo.ehPar(1));<br />  assertTrue("3 NAO deve ser par",!algoritmo.ehPar(3));<br />  assertTrue("5 NAO deve ser par",!algoritmo.ehPar(5));  <br /> }<br /> <br /> public void testCalculaModulo() throws Exception{<br />  assertTrue("modulo de  3 deve ser 3",algoritmo.calculaModulo(3) == 3);<br />  assertTrue("modulo de -3 deve ser 3",algoritmo.calculaModulo(-3) == 3);<br />  assertTrue("modulo de  5 deve ser 5",algoritmo.calculaModulo(5) == 5);<br />  assertTrue("modulo de -5 deve ser 5",algoritmo.calculaModulo(-5) == 5);  <br /> }<br /> <br /> public void testCalculaFibonacci() throws Exception{<br />  assertTrue("elemento  0 da serie fibonacci deve ser   0",algoritmo.calculaFibonacci(0) == 0);<br />  assertTrue("elemento  1 da serie fibonacci deve ser   1",algoritmo.calculaFibonacci(1) == 1);<br />  assertTrue("elemento  2 da serie fibonacci deve ser   1",algoritmo.calculaFibonacci(2) == 1);<br />  assertTrue("elemento  3 da serie fibonacci deve ser   2",algoritmo.calculaFibonacci(3) == 2);  <br />  assertTrue("elemento  4 da serie fibonacci deve ser   3",algoritmo.calculaFibonacci(4) == 3);<br />  assertTrue("elemento  5 da serie fibonacci deve ser   5",algoritmo.calculaFibonacci(5) == 5);<br />  assertTrue("elemento  6 da serie fibonacci deve ser   8",algoritmo.calculaFibonacci(6) == 8);<br />  assertTrue("elemento  7 da serie fibonacci deve ser  13",algoritmo.calculaFibonacci(7) == 13);  <br />  assertTrue("elemento 11 da serie fibonacci deve ser  89",algoritmo.calculaFibonacci(11) == 89);<br />  assertTrue("elemento 13 da serie fibonacci deve ser 223",algoritmo.calculaFibonacci(13) == 233);  <br /> }<br /> <br /> public void testCalculaFatorial() throws Exception{<br />  assertTrue("Fatorial de  1 deve ser        1",algoritmo.calculaFatorial(1) == 1);<br />  assertTrue("Fatorial de  2 deve ser        2",algoritmo.calculaFatorial(2) == 2);<br />  assertTrue("Fatorial de  3 deve ser        6",algoritmo.calculaFatorial(3) == 6);<br />  assertTrue("Fatorial de  4 deve ser       24",algoritmo.calculaFatorial(4) == 24);<br />  assertTrue("Fatorial de  5 deve ser      120",algoritmo.calculaFatorial(5) == 120);<br />  assertTrue("Fatorial de  6 deve ser      720",algoritmo.calculaFatorial(6) == 720);<br />  assertTrue("Fatorial de 10 deve ser 3628800L",algoritmo.calculaFatorial(10) == 3628800L);  <br /> }<br />}</code></pre><br /><br />Uma ideia sobre o JUnit pode ser encontrada aqui: [ http://guj.com.br/java.tutorial.artigo.40.1.guj ], alias o guj, na sessão de tutoriais, explica varias coisas, é ótimo material de referência!<br /><br />Ok, vc tem a interface que vc deve respeitar e um arquivo de teste. Vamos falar do arquivo de build do ant.<br /><br /><pre><code>&lt;project name="Meu Projeto" basedir="." default="dist"&gt;<br />        &lt;description&gt;<br />                Aprendendo a fazer um build.xml para o ant<br />        &lt;/description&gt;<br /><br />        &lt;property name="lib"   location="lib"/&gt;<br />        &lt;property name="src"   location="src/java"/&gt;<br />        &lt;property name="test"  location="src/test"/&gt;<br /><br />        &lt;property name="build" location="build"/&gt;<br />        &lt;property name="dist"  location="dist"/&gt;<br /><br />        &lt;path id="classpath.test"&gt; <br />                &lt;pathelement location="${test}" /&gt;<br />                &lt;pathelement location="${build}" /&gt;<br />                &lt;pathelement location="${lib}/junit-4.4.jar" /&gt;<br />        &lt;/path&gt;<br /><br />        &lt;target name="init"&gt;<br />                &lt;!-- Create the time stamp --&gt;<br />                &lt;tstamp/&gt;<br />                &lt;!-- Create the build directory structure used by compile --&gt;<br />                &lt;mkdir dir="${build}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="compile" depends="init" description="compile the source " &gt;<br />                &lt;!-- Compile the java code from ${src} into ${build} --&gt;<br />                &lt;javac srcdir="${src}" destdir="${build}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="dist" depends="compile" description="generate the distribution" &gt;<br />                &lt;!-- Create the distribution directory --&gt;<br />                &lt;mkdir dir="${dist}/lib"/&gt;<br /><br />                &lt;!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file --&gt;<br />                &lt;jar jarfile="${dist}/lib/Algortimo-${DSTAMP}.jar" basedir="${build}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="clean" description="clean up" &gt;<br />                &lt;!-- Delete the ${build} and ${dist} directory trees --&gt;<br />                &lt;delete dir="${build}"/&gt;<br />                &lt;delete dir="${dist}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="test" depends="compile"&gt;<br />                &lt;javac srcdir="${test}"&gt;<br />                        &lt;classpath refid="classpath.test"/&gt;<br />                &lt;/javac&gt;<br />                &lt;junit&gt;<br />                        &lt;classpath refid="classpath.test" /&gt;<br />                        &lt;formatter type="brief" usefile="false" /&gt;<br />                        &lt;test name="AlgoritmoTeste"/&gt;<br />                &lt;/junit&gt;<br />        &lt;/target&gt;<br />&lt;/project&gt;<br /></code></pre><br /><br />A utilização desse arquivo é muito simples, não se amedronte pelo tamanho do arquivo, o formato xml do ant é bizarro e verboso, sou muito mais um Makefile, porém uma vez com ele feito basta ir adicionando coisas &#8220;com cuidado&#8221;. Sem falar que tudo tem documentação oficial cheia de exemplos, só não aprende quem <span style="font-weight:bold;">não</span> quer.<br /><br />$ ant <br />isso deve compilar a sua classe e gerar um jar (pode ser util no futuro).<br /><br />$ ant clean<br />limpa os diretorios que vc acabou de criar com as suas paradas compiladas.<br /><br />$ ant test<br />compila e executa os testes unítarios.<br /><br />É claro que vc vai dizer, e agora??? Bom, veja isso:<br /><br /><pre><code>public class SuaClasse implements Algoritmo{<br />        public boolean ehPar(int numero){return false;}<br />        public int calculaModulo(int numero){ return -1;}<br />        public int calculaFibonacci(int elemento){return -1;}<br />        public long calculaFatorial(int numero){return -1;}<br />}</code></pre><br /><br />Olha que legal! Uma classe que tem o minimo pra compilar! Agora vamos testar&#8230;<br /><br /><pre>$ ant test<br />Buildfile: build.xml<br /><br />init:<br />    [mkdir] Created dir: /home/GLOBO.COM/peczenyj/test/junit/build<br /><br />compile:<br />    [javac] Compiling 2 source files to /home/GLOBO.COM/peczenyj/test/junit/build<br /><br />test:<br />    [javac] Compiling 1 source file<br />    [junit] Testsuite: AlgoritmoTeste<br />    [junit] Tests run: 4, Failures: 4, Errors: 0, Time elapsed: 0.005 sec<br />    [junit] <br />    [junit] Testcase: testEhPar(AlgoritmoTeste):        FAILED<br />    [junit] 2 deve ser par<br />    [junit] junit.framework.AssertionFailedError: 2 deve ser par<br />    [junit]     at AlgoritmoTeste.testEhPar(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Testcase: testCalculaModulo(AlgoritmoTeste):        FAILED<br />    [junit] modulo de  3 deve ser 3<br />    [junit] junit.framework.AssertionFailedError: modulo de  3 deve ser 3<br />    [junit]     at AlgoritmoTeste.testCalculaModulo(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Testcase: testCalculaFibonacci(AlgoritmoTeste):     FAILED<br />    [junit] elemento  0 da serie fibonacci deve ser   0<br />    [junit] junit.framework.AssertionFailedError: elemento  0 da serie fibonacci deve ser   0<br />    [junit]     at AlgoritmoTeste.testCalculaFibonacci(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Testcase: testCalculaFatorial(AlgoritmoTeste):      FAILED<br />    [junit] Fatorial de  1 deve ser        1<br />    [junit] junit.framework.AssertionFailedError: Fatorial de  1 deve ser        1<br />    [junit]     at AlgoritmoTeste.testCalculaFatorial(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Test AlgoritmoTeste FAILED<br /><br />BUILD SUCCESSFUL<br />Total time: 1 second</pre><br /><br />Agora basta escrever codigo de verdade na SuaClasse e testar, estara pronto quando TUDO estiver passando. São 4 métodos básicos, sabendo lidar com variaveis locais, if e for, vc consegue muita coisa.<br /><br />Se eu fosse professor eu daria exercícios assim: o projeto deveria compilar e todos os testes deveriam passar senão o aluno leva 0. A nota viria de acordo com o que eu espero, posso usar um EMMA e ver a cobertura de código, posso avaliar a presença de um Javadoc que preste, etc.<br /><br />Enfim, eu seria um professor muito malvado }-)<br /><br />Não perca a parte 2 <a href="/2008/08/voltas-s-aulas-e-o-java-parte-2.html">aqui</a>, e uma introdução ao TDD <a href="/2008/08/test-driven-development-parte-1.html">aqui</a>.</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Marcelo</div>
+<div class='content'>
+Muito bom o post, parabéns. Na minha opinião todo professor poderia ser &#8220;ruim&#8221; desse jeito.</div>
+</div>
+<div class='comment'>
+<div class='author'>Rafael Ponte</div>
+<div class='content'>
+Excelente post, parabéns!<BR/><BR/>Infelizmente muitos professores se preocupam mais com telinhas e &#8220;firulas&#8221; do que o que é importante na disciplina, pior é que muitos destes professores nunca nem ouviram falar sobre TDD ou mesmo testes unitários!</div>
+</div>
+<div class='comment'>
+<div class='author'>Guilherme Gall</div>
+<div class='content'>
+Está aí uma coisa que sempre achei errado e vi acontecer várias vezes com mais de um professor onde estudo: o cara começa ensinando bibliotecas para desenvolvimento de aplicações gráficas e detalhes específicos de determinada linguagem para uma galera que não sabe nada (e quando digo que não sabe nada digo que não sabem nem definir o termo) de algoritmos, ou herança e polimorfismo por exemplo.<BR/><BR/>Terminam as matérias que envolvem programação sabendo como fazer sobrecarga de operadores, mas implementando toda a lógica de um programa dentro de uma única classe com métodos static. Sabem fazer janelas com botões bonitinhos, mas se matam para implementar a lógica do programa.<BR/><BR/>Ficaria feliz se minha primeira aula de programação fosse no esquema do seu post. Sempre gostei de brincar com os exercícios propostos em sala, mas o cara era tão inflexível que certo dia veio me pedir para trocar de editor de texto, porque o que eu estava utilizando era complicado demais (vim) e me confundiria (wtf?). Tive aulas bastante boas depois, com um cara que valorizava o que é realmente essencial, mas alguns de meus colegas não tiveram a mesma sorte e continuaram tendo aulas desse tipo durante vários semestres.<BR/><BR/>Triste é ver o camarada que me pediu para trocar de editor de texto sendo citado como &#8220;excelente professor para quem está começando&#8221;. :-|</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+É aquilo, ou se aprende por necessidade ou pq se gosta da parada. Eu propus algo que, se alguem gosta de programar, vai se amarrar em fazer.<BR/><BR/>Mas tem quem <I>cague</I> pra isso. Paciência, depois vai pegar um estágio onde vai ter que fazer algo <B>muito</B> pior e sem internet pra poder postar as dúvidas!</div>
+</div>
+<div class='comment'>
+<div class='author'>tiago_stos</div>
+<div class='content'>
+Concordo como Roger, professor que faz aluno pensar e aprender algo útil é visto como professor ruim, que não sabe ensinar. Caso verídico de um professor do semestre passado.<BR/><BR/>Interessante notar que alguns professores que fazem os alunos pensarem mas ensino coisas inúteis não tem fama tão ruim&#8230;<BR/><BR/>Agora, Tiago, vc deveria dar aulas para alguns professores sobre como ensinar de verdade&#8230; hehe<BR/><BR/>Muito bom.</div>
+</div>
+<div class='comment'>
+<div class='author'>Roger Leite</div>
+<div class='content'>
+É Tiago, você seria um professor malvado e muito odiado, porque, seguindo a experiência acadêmica que tive, todo professor que ensina algo útil, e faz os alunos pensarem, geralmente caem naquela listinha (de troca de professor) que vai pra secretaria.<BR/><BR/>Pelo menos foi isso que eu vi acontecer. :(<BR/><BR/>De qualquer maneira, concordo com o seu post, e se um dia eu der aula, vou seguir a dica !</div>
+</div>
+<div class='comment'>
+<div class='author'>CMilfont</div>
+<div class='content'>
+Tiago, a academia não é para você. Você seria uam vergonha para seus colegas de &#8220;d[e]ocência&#8221;.<BR/>Onde já se viu utilizar Junit, ant e essas bizarrices em sala de aula?<BR/>Cadê o bom e velho pascal? [engraçado que tem aluno do 5º semestre ainda chamando de pascoal]<BR/>Cadê os System.out.println que todo sistema de vergonha tem?<BR/>:)<BR/>Tirando a brincadeira, muito bom seu artigo!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Falta o convite de alguma instituição de ensino, de preferência uma que não dê bola pras tais &#8220;Certificações&#8221;.</div>
+</div>
+<div class='comment'>
+<div class='author'>Rafael Carneiro</div>
+<div class='content'>
+Você já está indo no caminho correto&#8230; quando será professor mesmo? :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Tenho que dar o primeiro exemplo }-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Pra mim você está sendo bonzinho, pois você escreveu os testes pros alunos. Assim fica mole.</div>
+</div>
+</div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tiago Peczenyj</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-04T12:20:00-03:00" pubdate data-updated="true">Aug 4<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java/" data-via="pac_man" data-counturl="http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/07/08/tor-um-sistema-annimo-de-comunicao-na/" title="Previous Post: Tor: Um sistema anónimo de comunicação na Internet">&laquo; Tor: Um sistema anónimo de comunicação na Internet</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/08/06/trocar-de-emprego/" title="Next Post: Trocar de Emprego">Trocar de Emprego &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog1 */
+      google_ad_slot = "7472658989";
+      google_ad_width = 468;
+      google_ad_height = 15;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/bb21b27fe43fac2f302cdf3bfc59a6e9" alt="Gravatar of Tiago Peczenyj " title="Gravatar of Tiago Peczenyj" />
+	</span>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/07/moosex-a-new-ruby-dsl-for-object-oriented-programming-and-much-more/">MooseX - a new Ruby DSL for Object Oriented Programming (and much more)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/07/adding-a-dry-run-capability-to-your-moose-class-with-moosex-role-dryrunnable/">Adding a 'dry run' capability to your Moose class with MooseX::Role::DryRunnable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/lazy-bool-my-first-module-in-cpan/">Lazy::Bool my first module in CPAN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/schwartzian-transform/">Schwartzian transform</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/codility-equi-task-solution-in-modern-perl/">Codility Equi Task Solution in Modern Perl</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+<script type="text/javascript"><!--
+      google_ad_client = "ca-pub-0605393685377350";
+      /* blog3 */
+      google_ad_slot = "5437522583";
+      google_ad_width = 200;
+      google_ad_height = 200;
+      //-->
+      </script>
+      <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+</section>
+
+<section>
+  <h1>Stack Overflow</h1>
+  <a href="http://stackoverflow.com/users/1148194/tiago-peczenyj">
+  <img src="http://stackoverflow.com/users/flair/1148194.png" width="208" height="58" alt="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for tiago-peczenyj at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+  </a>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peczenyj">@peczenyj</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peczenyj',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pac_man", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pac_man" class="twitter-follow-button" data-show-count="true">Follow @pac_man</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/tiago.peczenyj?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 101.66666666666667%'>Algorithm(1)</a> <a href='/blog/categories/amor' style='font-size: 101.66666666666667%'>Amor(1)</a> <a href='/blog/categories/aop' style='font-size: 103.33333333333333%'>AOP(2)</a> <a href='/blog/categories/awk' style='font-size: 103.33333333333333%'>awk(2)</a> <a href='/blog/categories/awk' style='font-size: 101.66666666666667%'>Awk(1)</a> <a href='/blog/categories/bope' style='font-size: 101.66666666666667%'>Bope(1)</a> <a href='/blog/categories/brasil' style='font-size: 103.33333333333333%'>Brasil(2)</a> <a href='/blog/categories/c' style='font-size: 116.66666666666667%'>C(10)</a> <a href='/blog/categories/ceticismo' style='font-size: 103.33333333333333%'>Ceticismo(2)</a> <a href='/blog/categories/chrome' style='font-size: 101.66666666666667%'>Chrome(1)</a> <a href='/blog/categories/cygwin' style='font-size: 101.66666666666667%'>Cygwin(1)</a> <a href='/blog/categories/erlang' style='font-size: 103.33333333333333%'>Erlang(2)</a> <a href='/blog/categories/filhos' style='font-size: 101.66666666666667%'>Filhos(1)</a> <a href='/blog/categories/fisl' style='font-size: 105.0%'>FISL(3)</a> <a href='/blog/categories/flisol' style='font-size: 101.66666666666667%'>flisol(1)</a> <a href='/blog/categories/fortran' style='font-size: 101.66666666666667%'>Fortran(1)</a> <a href='/blog/categories/funny' style='font-size: 101.66666666666667%'>Funny(1)</a> <a href='/blog/categories/futebol' style='font-size: 101.66666666666667%'>futebol(1)</a> <a href='/blog/categories/gabeira43' style='font-size: 101.66666666666667%'>Gabeira43(1)</a> <a href='/blog/categories/globo-com' style='font-size: 106.66666666666667%'>globo.com(4)</a> <a href='/blog/categories/help' style='font-size: 101.66666666666667%'>Help(1)</a> <a href='/blog/categories/hqs' style='font-size: 101.66666666666667%'>HQs(1)</a> <a href='/blog/categories/java' style='font-size: 118.33333333333333%'>Java(11)</a> <a href='/blog/categories/javascript' style='font-size: 103.33333333333333%'>Javascript(2)</a> <a href='/blog/categories/jericho' style='font-size: 101.66666666666667%'>jericho(1)</a> <a href='/blog/categories/jobs' style='font-size: 101.66666666666667%'>Jobs(1)</a> <a href='/blog/categories/linux' style='font-size: 130.0%'>Linux(18)</a> <a href='/blog/categories/messias' style='font-size: 101.66666666666667%'>Messias(1)</a> <a href='/blog/categories/mono' style='font-size: 101.66666666666667%'>Mono(1)</a> <a href='/blog/categories/moose' style='font-size: 101.66666666666667%'>Moose(1)</a> <a href='/blog/categories/moosex' style='font-size: 101.66666666666667%'>MooseX(1)</a> <a href='/blog/categories/nerd' style='font-size: 126.66666666666667%'>Nerd(16)</a> <a href='/blog/categories/off-topic' style='font-size: 140.0%'>off-topic(24)</a> <a href='/blog/categories/open-source' style='font-size: 101.66666666666667%'>Open Source(1)</a> <a href='/blog/categories/perl' style='font-size: 106.66666666666667%'>Perl(4)</a> <a href='/blog/categories/politica' style='font-size: 103.33333333333333%'>Politica(2)</a> <a href='/blog/categories/portoalegre' style='font-size: 101.66666666666667%'>PortoAlegre(1)</a> <a href='/blog/categories/programacao' style='font-size: 105.0%'>Programacao(3)</a> <a href='/blog/categories/punk' style='font-size: 101.66666666666667%'>Punk(1)</a> <a href='/blog/categories/rj' style='font-size: 103.33333333333333%'>Rj(2)</a> <a href='/blog/categories/ruby' style='font-size: 113.33333333333333%'>Ruby(8)</a> <a href='/blog/categories/ruby-' style='font-size: 101.66666666666667%'>Ruby,(1)</a> <a href='/blog/categories/se-arrependimento-matasse' style='font-size: 101.66666666666667%'>Se-Arrependimento-Matasse(1)</a> <a href='/blog/categories/security' style='font-size: 101.66666666666667%'>Security(1)</a> <a href='/blog/categories/sed' style='font-size: 101.66666666666667%'>sed(1)</a> <a href='/blog/categories/shell' style='font-size: 160.0%'>Shell(36)</a> <a href='/blog/categories/tchelinux' style='font-size: 101.66666666666667%'>Tchelinux(1)</a> <a href='/blog/categories/tdd' style='font-size: 108.33333333333333%'>TDD(5)</a> <a href='/blog/categories/testes' style='font-size: 101.66666666666667%'>Testes(1)</a> <a href='/blog/categories/twitter' style='font-size: 101.66666666666667%'>twitter(1)</a> <a href='/blog/categories/vagas' style='font-size: 101.66666666666667%'>Vagas(1)</a> <a href='/blog/categories/western' style='font-size: 101.66666666666667%'>Western(1)</a> <a href='/blog/categories/xml' style='font-size: 101.66666666666667%'>XML(1)</a> </span>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tiago Peczenyj -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'peczenyj';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

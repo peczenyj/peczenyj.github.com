@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Closures em Java - Parte 2]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/11/closures-em-java-parte-2/"/>
+    <updated>2008-08-11T10:48:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/11/closures-em-java-parte-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Ainda sobre a Closures do java 7, agora será possivel fazer isso:<br /><br /><pre><code>public class A {<br />        public static void main(String args[]) {<br />            @Shared int acumulador = 0;<br /><br />            {int => int } xxx  = { int i =>  acumulador += i; i};<br /><br />            System.out.println(xxx.invoke(1));<br />            System.out.println(xxx.invoke(2));<br />            System.out.println(xxx.invoke(3));<br />            System.out.println("o valor do acumulador eh " + acumulador );<br /><br />        }<br />}</code></pre><br /><br />Só eu estou achando divertido?<br /><br /><a href="http://gafter.blogspot.com/2008/08/java-closures-prototype-feature.html">http://gafter.blogspot.com/2008/08/java-closures-prototype-feature.html</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Não dá ideia!!<BR/><BR/>Logo aparece um @Global da vida... ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+Fiquei com medo que tu falasse que era uma "variavel global" <BR/><BR/>hehe</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Martins, sem o @Shared o codigo compila mas gera um warning. É uma marcação que a variavel é compartilhada com outra closure ou bloco de código.</div>
+</div>
+<div class='comment'>
+<div class='author'>Marcelo Martins</div>
+<div class='content'>
+O que que vem a ser aquele @shared?</div>
+</div>
+<div class='comment'>
+<div class='author'>Fabio Nascimento</div>
+<div class='content'>
+Pois é, a única dúvida é como ele faz o autoboxing escondido(leia-se por debaixo dos panos)?<BR/>Mas no geral, tbm estou gostando, vamos ver... quando chegar a hora do SDK implementar isso de verdade mesmo.<BR/><BR/>Té +</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Closures em Java]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/08/closures-em-java/"/>
+    <updated>2008-08-08T19:23:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/08/closures-em-java</id>
+    <content type="html"><![CDATA[<div class='post'>
+Olha o que vai ter no java 1.7<br /><br /><pre><code>public class A {<br />        public static void main(String args[]) {<br />                exec( { int a, int b => a + b });<br />                exec( { int a, int b => a * b });<br />                exec( { int a, int b => <br />                        System.out.println("closure " + a + ":" + b); <br />                        (a * a) + (b * b) <br />                });<br />        }<br />        public static void exec({ int, int => int } closure){<br />                System.out.println(closure.invoke(3,2));<br />        }<br />}</code></pre><br /><br /><pre>$ java -Xbootclasspath/p:./closures-2008-08-04/lib/closures.jar   A<br />5<br />6<br />closure 3:2<br />13</pre><br /><br />Divertido :)<br /><br />Fonte:<br /><a href="http://guj.com.br/posts/list/99477.java">http://guj.com.br/posts/list/99477.java</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Hehehe... bizarro mesmo sera quando o java tiver suporte a pipes, sinais e outras coisas do mundo shell/C/*nix.<BR/><BR/>Imagina uma classe fazendo um TRAP... hehehe!</div>
+</div>
+<div class='comment'>
+<div class='author'>La Batalema Pitonisto</div>
+<div class='content'>
+Tenho muito medo disso!<BR/><BR/>[]'s<BR/>Cacilhas, La Batalema</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Voltas às Aulas e o Java - parte 2]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/07/voltas-s-aulas-e-o-java-parte-2/"/>
+    <updated>2008-08-07T17:43:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/07/voltas-s-aulas-e-o-java-parte-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Existe o clássico problema de determinar se um aluno passou ou não de ano quando são informados as notas e o número de faltas.<br /><br />Vejamos: <br />1) O número de faltas é acima do permitido?. Aqui entra um <span style="font-weight:bold;">if</span> dos bons com uma comparação numérica, quando um número é maior ou igual a outro.<br />2) A média é basicamente somar as X notas e dividir por X (se for média aritmética). Somar e dividir são operações matemáticas básicas.<br /><br />Uma forma de fazer é:<br /><code> if( numero_de_faltas &gt; maximo_de_faltas_toleradas) {<br />   // reprovado por faltas<br />} else if ( media_do_aluno &lt; media_para_passar ){<br />  // reprovado por nota<br />} <br />// se nem um nem outro, esta aprovado<br /></code><br /><br />O ruim dessa abordagem é que o aluno estar aprovado é uma condição "que sobra". Se passarmos a focar a aprovação do mesmo ficaria assim:<br /><br /><code> if( media_do_aluno &gt;= media_para_passar && numero_de_faltas &lt;= maximo_de_faltas_toleradas) {<br />   // aprovado!<br />} else {<br />  // reprovado!<br />}</code><br /><br />É claro que eu posso que eu posso querer saber o motivo pelo qual o aluno foi reprovado:<br /><br /><code> if( media_do_aluno &gt;= media_para_passar && numero_de_faltas &lt;= maximo_de_faltas_toleradas) {<br />   // aprovado!<br />} else if(numero_de_faltas &gt; maximo_de_faltas_toleradas){<br />   // reprovado pelo número de faltas: ignoro a média.<br />} else {<br />  // aqui só sobra a reprovação por nota, <br />  // basta fazer a tabela-verdade dessas expressões<br />}</code><br /><br />Se o foco do professor for o algoritmo, isso é o que deveria ser analisado. Quem implementa corretamente um método que recebe X notas e um número de faltas e consegue responder a essas perguntas consegue descrever facilmente os casos de teste para verificar se a implementação corresponde ao que se espera.<br /><br />Um programa que tenha algum tipo de interação (seja Swing ou console) ajuda a fazer um macarrão de código, mesclando o algoritmo com o controle de estado dos "menuzinhos". No fim vemos laços de repetição aonde não são necessários, calculo de média errado, etc.<br /><br />Ok, não acho que um marinheiro de primeira viagem devesse começar por JUnit, mas uma com boa noção dos fundamentos da linguagem e evitando a interação desnecessária com o usuario (poderia ser usado até os parâmetros do main), acredito num melhor desempenho. O risco é o aluno acreditar que java  é dificil ou que tudo se resume a getters/setters e gigantescos try/catch's onde as exceptions são varridas pra debaixo do tapete. <br /><br />Eu colocaria TDD num segundo momento, mas ai sem perdão, ensinando o caboclo a fazer do jeito certo o quanto antes. O que é dificil se eles conseguem passar sem saber fazer aritmética básica.</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test Driven Development - parte 1.]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/06/test-driven-development-parte-1/"/>
+    <updated>2008-08-06T14:31:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/06/test-driven-development-parte-1</id>
+    <content type="html"><![CDATA[<div class='post'>
+Veja este código:<br /><br /><pre><code> public void testEhPar() throws Exception{<br />  assertTrue("2 deve ser par",algoritmo.ehPar(2));<br />  assertTrue("4 deve ser par",algoritmo.ehPar(4));<br />  assertTrue("6 deve ser par",algoritmo.ehPar(6));<br />  <br />  assertTrue("1 NAO deve ser par",!algoritmo.ehPar(1));<br />  assertTrue("3 NAO deve ser par",!algoritmo.ehPar(3));<br />  assertTrue("5 NAO deve ser par",!algoritmo.ehPar(5));  <br /> }</code></pre><br /><br />Dentro de uma classe de teste, usando o framework <a href="http://junit.sourceforge.net/#Getting">JUnit</a>, a leitura dessas linhas é a seguinte:<br /><br />Eu tenho um objeto chamado <span style="font-style:italic;">algortimo</span>.<br />A chamada algoritmo.ehPar(2) deve retornar <span style="font-weight:bold;">true</span>, pois 2 é par, e este método informa se o parâmetro informado é, ou não, par.<br />O método <span style="font-weight:bold;">assertTrue</span> recebe dois parâmetros: uma mensagem informando o significado deste teste, e o resultado do mesmo.<br /><br />Se o método estivesse com algum problema e retornasse false, isso:<br /><br />assertTrue("2 deve ser par",algoritmo.ehPar(2));<br /><br />seria o mesmo que<br /><br />assertTrue("2 deve ser par",false);<br /><br />Logo, o teste falha, pois <span style="font-weight:bold;">2 deve ser par</span>.<br /><br />Esta é uma forma <span style="font-style:italic;">programática</span> de garantir o comportamento do código que eu desenvolvo: testando. Se o meu método só depende dos parâmetros informados, é muito simples verificar o seu funcionamento.<br /><br />Desenvolvendo os testes antes de implementar o código, tendo apenas as assinaturas dos métodos (por isso recorri a uma interface <a href="http://pacman.blog.br/2008/08/voltas-s-aulas-e-o-java.html">aqui</a>, lembra?), eu posso pensar nos comportamentos esperados e, então, vou desenvolvendo até que todos os testes estejam passando.<br /><br />Não é nada fácil, funciona melhor quando o projeto que estás desenvolvendo está começando, porém os resultados são excelentes: veja o quanto de tempo estás economizando! Se tu pretendes determinar se um código teu está funcionando por programas que perguntam os valores, escrever <br /><br /><pre>$ ant clean test</pre><br /><br />é muito mais rápido! <br /><br />O problema surge quando queremos fazer algo complexo, pois a dificuldade de testar mostra problemas na arquitetura adotada, por exemplo. Quanto temos objetos que tem objetos, herança, polimorfismo, tecnicas mais avançadas podem ser usadas como usar Mocks de objetos (e prover os mecanismos para injetar estes Mocks).<br /><br />No caso desse exemplo, esta é uma solução:<br /><pre><code>public boolean ehPar(int numero){<br />      return numero % 2 == 0;<br />}</code></pre><br /><br />Muitos alunos desconhecem as operações de divisão e módulo entre inteiros. O 1, inteiro, dividido por 2, inteiro, não é 0.5, (em java), e sim 0, pois este é o resultado da divisão inteira. O resto da divisão, simbolizado por %, retorna 1. Dessa forma, o resto da divisão de um numero par por 2 é 0, caso contrario é um número inteiro. São operações básicas que precisam ser dominadas. Repare que eu fiz um código que funcione, não tentei nada mais maquiavélico que dê 0.0001 milissegundos mais rápido. <a href="http://gc.blog.br/2008/01/08/a-falacia-da-otimizacao-prematura/">Evite a otimização precoce</a>.<br /><br />Programar profissionalmente é uma tarefa de <span style="font-weight:bold;">muita</span> responsabilidade. Desenvolver testes para garantir a qualidade provê excelentes resultados a longo prazo.</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Sim sim, escrevi errado!</div>
+</div>
+<div class='comment'>
+<div class='author'>OLP</div>
+<div class='content'>
+"caso contrario é um número inteiro" não seria "caso contrario o numero é impar" ?</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Voltas às Aulas e o Java]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java/"/>
+    <updated>2008-08-04T12:20:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/04/voltas-s-aulas-e-o-java</id>
+    <content type="html"><![CDATA[<div class='post'>
+Na época de volta às aulas nas faculdades percebe-se uma grande invasão de alunos desesperados em foruns de informática para resolverem os seus execícios. É facil reconhecer um aluno em pânico com o seu primeiro <span style="font-style:italic;">while</span> ou algum exercício sobre Fibonacci: eles não tentam, simplesmente colam o enunciado do problema esperando a resposta pronta.<br /><br />Entretanto tão bizarro quanto são os exercícios propostos: um programa que leia pergunte 2 numeros e retorne a soma, ou um programa para calcular alguma coisa que pergunte ao usuário... perai, pergunte? Um programa perguntando? Como?<br /><br />Este é o típico programa 'interativo' com o usuário. Quando não usa a entrada padrão (algo completamente misterioso para boa parte dos alunos), usam algum recurso SWING. Mas sera que ninguem pensa o quão PREJUDICIAL são estes exercícios?<br /><br />Normalmente o aluno se preocupa com a apresentação do mesmo, fazendo frescuras de menuzinhos, asteriscos pra lá e pra cá... e o algoritmo que é bom nada. Sinceramente: dane-se os menuzinhos. Sabem quantos programas com menuzinhos e que vão perguntar alguma coisa pro usuario vcs vão fazer na vida profissional de vcs? 0! Zero! Nenhum!<br /><br />Existem muitas formas de interação com o usuario, hoje em dia vc pode ter interfaces web, por exemplo. Eu acho que, num primeiro momento, a única interação com o usuario deveria ser escrever na tela. Nada mais que isso se o camarada não sabe o que significa um NullPointerException.<br /><br /><br />Exemplo pratico:<br /><br />- Prepare um diretório para trabalhar (suponho que vc vai usar linux, senão deve ser facil portar este exemplo para outros sistemas operacionais).<br />- Crie um diretorio lib e copie o junit-4.4.jar pra lá (use o google pra baixar esse arquivo, se vc não conseguir saia do curso de informática).<br />- Crie a estrutura abaixo, ainda no diretório de trabalho:<br />src/java<br />src/test<br />- Instale o aplicativo ant (de novo o google te ajuda, alias vc tem algum JDK instalado, certo??).<br />- Crie um arquivo chamado build.xml no diretorio de trabalho.<br />- Baixe o arquivo ant-junit.jar daqui [ http://www.java2s.com/Code/Jar/ANT/Downloadantjunitjar.htm ] e copie o .JAR para ~/.ant/lib (se não existe, crie).<br /><br />Agora vem a proposta: baseado nessa interface:<br /><br /><pre><code>public interface Algoritmo{<br />/* dado um numero, retorna true se for par */        <br />boolean ehPar(int numero);<br />/* calcula o valor absoluto ou modulo de um numero, ex: -1 vira 1, 1 vira 1 */<br />int calculaModulo(int numero);<br />/* calcula algum termo da série de fibonacci: se 0, mostra o primeiro, se 1 mostra o segundo...*/<br />int calculaFibonacci(int elemento);<br />/* calcula o fatorial do numero indicado */<br />long calculaFatorial(int numero);<br />}</code></pre><br /><br />Vais criar uma classe chamada, digamos, SuaClasse que implementa esta interface (percebeu que tudo deve ficar em src/java não é?). Não pense na implementação dessa classe ainda.<br /><br />No diretorio src/test vc vai salvar esta classe:<br /><br /><pre><code>import junit.framework.TestCase;<br /><br />public class AlgoritmoTeste extends TestCase{<br /> Algoritmo algoritmo;<br /> public void setUp(){<br />  algoritmo = new SuaClasse();<br /> }<br /> <br /> public void tearDown(){<br />  algoritmo = null;  <br /> }<br /> <br /> public void testEhPar() throws Exception{<br />  assertTrue("2 deve ser par",algoritmo.ehPar(2));<br />  assertTrue("4 deve ser par",algoritmo.ehPar(4));<br />  assertTrue("6 deve ser par",algoritmo.ehPar(6));<br />  <br />  assertTrue("1 NAO deve ser par",!algoritmo.ehPar(1));<br />  assertTrue("3 NAO deve ser par",!algoritmo.ehPar(3));<br />  assertTrue("5 NAO deve ser par",!algoritmo.ehPar(5));  <br /> }<br /> <br /> public void testCalculaModulo() throws Exception{<br />  assertTrue("modulo de  3 deve ser 3",algoritmo.calculaModulo(3) == 3);<br />  assertTrue("modulo de -3 deve ser 3",algoritmo.calculaModulo(-3) == 3);<br />  assertTrue("modulo de  5 deve ser 5",algoritmo.calculaModulo(5) == 5);<br />  assertTrue("modulo de -5 deve ser 5",algoritmo.calculaModulo(-5) == 5);  <br /> }<br /> <br /> public void testCalculaFibonacci() throws Exception{<br />  assertTrue("elemento  0 da serie fibonacci deve ser   0",algoritmo.calculaFibonacci(0) == 0);<br />  assertTrue("elemento  1 da serie fibonacci deve ser   1",algoritmo.calculaFibonacci(1) == 1);<br />  assertTrue("elemento  2 da serie fibonacci deve ser   1",algoritmo.calculaFibonacci(2) == 1);<br />  assertTrue("elemento  3 da serie fibonacci deve ser   2",algoritmo.calculaFibonacci(3) == 2);  <br />  assertTrue("elemento  4 da serie fibonacci deve ser   3",algoritmo.calculaFibonacci(4) == 3);<br />  assertTrue("elemento  5 da serie fibonacci deve ser   5",algoritmo.calculaFibonacci(5) == 5);<br />  assertTrue("elemento  6 da serie fibonacci deve ser   8",algoritmo.calculaFibonacci(6) == 8);<br />  assertTrue("elemento  7 da serie fibonacci deve ser  13",algoritmo.calculaFibonacci(7) == 13);  <br />  assertTrue("elemento 11 da serie fibonacci deve ser  89",algoritmo.calculaFibonacci(11) == 89);<br />  assertTrue("elemento 13 da serie fibonacci deve ser 223",algoritmo.calculaFibonacci(13) == 233);  <br /> }<br /> <br /> public void testCalculaFatorial() throws Exception{<br />  assertTrue("Fatorial de  1 deve ser        1",algoritmo.calculaFatorial(1) == 1);<br />  assertTrue("Fatorial de  2 deve ser        2",algoritmo.calculaFatorial(2) == 2);<br />  assertTrue("Fatorial de  3 deve ser        6",algoritmo.calculaFatorial(3) == 6);<br />  assertTrue("Fatorial de  4 deve ser       24",algoritmo.calculaFatorial(4) == 24);<br />  assertTrue("Fatorial de  5 deve ser      120",algoritmo.calculaFatorial(5) == 120);<br />  assertTrue("Fatorial de  6 deve ser      720",algoritmo.calculaFatorial(6) == 720);<br />  assertTrue("Fatorial de 10 deve ser 3628800L",algoritmo.calculaFatorial(10) == 3628800L);  <br /> }<br />}</code></pre><br /><br />Uma ideia sobre o JUnit pode ser encontrada aqui: [ http://guj.com.br/java.tutorial.artigo.40.1.guj ], alias o guj, na sessão de tutoriais, explica varias coisas, é ótimo material de referência!<br /><br />Ok, vc tem a interface que vc deve respeitar e um arquivo de teste. Vamos falar do arquivo de build do ant.<br /><br /><pre><code>&lt;project name="Meu Projeto" basedir="." default="dist"&gt;<br />        &lt;description&gt;<br />                Aprendendo a fazer um build.xml para o ant<br />        &lt;/description&gt;<br /><br />        &lt;property name="lib"   location="lib"/&gt;<br />        &lt;property name="src"   location="src/java"/&gt;<br />        &lt;property name="test"  location="src/test"/&gt;<br /><br />        &lt;property name="build" location="build"/&gt;<br />        &lt;property name="dist"  location="dist"/&gt;<br /><br />        &lt;path id="classpath.test"&gt; <br />                &lt;pathelement location="${test}" /&gt;<br />                &lt;pathelement location="${build}" /&gt;<br />                &lt;pathelement location="${lib}/junit-4.4.jar" /&gt;<br />        &lt;/path&gt;<br /><br />        &lt;target name="init"&gt;<br />                &lt;!-- Create the time stamp --&gt;<br />                &lt;tstamp/&gt;<br />                &lt;!-- Create the build directory structure used by compile --&gt;<br />                &lt;mkdir dir="${build}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="compile" depends="init" description="compile the source " &gt;<br />                &lt;!-- Compile the java code from ${src} into ${build} --&gt;<br />                &lt;javac srcdir="${src}" destdir="${build}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="dist" depends="compile" description="generate the distribution" &gt;<br />                &lt;!-- Create the distribution directory --&gt;<br />                &lt;mkdir dir="${dist}/lib"/&gt;<br /><br />                &lt;!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file --&gt;<br />                &lt;jar jarfile="${dist}/lib/Algortimo-${DSTAMP}.jar" basedir="${build}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="clean" description="clean up" &gt;<br />                &lt;!-- Delete the ${build} and ${dist} directory trees --&gt;<br />                &lt;delete dir="${build}"/&gt;<br />                &lt;delete dir="${dist}"/&gt;<br />        &lt;/target&gt;<br /><br />        &lt;target name="test" depends="compile"&gt;<br />                &lt;javac srcdir="${test}"&gt;<br />                        &lt;classpath refid="classpath.test"/&gt;<br />                &lt;/javac&gt;<br />                &lt;junit&gt;<br />                        &lt;classpath refid="classpath.test" /&gt;<br />                        &lt;formatter type="brief" usefile="false" /&gt;<br />                        &lt;test name="AlgoritmoTeste"/&gt;<br />                &lt;/junit&gt;<br />        &lt;/target&gt;<br />&lt;/project&gt;<br /></code></pre><br /><br />A utilização desse arquivo é muito simples, não se amedronte pelo tamanho do arquivo, o formato xml do ant é bizarro e verboso, sou muito mais um Makefile, porém uma vez com ele feito basta ir adicionando coisas "com cuidado". Sem falar que tudo tem documentação oficial cheia de exemplos, só não aprende quem <span style="font-weight:bold;">não</span> quer.<br /><br />$ ant <br />isso deve compilar a sua classe e gerar um jar (pode ser util no futuro).<br /><br />$ ant clean<br />limpa os diretorios que vc acabou de criar com as suas paradas compiladas.<br /><br />$ ant test<br />compila e executa os testes unítarios.<br /><br />É claro que vc vai dizer, e agora??? Bom, veja isso:<br /><br /><pre><code>public class SuaClasse implements Algoritmo{<br />        public boolean ehPar(int numero){return false;}<br />        public int calculaModulo(int numero){ return -1;}<br />        public int calculaFibonacci(int elemento){return -1;}<br />        public long calculaFatorial(int numero){return -1;}<br />}</code></pre><br /><br />Olha que legal! Uma classe que tem o minimo pra compilar! Agora vamos testar...<br /><br /><pre>$ ant test<br />Buildfile: build.xml<br /><br />init:<br />    [mkdir] Created dir: /home/GLOBO.COM/peczenyj/test/junit/build<br /><br />compile:<br />    [javac] Compiling 2 source files to /home/GLOBO.COM/peczenyj/test/junit/build<br /><br />test:<br />    [javac] Compiling 1 source file<br />    [junit] Testsuite: AlgoritmoTeste<br />    [junit] Tests run: 4, Failures: 4, Errors: 0, Time elapsed: 0.005 sec<br />    [junit] <br />    [junit] Testcase: testEhPar(AlgoritmoTeste):        FAILED<br />    [junit] 2 deve ser par<br />    [junit] junit.framework.AssertionFailedError: 2 deve ser par<br />    [junit]     at AlgoritmoTeste.testEhPar(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Testcase: testCalculaModulo(AlgoritmoTeste):        FAILED<br />    [junit] modulo de  3 deve ser 3<br />    [junit] junit.framework.AssertionFailedError: modulo de  3 deve ser 3<br />    [junit]     at AlgoritmoTeste.testCalculaModulo(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Testcase: testCalculaFibonacci(AlgoritmoTeste):     FAILED<br />    [junit] elemento  0 da serie fibonacci deve ser   0<br />    [junit] junit.framework.AssertionFailedError: elemento  0 da serie fibonacci deve ser   0<br />    [junit]     at AlgoritmoTeste.testCalculaFibonacci(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Testcase: testCalculaFatorial(AlgoritmoTeste):      FAILED<br />    [junit] Fatorial de  1 deve ser        1<br />    [junit] junit.framework.AssertionFailedError: Fatorial de  1 deve ser        1<br />    [junit]     at AlgoritmoTeste.testCalculaFatorial(Unknown Source)<br />    [junit] <br />    [junit] <br />    [junit] Test AlgoritmoTeste FAILED<br /><br />BUILD SUCCESSFUL<br />Total time: 1 second</pre><br /><br />Agora basta escrever codigo de verdade na SuaClasse e testar, estara pronto quando TUDO estiver passando. São 4 métodos básicos, sabendo lidar com variaveis locais, if e for, vc consegue muita coisa.<br /><br />Se eu fosse professor eu daria exercícios assim: o projeto deveria compilar e todos os testes deveriam passar senão o aluno leva 0. A nota viria de acordo com o que eu espero, posso usar um EMMA e ver a cobertura de código, posso avaliar a presença de um Javadoc que preste, etc.<br /><br />Enfim, eu seria um professor muito malvado }-)<br /><br />Não perca a parte 2 <a href="http://pacman.blog.br/2008/08/voltas-s-aulas-e-o-java-parte-2.html">aqui</a>, e uma introdução ao TDD <a href="http://pacman.blog.br/2008/08/test-driven-development-parte-1.html">aqui</a>.</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Marcelo</div>
+<div class='content'>
+Muito bom o post, parabéns. Na minha opinião todo professor poderia ser "ruim" desse jeito.</div>
+</div>
+<div class='comment'>
+<div class='author'>Rafael Ponte</div>
+<div class='content'>
+Excelente post, parabéns!<BR/><BR/>Infelizmente muitos professores se preocupam mais com telinhas e "firulas" do que o que é importante na disciplina, pior é que muitos destes professores nunca nem ouviram falar sobre TDD ou mesmo testes unitários!</div>
+</div>
+<div class='comment'>
+<div class='author'>Guilherme Gall</div>
+<div class='content'>
+Está aí uma coisa que sempre achei errado e vi acontecer várias vezes com mais de um professor onde estudo: o cara começa ensinando bibliotecas para desenvolvimento de aplicações gráficas e detalhes específicos de determinada linguagem para uma galera que não sabe nada (e quando digo que não sabe nada digo que não sabem nem definir o termo) de algoritmos, ou herança e polimorfismo por exemplo.<BR/><BR/>Terminam as matérias que envolvem programação sabendo como fazer sobrecarga de operadores, mas implementando toda a lógica de um programa dentro de uma única classe com métodos static. Sabem fazer janelas com botões bonitinhos, mas se matam para implementar a lógica do programa.<BR/><BR/>Ficaria feliz se minha primeira aula de programação fosse no esquema do seu post. Sempre gostei de brincar com os exercícios propostos em sala, mas o cara era tão inflexível que certo dia veio me pedir para trocar de editor de texto, porque o que eu estava utilizando era complicado demais (vim) e me confundiria (wtf?). Tive aulas bastante boas depois, com um cara que valorizava o que é realmente essencial, mas alguns de meus colegas não tiveram a mesma sorte e continuaram tendo aulas desse tipo durante vários semestres.<BR/><BR/>Triste é ver o camarada que me pediu para trocar de editor de texto sendo citado como "excelente professor para quem está começando". :-|</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+É aquilo, ou se aprende por necessidade ou pq se gosta da parada. Eu propus algo que, se alguem gosta de programar, vai se amarrar em fazer.<BR/><BR/>Mas tem quem <I>cague</I> pra isso. Paciência, depois vai pegar um estágio onde vai ter que fazer algo <B>muito</B> pior e sem internet pra poder postar as dúvidas!</div>
+</div>
+<div class='comment'>
+<div class='author'>tiago_stos</div>
+<div class='content'>
+Concordo como Roger, professor que faz aluno pensar e aprender algo útil é visto como professor ruim, que não sabe ensinar. Caso verídico de um professor do semestre passado.<BR/><BR/>Interessante notar que alguns professores que fazem os alunos pensarem mas ensino coisas inúteis não tem fama tão ruim...<BR/><BR/>Agora, Tiago, vc deveria dar aulas para alguns professores sobre como ensinar de verdade... hehe<BR/><BR/>Muito bom.</div>
+</div>
+<div class='comment'>
+<div class='author'>Roger Leite</div>
+<div class='content'>
+É Tiago, você seria um professor malvado e muito odiado, porque, seguindo a experiência acadêmica que tive, todo professor que ensina algo útil, e faz os alunos pensarem, geralmente caem naquela listinha (de troca de professor) que vai pra secretaria.<BR/><BR/>Pelo menos foi isso que eu vi acontecer. :(<BR/><BR/>De qualquer maneira, concordo com o seu post, e se um dia eu der aula, vou seguir a dica !</div>
+</div>
+<div class='comment'>
+<div class='author'>CMilfont</div>
+<div class='content'>
+Tiago, a academia não é para você. Você seria uam vergonha para seus colegas de "d[e]ocência".<BR/>Onde já se viu utilizar Junit, ant e essas bizarrices em sala de aula?<BR/>Cadê o bom e velho pascal? [engraçado que tem aluno do 5º semestre ainda chamando de pascoal]<BR/>Cadê os System.out.println que todo sistema de vergonha tem?<BR/>:)<BR/>Tirando a brincadeira, muito bom seu artigo!</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Falta o convite de alguma instituição de ensino, de preferência uma que não dê bola pras tais "Certificações".</div>
+</div>
+<div class='comment'>
+<div class='author'>Rafael Carneiro</div>
+<div class='content'>
+Você já está indo no caminho correto... quando será professor mesmo? :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Tenho que dar o primeiro exemplo }-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Albineli Motta</div>
+<div class='content'>
+Pra mim você está sendo bonzinho, pois você escreveu os testes pros alunos. Assim fica mole.</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

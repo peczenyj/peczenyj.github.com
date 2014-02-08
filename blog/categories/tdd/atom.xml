@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: TDD | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/tdd/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Testable & Untestable Code]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/08/testable-untestable-code/"/>
+    <updated>2008-08-08T14:29:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/08/testable-untestable-code</id>
+    <content type="html"><![CDATA[<div class='post'>
+Leitura recomendada:<br /><br /><a href="http://misko.hevery.com/2008/07/24/how-to-write-3v1l-untestable-code/">http://misko.hevery.com/2008/07/24/how-to-write-3v1l-untestable-code/</a><br /><a href="http://www.testingreflections.com/node/view/7221">http://www.testingreflections.com/node/view/7221</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Guilherme Gall</div>
+<div class='content'>
+Estou achando bem interessante a proposta do TDD. É algo que parece ser importante e que infelizmente não é visto na faculdade. Continue postando sobre isso sempre que é bem legal. Se puder, indique algum livro sobre o assunto.<BR/><BR/>Saudações</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Voltas às Aulas e o Java - parte 2]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/07/voltas-s-aulas-e-o-java-parte-2/"/>
+    <updated>2008-08-07T17:43:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/07/voltas-s-aulas-e-o-java-parte-2</id>
+    <content type="html"><![CDATA[<div class='post'>
+Existe o clássico problema de determinar se um aluno passou ou não de ano quando são informados as notas e o número de faltas.<br /><br />Vejamos: <br />1) O número de faltas é acima do permitido?. Aqui entra um <span style="font-weight:bold;">if</span> dos bons com uma comparação numérica, quando um número é maior ou igual a outro.<br />2) A média é basicamente somar as X notas e dividir por X (se for média aritmética). Somar e dividir são operações matemáticas básicas.<br /><br />Uma forma de fazer é:<br /><code> if( numero_de_faltas &gt; maximo_de_faltas_toleradas) {<br />   // reprovado por faltas<br />} else if ( media_do_aluno &lt; media_para_passar ){<br />  // reprovado por nota<br />} <br />// se nem um nem outro, esta aprovado<br /></code><br /><br />O ruim dessa abordagem é que o aluno estar aprovado é uma condição "que sobra". Se passarmos a focar a aprovação do mesmo ficaria assim:<br /><br /><code> if( media_do_aluno &gt;= media_para_passar && numero_de_faltas &lt;= maximo_de_faltas_toleradas) {<br />   // aprovado!<br />} else {<br />  // reprovado!<br />}</code><br /><br />É claro que eu posso que eu posso querer saber o motivo pelo qual o aluno foi reprovado:<br /><br /><code> if( media_do_aluno &gt;= media_para_passar && numero_de_faltas &lt;= maximo_de_faltas_toleradas) {<br />   // aprovado!<br />} else if(numero_de_faltas &gt; maximo_de_faltas_toleradas){<br />   // reprovado pelo número de faltas: ignoro a média.<br />} else {<br />  // aqui só sobra a reprovação por nota, <br />  // basta fazer a tabela-verdade dessas expressões<br />}</code><br /><br />Se o foco do professor for o algoritmo, isso é o que deveria ser analisado. Quem implementa corretamente um método que recebe X notas e um número de faltas e consegue responder a essas perguntas consegue descrever facilmente os casos de teste para verificar se a implementação corresponde ao que se espera.<br /><br />Um programa que tenha algum tipo de interação (seja Swing ou console) ajuda a fazer um macarrão de código, mesclando o algoritmo com o controle de estado dos "menuzinhos". No fim vemos laços de repetição aonde não são necessários, calculo de média errado, etc.<br /><br />Ok, não acho que um marinheiro de primeira viagem devesse começar por JUnit, mas uma com boa noção dos fundamentos da linguagem e evitando a interação desnecessária com o usuario (poderia ser usado até os parâmetros do main), acredito num melhor desempenho. O risco é o aluno acreditar que java  é dificil ou que tudo se resume a getters/setters e gigantescos try/catch's onde as exceptions são varridas pra debaixo do tapete. <br /><br />Eu colocaria TDD num segundo momento, mas ai sem perdão, ensinando o caboclo a fazer do jeito certo o quanto antes. O que é dificil se eles conseguem passar sem saber fazer aritmética básica.</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test Driven Development - parte 1.]]></title>
+    <link href="http://pacman.blog.br/blog/2008/08/06/test-driven-development-parte-1/"/>
+    <updated>2008-08-06T14:31:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/08/06/test-driven-development-parte-1</id>
+    <content type="html"><![CDATA[<div class='post'>
+Veja este código:<br /><br /><pre><code> public void testEhPar() throws Exception{<br />  assertTrue("2 deve ser par",algoritmo.ehPar(2));<br />  assertTrue("4 deve ser par",algoritmo.ehPar(4));<br />  assertTrue("6 deve ser par",algoritmo.ehPar(6));<br />  <br />  assertTrue("1 NAO deve ser par",!algoritmo.ehPar(1));<br />  assertTrue("3 NAO deve ser par",!algoritmo.ehPar(3));<br />  assertTrue("5 NAO deve ser par",!algoritmo.ehPar(5));  <br /> }</code></pre><br /><br />Dentro de uma classe de teste, usando o framework <a href="http://junit.sourceforge.net/#Getting">JUnit</a>, a leitura dessas linhas é a seguinte:<br /><br />Eu tenho um objeto chamado <span style="font-style:italic;">algortimo</span>.<br />A chamada algoritmo.ehPar(2) deve retornar <span style="font-weight:bold;">true</span>, pois 2 é par, e este método informa se o parâmetro informado é, ou não, par.<br />O método <span style="font-weight:bold;">assertTrue</span> recebe dois parâmetros: uma mensagem informando o significado deste teste, e o resultado do mesmo.<br /><br />Se o método estivesse com algum problema e retornasse false, isso:<br /><br />assertTrue("2 deve ser par",algoritmo.ehPar(2));<br /><br />seria o mesmo que<br /><br />assertTrue("2 deve ser par",false);<br /><br />Logo, o teste falha, pois <span style="font-weight:bold;">2 deve ser par</span>.<br /><br />Esta é uma forma <span style="font-style:italic;">programática</span> de garantir o comportamento do código que eu desenvolvo: testando. Se o meu método só depende dos parâmetros informados, é muito simples verificar o seu funcionamento.<br /><br />Desenvolvendo os testes antes de implementar o código, tendo apenas as assinaturas dos métodos (por isso recorri a uma interface <a href="http://pacman.blog.br/2008/08/voltas-s-aulas-e-o-java.html">aqui</a>, lembra?), eu posso pensar nos comportamentos esperados e, então, vou desenvolvendo até que todos os testes estejam passando.<br /><br />Não é nada fácil, funciona melhor quando o projeto que estás desenvolvendo está começando, porém os resultados são excelentes: veja o quanto de tempo estás economizando! Se tu pretendes determinar se um código teu está funcionando por programas que perguntam os valores, escrever <br /><br /><pre>$ ant clean test</pre><br /><br />é muito mais rápido! <br /><br />O problema surge quando queremos fazer algo complexo, pois a dificuldade de testar mostra problemas na arquitetura adotada, por exemplo. Quanto temos objetos que tem objetos, herança, polimorfismo, tecnicas mais avançadas podem ser usadas como usar Mocks de objetos (e prover os mecanismos para injetar estes Mocks).<br /><br />No caso desse exemplo, esta é uma solução:<br /><pre><code>public boolean ehPar(int numero){<br />      return numero % 2 == 0;<br />}</code></pre><br /><br />Muitos alunos desconhecem as operações de divisão e módulo entre inteiros. O 1, inteiro, dividido por 2, inteiro, não é 0.5, (em java), e sim 0, pois este é o resultado da divisão inteira. O resto da divisão, simbolizado por %, retorna 1. Dessa forma, o resto da divisão de um numero par por 2 é 0, caso contrario é um número inteiro. São operações básicas que precisam ser dominadas. Repare que eu fiz um código que funcione, não tentei nada mais maquiavélico que dê 0.0001 milissegundos mais rápido. <a href="http://gc.blog.br/2008/01/08/a-falacia-da-otimizacao-prematura/">Evite a otimização precoce</a>.<br /><br />Programar profissionalmente é uma tarefa de <span style="font-weight:bold;">muita</span> responsabilidade. Desenvolver testes para garantir a qualidade provê excelentes resultados a longo prazo.</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Sim sim, escrevi errado!</div>
+</div>
+<div class='comment'>
+<div class='author'>OLP</div>
+<div class='content'>
+"caso contrario é um número inteiro" não seria "caso contrario o numero é impar" ?</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TDD com Perl]]></title>
+    <link href="http://pacman.blog.br/blog/2008/05/02/tdd-com-perl/"/>
+    <updated>2008-05-02T15:00:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/05/02/tdd-com-perl</id>
+    <content type="html"><![CDATA[<div class='post'>
+É possivel fazer Test Driven Development com Perl? Mas claro :)<br /><br />Artigo interessante sobre <a href="http://perldoc.perl.org/Test/More.html">Test::More</a>:<br /><a href="http://www.testingreflections.com/node/view/5333">http://www.testingreflections.com/node/view/5333</a><br /><br />Tutorial bem sucinto:<br /><a href="http://www.wgz.org/chromatic/perl/IntroTestMore.pdf">http://www.wgz.org/chromatic/perl/IntroTestMore.pdf</a><br /><br />Excelente apresentação:<br /><a href="http://wellington.pm.org/archive/200606/tdd/">http://wellington.pm.org/archive/200606/tdd/</a></div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Trabalho que é coisa séria ninguem comenta... ;-)</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testes Unitários com VBScript]]></title>
+    <link href="http://pacman.blog.br/blog/2007/12/03/testes-unitrios-com-vbscript/"/>
+    <updated>2007-12-03T13:49:00-02:00</updated>
+    <id>http://pacman.blog.br/blog/2007/12/03/testes-unitrios-com-vbscript</id>
+    <content type="html"><![CDATA[<div class='post'>
+Nas ultimas semanas, tive que aprender VBScript por conta de alguns testes que estão por vir. A sintaxe é bem estranha, mas fazer o que...<br /><br />Entretanto é simples o suficiente para se desenvolver pequenas rotinas e, de quebra, aprender boas praticas de programação, como TDD, no exemplo abaixo:<br /><br /><pre><code>' Função a ser testada<br />' EhPrimo determina se um determinado número inteiro é primo ou não<br />Function EhPrimo(numero)<br />   '<br />   'coloque o codigo aqui :)<br />   '<br />   EhPrimo=false ' so pra retornar algo...<br />End Function<br /><br />'Coloquei o nome Test para ficar mais facil :)<br />Sub Test( objQuery, strMessage ) <br />   If Not objQuery Then<br />    WScript.Echo VbCrlf & "ERRO: " & strMessage<br />    WScript.Quit 'no primeiro teste errado...<br />   End If<br />End Sub<br /><br />' Testando primos<br />Primos = array(2,3,5,7,11)<br />For Each Numero  In Primos<br />  Test EhPrimo(Numero),"Numero " & Numero & " deve ser primo!"<br />Next<br /><br />' Testando _nao_ primos<br />NaoPrimos = array(4,6,8,9,10)<br />For Each Numero In NaoPrimos<br />  Test (Not EhPrimo(Numero)),"Numero " & Numero & " NAO deve ser primo!"<br />Next<br /><br />' Testando outras coisas<br />Test (Not EhPrimo( 0)),"Numero  0 NAO deve ser primo!"<br />Test (Not EhPrimo( 1)),"Numero  1 NAO deve ser primo!"<br />Test (Not EhPrimo(-1)),"Numero -1 NAO deve ser primo!"<br /><br /><br />WScript.Echo VbCrlf & "Pronto, passou tudo!"</code></pre><br /><br />Pronto, agora <br /><br />Qual a vantagem dessa abordagem?<br /> 1) vc se obriga a testar o seu código <br /> 2) vc descobre quais parametros são uteis nas suas funções<br /> 3) vc especifica o comportamento das suas funções ANTES de implementa-la:)</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>NetWalker</div>
+<div class='content'>
+Paranóia minha, mas código VB sempre me pareceu como um texto que abriu com erros... :D</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

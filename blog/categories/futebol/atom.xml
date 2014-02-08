@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: futebol | Peczenyj's Blog]]></title>
+  <link href="http://pacman.blog.br/blog/categories/futebol/atom.xml" rel="self"/>
+  <link href="http://pacman.blog.br/"/>
+  <updated>2014-02-08T16:51:23-02:00</updated>
+  <id>http://pacman.blog.br/</id>
+  <author>
+    <name><![CDATA[Tiago Peczenyj]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tabela do Brasileirão 2008 com links + sed]]></title>
+    <link href="http://pacman.blog.br/blog/2008/06/18/tabela-do-brasileiro-2008-com-links-sed/"/>
+    <updated>2008-06-18T15:15:00-03:00</updated>
+    <id>http://pacman.blog.br/blog/2008/06/18/tabela-do-brasileiro-2008-com-links-sed</id>
+    <content type="html"><![CDATA[<div class='post'>
+O sed é um processador de texto muito versátil.<br /><br />O links é um browser modo texto com features tão interessantes quanto do antigo lynx.<br /><br />Ano passado eu <a href="http://peczenyj.blogspot.com/2007/06/classificao-do-brasileiro-via-shell.html">postei</a> como imprimir a tabela do brasileirão com um one liner interessante. Agora eu resolvi beber de outra fonte:<br /><br /><pre><code>#!/bin/bash<br />TIME=Internacional<br />COLOR=$(echo -ne '\e[31;1m&\e[m')<br />URL=http://globoesporte.globo.com/Esportes/Futebol/Classificacao/0,,ESP0-9827,00.html<br />links --dump ${URL} | sed -r 's/\[[0-9]*\]//;/(^[0-9]|J jogos)/!d' | sed "s/${TIME}/${COLOR}/<br />         1a-----Libertadores----------<br />         4a-----Pre-Libertadores------<br />         5a-----Sul-Americana---------<br />        13a---------------------------<br />        17a-----Rebaixado-------------"</pre></code><br /><br />O resultado não é tão bom quanto o do ano passado, é verdade, mas não deixa de ser uma alternativa</div>
+
+
+<h2>Comments</h2>
+
+
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Alan Carvalho de Assis</div>
+<div class='content'>
+Ola Tiago,<BR/>gostei do script, muito fera.<BR/><BR/>Um abraço,<BR/><BR/>Alan</div>
+</div>
+<div class='comment'>
+<div class='author'>Tiago Peczenyj</div>
+<div class='content'>
+Dê tempo ao tempo... ;-)</div>
+</div>
+<div class='comment'>
+<div class='author'>Ivan Brasil Fuzzer</div>
+<div class='content'>
+Com poucas alterações no script até o resultado melhora.<BR/>Os bugs encontrados estão na cor e no time!<BR/>Mudando para azul e Gremio fica bem melhor :-P<BR/><BR/>Abraços.</div>
+</div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>
