@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Example Page for First Party Cookie</title>
+  </head>
+  <body>
+
+    <div id="content">
+    </div>
+
+
+  <script type="text/javascript">
+    var wamid = '000'; /* Wam Account ID */
+    var typ = '1'; /* Event Type default 1 */
+    var Wvar = ["key2:efg","key1:abc","key4:1","key4:2" ,"key3:val1" ,"key3:val2","key3:val3","key3:val4"];
+    var WfirstParty = true; /* will enable first party cookies */
+    /* var WfirstPartyConf = { // if set, can customize the first part js component, instead use the defaults below
+      cookieName:           "AFFICHE_C",
+      cookieTTL:            90*24*60*60*1000, // 90 days
+      cookiePath:           "/",
+      cookieDomain:         "auto", // or can be .foo.bar, etc
+    	cookieSecure:         false,
+      cookieSameSite:       "", // or None, etc
+      shouldRefreshCookie:  false,
+    	firstPartyIDQueryArg: "first_party_id"
+    }; */
+    (function () {
+      var w = document.createElement('script');
+      w.type = 'text/javascript';
+      w.src = '//cstatic.weborama.fr/js/wam/preprod/wamfactory_dpm.wildcard.min.js?rnd=' + new Date().getTime();
+      // w.src = '//pacman.blog.br/wamfactory_dpm.wildcard.min.js?rnd=' + new Date().getTime();
+      w.async = true
+
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(w, s);
+    })();
+  </script>
+
+  <a href="#" onClick="window.wamf.eventSend('2','EventKey','EventValue');">Event</a>
+  </body>
+</html>
