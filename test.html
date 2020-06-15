@@ -18,10 +18,10 @@
       cookieTTL:            90*24*60*60*1000, // 90 days
       cookiePath:           "/",
       cookieDomain:         "auto", // or can be .foo.bar, etc
-    	cookieSecure:         false,
-      cookieSameSite:       "", // or None, etc
+      cookieSecure:         false,
+      cookieSameSite:       "Strict", // or None, etc
       shouldRefreshCookie:  false,
-    	firstPartyIDQueryArg: "first_party_id"
+      firstPartyIDQueryArg: "first_party_id"
     }; */
     (function () {
       var w = document.createElement('script');
