@@ -1,0 +1,31 @@
+<html>
+
+<head>
+  <title>test gdpr with tcfv1 + Chandago CMP</title>
+
+<!-- Chandago CMP Builder start -->
+<script src="https://cdn.appconsent.io/6/34/S1pwpVQsX/notice.js"></script>
+<script type="text/javascript">
+appConsent.isConsentsGiven(function(n,t) {
+	0===n && t ? appConsent.getLastStatus(
+		function(n,t) {
+			if(0 === n && t && 0 !== t.length) {
+				var e=t.filter(function(n) {
+					return n.state
+				});
+				appConsent.syncDataLayer(e)
+			}
+		}) : 0 !==n || t ? console.log("[WARN] Error: cannot dial with collector") : appConsent.initialize()
+});
+</script>
+<!-- Chandago CMP Builder end -->
+
+</head>
+
+<body>
+
+<p>test gdpr with tcfv1 + Chandago CMP</p>
+
+</body>
+
+<html>
