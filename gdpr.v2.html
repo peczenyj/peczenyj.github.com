@@ -36,7 +36,7 @@
     var typ = '1'; /* Event Type default 1 */
     var Wvar = ["key2:efg","key1:abc","key4:1","key4:2" ,"key3:val1" ,"key3:val2","key3:val3","key3:val4"];
     
-    (function () {
+    setTimeout(function () {
       var w = document.createElement('script');
       w.type = 'text/javascript';
       // w.src = '//cstatic.weborama.fr/js/js/wam/preprod/wamfactory_dpm.wildcard.min.js';
@@ -45,7 +45,7 @@
 
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(w, s);
-    })();
+    }, 3000);
     </script>
 
   <a href="#" onClick="window.wamf.eventSend('2','EventKey','EventValue');">Event</a>
