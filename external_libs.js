@@ -267,17 +267,24 @@ var Utils = {
     return params;
   },
   decorateURL: function(url, callback) {
+    console.log("decorateURL", url);
     // 1. check gdpr parameters in url, if any GO
     var gdprParams = this.extractGDPRParameters(url);
+    console.log("decorateURL find params in url?", gdprParams);
     // 2. check gdpr parameters in document.location, if any COPY
     if (gdprParams == null) {
+      console.log("decorateURL via document.location.search", document.location.search);
       gdprParams = this.extractGDPRParameters(document.location.search);
+      console.log("decorateURL find params in document.location?", gdprParams);
     }
 
     if (gdprParams == null) {
+      console.log("find no gdpr params, try to speack with cmp");
       // 3. check if cmp v2 and integrate async (!)
       if (typeof window.__tcfapi == 'function') {
+        console.log("found TCF V2 cmp");
         window.__tcfapi('getTCData', 2, function(response, success) {
+          console.log('getTCData', response, success);
           var checkPurposeIDs = function(response, purposeIDs) {
             for (i in purposeIDs) {
               if (purposeIDs.hasOwnProperty(i)) {
@@ -295,13 +302,16 @@ var Utils = {
           } else if (!response['gdprApplies']) {
             url += "gdpr=0";
           } else if (response.eventStatus !== 'useractioncomplete' && !checkPurposeIDs(response, [1, 3, 4])) {
+            console.log("prepare callback for addEventListener");
             window.__tcfapi('addEventListener', 2, function(response, success) {
+              console.log('addEventListener', response, success);
               if (success && response != null) {
                 if (response.eventStatus == 'useractioncomplete') {
                   window.__tcfapi('removeEventListener', 2, function() {}, response.listenerId);
 
                   url += "gdpr=1&gdpr_consent=" + (response['tcString'] || "");
-
+  
+                  console.log("execute callback inside addEventListener for url", url)
                   callback(url);
                 }
               }
@@ -311,13 +321,16 @@ var Utils = {
           } else {
             url += "gdpr=1&gdpr_consent=" + (response['tcString'] || "");
           }
-
+  
+          console.log("execute callback inside getTCData for url", url)
           callback(url);
         });
         return;
         // 4. check if cmp v1 and integrate async (!)
       } else if (typeof window.__cmp == 'function') {
+        console.log("tcf v1 cmp found");
         window.__cmp('getConsentData', null, function(response, success) {
+          console.log('getConsentData', response, success);
           url += ((url.indexOf("?") == -1) ? "?" : "&");
           if (!success) {
             url += "gdpr=1&gdpr_cmp_failure=1";
@@ -326,6 +339,7 @@ var Utils = {
           } else {
             url += "gdpr=0"
           }
+          console.log("execute callback inside getConsentData for url", url)
           callback(url)
         });
         return;
@@ -336,6 +350,7 @@ var Utils = {
     }
 
     // fallback: call directly
+    console.log("execute callback as fallback for url", url);
     callback(url);
   }
 };
