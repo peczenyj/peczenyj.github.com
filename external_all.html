@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="external_libs.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var r = parseInt( Math.random() * 1000000 ), t = new Date().getTime();
+        var Config = {
+            cookieName: '_xttrk2_all',
+            cookieLifetime: 3,
+            cookies: ['_xttrk2_all', '_xttrk2', '_xttrk2_ids', '_xttrk2_mpub', '_xttrk2_uk'],
+            trackersSSL: {
+                'PIXEL': [
+                    'https://cm.g.doubleclick.net/pixel?google_nid=weborama_dmp&google_cm',
+                    'https://cr.frontend.weborama.fr/cr?key=appnexus&url=https%3A%2F%2Fsecure.adnxs.com%2Fgetuid%3Fhttps%3A%2F%2Fidsync.frontend.weborama.fr%2Fids%3Fkey%3Dappnexus_id%26value%3D%24UID'
+                ],
+                'IFRAME': [
+                    'https://aimfar.solution.weborama.fr/fcgi-bin/dispatch.fcgi?d.A=prx&g.r=' + r
+                ],
+                'JAVASCRIPT': [
+                    'https://wam.solution.weborama.fr/fcgi-bin/dispatch.fcgi?d.A=cj&d.k=graphinium'
+                ]
+            }
+        };
+
+        ( function ()
+        {
+            Utils.run( 10 );
+        } )();
+    </script>
+</body>
+
+</html>
