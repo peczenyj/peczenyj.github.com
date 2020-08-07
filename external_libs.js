@@ -252,7 +252,7 @@ var Utils = {
     if (questionMark === -1) {
       return null;
     }
-    var params = [],
+    var params = null,
       vars = url.substring(questionMark + 1).split('&');
     for (var i = 0; i < vars.length; i++) {
       var pair = vars[i];
