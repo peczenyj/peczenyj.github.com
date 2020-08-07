@@ -10,4 +10,4 @@
         document.body.appendChild(i);
       } catch (e) {}
       console.log('iframe ok');
-})
+}())
