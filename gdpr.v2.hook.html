@@ -21,8 +21,8 @@ function OptanonWrapper() {
       }
     }
   
-  
-    OneTrust.InsertScript('https://cstatic.weborama.fr/iframe/preprod/external_ids_sync.html?r' + new Date().getTime(), 'body', console.log, null, '2');
+    // InsertScript
+    OneTrust.InsertHtml('https://cstatic.weborama.fr/iframe/preprod/external_ids_sync.html?r' + new Date().getTime(), 'body', console.log, null, '2');
 }
   </script>
 <!-- OneTrust CMP Builder end -->
