@@ -22,7 +22,9 @@ function OptanonWrapper() {
     }
   
     // InsertScript
-    OneTrust.InsertHtml('https://cstatic.weborama.fr/iframe/preprod/external_ids_sync.html?r' + new Date().getTime(), 'body', console.log, null, '2');
+    var url = 'https://cstatic.weborama.fr/iframe/preprod/external_ids_sync.html?r' + new Date().getTime(),
+        html = '<iframe src="' + url + '"></iframe>';
+    OneTrust.InsertHtml(html, 'body', console.log, null, '2');
 }
   </script>
 <!-- OneTrust CMP Builder end -->
