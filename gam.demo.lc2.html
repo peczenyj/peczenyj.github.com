@@ -64,8 +64,6 @@
         console.log("updateDiv");
         document.getElementById("profile").innerText = localStorage.getItem(key) || "not found";
       }
-      
-      updateDiv();
     </script>  
   </head>
   <body>
@@ -77,6 +75,10 @@
       <button onClick="addToProfile('blue')">Add BLUE</button>
       <button onClick="addToProfile('green')">Add GREEN</button>
     </div>
+    
+    <script>
+      updateDiv();
+    </script>
     
     <!-- /1056029/test-for-code-333 -->
     <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
