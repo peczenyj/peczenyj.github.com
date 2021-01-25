@@ -35,7 +35,7 @@
       }
       function addToProfile(customSegment){
         console.log("addToProfile", customSegment)
-        var item = { value: {} }, itemStr = localStorage.getItem(key);
+        var item = { value: {}, expiration: "some date in the future" }, itemStr = localStorage.getItem(key);
         if(itemStr) {
           console.log("found previous profile", itemStr);
           item = JSON.parse(itemStr);
@@ -43,9 +43,9 @@
         var profile = item.value, cs = profile["custom_segments"];
         if(!cs) {
           console.log("no custom segment: should create it");
-          cs = [];
+          cs = new Set();
         }
-        cs.push(customSegment);
+        cs.add(customSegment);
         profile["custom_segments"] = cs;
         item.value = profile;
         console.log("update local storage key",key, "value", item);
@@ -54,7 +54,7 @@
       }
       function updateDiv(){
         console.log("updateDiv");
-        document.getElementById("profile").innerText = localStorage.getItem(key);
+        document.getElementById("profile").innerText = localStorage.getItem(key) || "not found";
       }
     </script>  
   </head>
