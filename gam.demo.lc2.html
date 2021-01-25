@@ -43,9 +43,17 @@
         var profile = item.value, cs = profile["custom_segments"];
         if(!cs) {
           console.log("no custom segment: should create it");
-          cs = new Set();
+          cs = [];
         }
-        cs.add(customSegment);
+        
+        var s = new Set();
+        for(i in cs) {
+          s.add(cs[i]);
+        }
+        s.add(customSegment);
+        
+        cs = Array.from(s);
+        
         profile["custom_segments"] = cs;
         item.value = profile;
         console.log("update local storage key",key, "value", item);
@@ -56,6 +64,8 @@
         console.log("updateDiv");
         document.getElementById("profile").innerText = localStorage.getItem(key) || "not found";
       }
+      
+      updateDiv();
     </script>  
   </head>
   <body>
