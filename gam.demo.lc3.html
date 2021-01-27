@@ -28,7 +28,13 @@
       }
       
       function setRAWData(profile){
+        var key = "webo_profile", item = {value: profile};
         console.log("*** setRAWData ***", profile);
+        
+        var strItem = JSON.stringify(item);
+        
+        console.log("localStorage.setItem",key, strItem);
+        localStorage.setItem(key, strItem);
       }
     </script>  
   </head>
