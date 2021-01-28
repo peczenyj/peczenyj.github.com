@@ -35,11 +35,24 @@
         
         console.log("localStorage.setItem",key, strItem);
         localStorage.setItem(key, strItem);
+        updateDiv();
+      }
+      function clearProfile(){
+        console.log("clearProfile key:", key);
+        localStorage.removeItem(key);
+        updateDiv();
+      }
+      function updateDiv(){
+        console.log("updateDiv");
+        document.getElementById("profile").innerText = localStorage.getItem(key) || "not found";
       }
     </script>  
   </head>
   <body>
-    <p>test webo_cs=...</p>
+    <div>test localStorage contains:<p id="profile"></p></div>
+    <div> 
+      <button onClick="clearProfile()">Clear Profile</button>
+    </div>  
 
     </pre>
     <!-- /1056029/test-for-code-333 -->
