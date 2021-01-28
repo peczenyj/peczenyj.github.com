@@ -44,6 +44,7 @@
         updateDiv();
       }
       function updateDiv(){
+        var key = "webo_profile";
         console.log("updateDiv");
         document.getElementById("profile").innerText = localStorage.getItem(key) || "not found";
       }
