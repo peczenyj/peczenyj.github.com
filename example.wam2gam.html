@@ -15,8 +15,8 @@
   <body>
     <p>please make sure you have no AFFICHE_W cookie</p>
     <script src="wam2gam.min.js?rnd=8343243242"></<script>
-    <script>
-
+    <script type="text/javascript">
+console.log(1);
             var conf = {
               debug: true,             // default is false
               ttl: 15 * 60 * 1000,     // default value
@@ -26,9 +26,9 @@
               wamid: 259,              // needed!
               instance_name: "weborama"  // to be possible call via jsonp
             };
-
+console.log(2);
             window.weborama = new WAM2GAM(conf);
-
+console.log(3);
             function callScript(url){
               var g = document.createElement('script');
               g.type = 'text/javascript';
@@ -38,12 +38,14 @@
 
               console.log("calling script url",url);
             }
-
+console.log(4);
             function callProfile(idcrm){
               weborama.tryGetUpdateProfileURL({
                 idcrm: idcrm
               }, callScript);
             }
+      
+      console.log(5);
   </script>
 
     <div>
