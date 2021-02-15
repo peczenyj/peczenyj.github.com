@@ -14,8 +14,40 @@
   </head>
   <body>
     <p>please make sure you have no AFFICHE_W cookie</p>
+    <script src="wam2gam.min.js"></<script>
+    <script>
+
+            var conf = {
+              debug: true,             // default is false
+              ttl: 15 * 60 * 1000,     // default value
+              key: "weborama_profile", // local storage key
+              base_url: "https://bsd.frontend.weborama.fr/bsd", // default base url
+              token: "JyqFfnyJvcF4",   // needed!
+              wamid: 259,              // needed!
+              instance_name: "weborama"  // to be possible call via jsonp
+            };
+
+            var weborama = new WAM2GAM(conf);
+
+            function callScript(url){
+              var g = document.createElement('script');
+              g.type = 'text/javascript';
+              g.src = url;
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(g, s);
+
+              console.log("calling script url",url);
+            }
+
+            function callProfile(idcrm){
+              weborama.tryGetUpdateProfileURL({
+                idcrm: idcrm
+              }, callScript);
+            }
+  </script>
+
     <div>
-      <button onClick="clearProfile()">Clear Profile</button><br/>
+      <button onClick="weborama.clearProfile()">Clear Profile</button><br/>
 
       <button onClick="callProfile('11111')">change to crm id 11111 - weboid blrVU0TAaAVu - custom segment: red</button><br/>
       <button onClick="callProfile('22222')">change to crm id 22222 - weboid z6afcHuqmc3P - custom segment: blue</button><br/>
@@ -25,38 +57,7 @@
     </div>
     <!-- /1056029/test-for-code-333 -->
     <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
-      <script src="wam2gam.min.js"></<script>
       <script>
-
-              var conf = {
-                debug: true,             // default is false
-                ttl: 15 * 60 * 1000,     // default value
-              	key: "weborama_profile", // local storage key
-                base_url: "https://bsd.frontend.weborama.fr/bsd", // default base url
-                token: "JyqFfnyJvcF4",   // needed!
-                wamid: 259,              // needed!
-                instance_name: "weborama"  // to be possible call via jsonp
-              };
-
-              var weborama = new WAM2GAM(conf);
-
-              function callScript(url){
-                var g = document.createElement('script');
-                g.type = 'text/javascript';
-                g.src = url;
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(g, s);
-
-                console.log("calling script url",url);
-              }
-
-              function callProfile(idcrm){
-                weborama.tryGetUpdateProfileURL({
-                  idcrm: idcrm
-                }, callScript);
-              }
-
-
         weborama.updateGAM(); // read from local storage and call GAM
 
         googletag.cmd.push(function() { googletag.display('div-gpt-ad-1611151950096-0'); });
