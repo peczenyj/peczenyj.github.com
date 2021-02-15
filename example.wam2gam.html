@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>GAM demo local storage #4</title>
+    <title>Example WAM2GAM</title>
 
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script type="text/javascript">
@@ -46,11 +46,16 @@
     <!-- /1056029/test-for-code-333 -->
     <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
       <script>
-        weborama.updateGAM(); // read from local storage and call GAM
+        googletag.cmd.push(function() {
+          var profile = weborama.getProfile(); // read from local storage
+          if(profile && profile["custom_segments"]) {
+            googletag.pubads().setTargeting("webo_cs", profile["custom_segments"]);
+          }
+        });
 
         googletag.cmd.push(function() { googletag.display('div-gpt-ad-1611151950096-0'); });
 
-        weborama.tryGetUpdateProfileURL({
+        weborama.fetchProfile({
           idcrm: '11111', // hard coded version, with RED custom segment
         }, callScript);
       </script>
