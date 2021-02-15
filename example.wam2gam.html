@@ -14,8 +14,8 @@
   </head>
   <body>
     <p>please make sure you have no AFFICHE_W cookie</p>
-    <script src="wam2gam.min.js?rnd=8343243242"></script>
-    <script type="text/javascript">
+    <script src="wam2gam.min.js"></<script>
+    <script>
             var conf = {
               debug: true,             // default is false
               ttl: 15 * 60 * 1000,     // default value
@@ -26,7 +26,7 @@
               instance_name: "weborama"  // to be possible call via jsonp
             };
 
-            var weborama = new WAM2GAM(conf);
+            window.weborama = new WAM2GAM(conf);
 
             function callScript(url){
               var g = document.createElement('script');
@@ -37,6 +37,7 @@
 
               console.log("calling script url",url);
             }
+
             function callProfile(idcrm){
               weborama.tryGetUpdateProfileURL({
                 idcrm: idcrm
@@ -55,11 +56,9 @@
     </div>
     <!-- /1056029/test-for-code-333 -->
     <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
-      <script type="text/javascript">
-        try {
-          weborama.updateGAM(); // read from local storage and call GAM
-        }catch(e) { console.log(e); }
-        
+      <script>
+        weborama.updateGAM(); // read from local storage and call GAM
+
         googletag.cmd.push(function() { googletag.display('div-gpt-ad-1611151950096-0'); });
       </script>
     </div>
