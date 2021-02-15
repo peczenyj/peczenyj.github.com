@@ -14,7 +14,7 @@
   </head>
   <body>
     <p>please make sure you have no AFFICHE_W cookie</p>
-    <script src="wam2gam.min.js"></<script>
+    <script src="wam2gam.min.js"></script>
     <script>
             var conf = {
               debug: true,             // default is false
@@ -26,7 +26,7 @@
               instance_name: "weborama"  // to be possible call via jsonp
             };
 
-            window.weborama = new WAM2GAM(conf);
+            var weborama = new WAM2GAM(conf);
 
             function callScript(url){
               var g = document.createElement('script');
