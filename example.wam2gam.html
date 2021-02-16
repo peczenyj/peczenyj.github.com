@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Example ProfileCacheManager</title>
+    <title>Example WAM2GAM</title>
 
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script type="text/javascript">
@@ -10,6 +10,17 @@
         googletag.defineSlot('/1056029/test-for-code-333', [333, 333], 'div-gpt-ad-1611151950096-0').addService(googletag.pubads());
         googletag.enableServices();
       });
+
+      /* // this substitute weborama.updateGAM()
+         // to be used when we should be fast
+      googletag.cmd.push(function() {
+        var data = JSON.parse(localStorage.getItem("webo_gam_targeting")) || {},
+        targeting = data["targeting"];
+        for(var key in targeting){
+          googletag.pubads().setTargeting(key, targeting[key]);
+        }
+      });
+      */
     </script>
   </head>
   <body>
@@ -26,7 +37,7 @@
         instance_name: "weborama"  // to be possible call via jsonp
       };
 
-      var weborama = new ProfileCacheManager(conf);
+      var weborama = new WAM2GAM(conf);
 
       function callScript(url){
         // TODO add gdpr url decoration
@@ -46,12 +57,7 @@
     <!-- /1056029/test-for-code-333 -->
     <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
       <script>
-        googletag.cmd.push(function() {
-          var profile = weborama.getProfileFromCache(); // read from local storage
-          if(profile && profile["custom_segments"]) {
-            googletag.pubads().setTargeting("webo_cs", profile["custom_segments"]);
-          }
-        });
+        weborama.updateGAM();
 
         googletag.cmd.push(function() { googletag.display('div-gpt-ad-1611151950096-0'); });
 
