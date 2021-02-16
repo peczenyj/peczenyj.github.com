@@ -34,10 +34,10 @@
         base_url: "https://bsd.frontend.weborama.fr/bsd", // default base url
         token: "JyqFfnyJvcF4",   // needed!
         wamid: 259,              // needed!
-        instance_name: "weborama"  // to be possible call via jsonp
+        instance_name: "wam2gam"  // to be possible call via jsonp
       };
 
-      var weborama = new WAM2GAM(conf);
+      var wam2gam = new WAM2GAM(conf);
 
       function callScript(url){
         // TODO add gdpr url decoration
@@ -57,11 +57,11 @@
     <!-- /1056029/test-for-code-333 -->
     <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
       <script>
-        weborama.updateGAM();
+        wam2gam.updateGAM();
 
         googletag.cmd.push(function() { googletag.display('div-gpt-ad-1611151950096-0'); });
 
-        weborama.updateLocalTargeting({
+        wam2gam.updateLocalTargeting({
           idcrm: '11111', // hard coded version, with RED custom segment
         }, callScript);
       </script>
