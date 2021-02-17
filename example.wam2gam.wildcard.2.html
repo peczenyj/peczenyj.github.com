@@ -2,17 +2,6 @@
   <head>
     <title>Example WAM2GAM with wamfactory wildcard #2</title>
 
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-    <script type="text/javascript">
-      window.googletag = window.googletag || {cmd: []};
- 
-      googletag.cmd.push(function() {
-        googletag.defineSlot('/1056029/test-for-code-333', [333, 333], 'div-gpt-ad-1611151950096-0').addService(googletag.pubads());
-        googletag.enableServices();
-      });
-    </script>
-    <!-- something else -->
-
     <script type='text/javascript'>
       var wamid = '000'; /* Wam Account ID */
       var typ = '1'; /* Event Type default 1 */
@@ -36,9 +25,20 @@
       // w.async = true;
       var body = document.getElementsByTagName('script')[0];
       body.parentNode.insertBefore(w,body);
+      console.log("finish include wildcard");
       })();
      </script>
-
+    
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script type="text/javascript">
+      window.googletag = window.googletag || {cmd: []};
+ 
+      googletag.cmd.push(function() {
+        googletag.defineSlot('/1056029/test-for-code-333', [333, 333], 'div-gpt-ad-1611151950096-0').addService(googletag.pubads());
+        googletag.enableServices();
+      });
+    </script>
+    <!-- something else -->
   </head>
   <body>
     <p>please make sure you have no AFFICHE_W cookie. using idcrm 22222 should present advertiser BLUE</p>
