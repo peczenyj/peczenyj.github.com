@@ -10,6 +10,17 @@
         googletag.defineSlot('/1056029/test-for-code-333', [333, 333], 'div-gpt-ad-1611151950096-0').addService(googletag.pubads());
         googletag.enableServices();
       });
+      
+      // this substitute weborama.updateGAM()
+      // to be used when we should be fast
+      googletag.cmd.push(function() {
+        console.log("using workaround");
+        var data = JSON.parse(localStorage.getItem("webo_gam_targeting")) || {},
+        targeting = data["targeting"];
+        for(var key in targeting){
+          googletag.pubads().setTargeting(key, targeting[key]);
+        }
+      });
     </script>
     <!-- something else -->
 
