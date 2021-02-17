@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Example WAM2GAM with wamfactory wildcard #3</title>
+
+    <script type='text/javascript'>
+      var wamid = '000'; /* Wam Account ID */
+      var typ = '1'; /* Event Type default 1 */
+      var Wam2gamConf = { // if set, enable the feature
+        debug: true,               // default is false
+        ttl: 1 * 60 * 1000,        // default value is 15 * 60 * 1000
+        key: "webo_gam_targeting", // default local storage key
+        baseUrl: "https://bsd.frontend.weborama.fr/bsd", // default base url
+        token: "JyqFfnyJvcF4",     // needed!
+        wamid: 259,                // needed!
+        idcrm: 22222               // needed!
+      };
+
+      /* Segments: Json object method */
+      var Wvar =  {"key1":"abc","key2":"efg","key4":["1","2"],"key3":["val1","val2","val3","val4"]};
+    </script>
+    </script src="//pacman.blog.br/wamfactory_dpm.wildcard.min.js?rnd=123456"></script>
+      
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script type="text/javascript">
+      window.googletag = window.googletag || {cmd: []};
+ 
+      googletag.cmd.push(function() {
+        googletag.defineSlot('/1056029/test-for-code-333', [333, 333], 'div-gpt-ad-1611151950096-0').addService(googletag.pubads());
+        googletag.enableServices();
+      });
+    </script>
+    <!-- something else -->
+  </head>
+  <body>
+    <p>please make sure you have no AFFICHE_W cookie. using idcrm 22222 should present advertiser BLUE</p>
+    <div>
+      <button onClick="wamf.clearCache()">Clear Profile Cache</button><br/>
+    </div>
+    <!-- /1056029/test-for-code-333 -->
+    <div id='div-gpt-ad-1611151950096-0' style='width: 333px; height: 333px;'>
+      <script>
+        googletag.cmd.push(function() { 
+          console.log("calling googletag.display(...)");
+          googletag.display('div-gpt-ad-1611151950096-0'); 
+        });
+      </script>
+    </div>
+  </body>
+</html>
