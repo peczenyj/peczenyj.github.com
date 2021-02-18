@@ -8,3 +8,5 @@ googletag.cmd.push(function() {
     googletag.pubads().setTargeting(key, targeting[key]);
   }
 });
+
+console.log("finish include wam2gam.standalone.js");
