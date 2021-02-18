@@ -12,7 +12,7 @@
         baseUrl: "https://bsd.frontend.weborama.fr/bsd", // default base url
         token: "JyqFfnyJvcF4",     // needed!
         wamid: 259,                // needed!
-        idcrm: 22222               // needed!
+        idcrm: 11111               // needed!
       };
 
       /* Segments: Json object method */
@@ -22,7 +22,7 @@
       var w = document.createElement("script");
       w.type = "text/javascript";
       w.src = document.location.protocol + "//pacman.blog.br/wamfactory_dpm.wildcard.min.js?rnd="+new Date().getTime();
-      // w.async = true;
+      w.async = true;
       var body = document.getElementsByTagName('script')[0];
       body.parentNode.insertBefore(w,body);
       console.log("finish include wildcard");
@@ -41,7 +41,7 @@
     <!-- something else -->
   </head>
   <body>
-    <p>please make sure you have no AFFICHE_W cookie. using idcrm 22222 should present advertiser BLUE</p>
+    <p>please make sure you have no AFFICHE_W cookie. using idcrm 11111 should present advertiser RED</p>
     <div>
       <button onClick="wamf.clearCache()">Clear Profile Cache</button><br/>
     </div>
