@@ -36,8 +36,11 @@
         baseUrl: "https://0.0.0.0:3000/bsd", // default base url
         token: "JyqFfnyJvcF4",     // needed!
         wamid: 259,                // needed!
-        idcrm: 11111,               // needed!
-        extraQueryArgs: "cookieless=1&useXdevice=1" // magic !
+        idcrm: 11111,              // needed!
+        extraQueryArgs: { 
+          cookieless: 1, // ignore/do not create AFFICHE_W cookies
+          useXdevice: 1, // use crossdevice 
+        }
       };
 
       /* Segments: Json object method */
