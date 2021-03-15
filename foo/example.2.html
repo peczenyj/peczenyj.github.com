@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Example WAM2GAM with wamfactory wildcard</title>
+    <title>Example WAM2GAM with wamfactory #2</title>
 
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script type="text/javascript">
@@ -27,19 +27,15 @@
   <body>
     
     <script type='text/javascript'>
-      var wamid = '000'; /* Wam Account ID */
+      var wamid = '259'; /* Wam Account ID */
       var typ = '1'; /* Event Type default 1 */
       var Wam2gamConf = { // if set, enable the feature
         debug: true,               // default is false
         ttl: 1 * 60 * 1000,        // default value is 15 * 60 * 1000
         key: "webo_gam_targeting", // default local storage key
-        baseUrl: "http://0.0.0.0:3000/bsd", // default base url
         token: "JyqFfnyJvcF4",     // needed!
-        wamid: 259,                // needed!
         idcrm: 11111,              // needed!
-        extraQueryArgs: { 
-          cookieless: 1, // ignore/do not create AFFICHE_W cookies
-        }
+        cookieless: true,          // ignore/do not create AFFICHE_W cookies
       };
 
       /* Segments: Json object method */
