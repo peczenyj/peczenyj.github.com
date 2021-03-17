@@ -15,7 +15,7 @@
       // to be used when we should be fast
       googletag.cmd.push(function() {
         console.log("using workaround");
-        var data = JSON.parse(localStorage.getItem("webo_gam_targeting")) || {},
+        var data = JSON.parse(localStorage.getItem("webo_wam2gam_entry")) || {},
         targeting = data["targeting"];
         for(var key in targeting){
           googletag.pubads().setTargeting(key, targeting[key]);
