@@ -15,7 +15,7 @@
       // to be used when we should be fast
       googletag.cmd.push(function() {
         console.log("using workaround");
-        var data = JSON.parse(localStorage.getItem("webo_gam_targeting")) || {},
+        var data = JSON.parse(localStorage.getItem("webo_wam2gam_entry")) || {},
         targeting = data["targeting"];
         for(var key in targeting){
           googletag.pubads().setTargeting(key, targeting[key]);
@@ -31,8 +31,6 @@
       var typ = '1'; /* Event Type default 1 */
       var Wam2gamConf = { // if set, enable the feature
         debug: true,               // default is false
-        ttl: 1 * 60 * 1000,        // default value is 15 * 60 * 1000
-        key: "webo_gam_targeting", // default local storage key
         token: "JyqFfnyJvcF4",     // needed!
         idcrm: 11111,              // needed!
         cookieless: true,          // ignore/do not create AFFICHE_W cookies
