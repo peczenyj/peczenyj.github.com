@@ -7,11 +7,14 @@
 <script src="https://cmp-cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="center-center-default-global">
 </script>
 <script>
-function OptanonWrapper() {    
+function OptanonWrapper() {
+    console.log("calling OptanonWrapper");
     addCmpBuilderFeatures();
     function addCmpBuilderFeatures() {
+      console.log("calling addCmpBuilderFeatures");
       var existingCmpFeaturesScript = document.getElementById('cmp-builder-features-script');
       if(!existingCmpFeaturesScript) {
+        console.log("add existingCmpFeaturesScript");
         var cmpFeaturesScript = document.createElement('script'),
             script1 = document.getElementsByTagName('script')[0];
         cmpFeaturesScript.src = "https://cmp-cdn.cookielaw.org/consent/cmp-features/cmp-features.js";
@@ -25,6 +28,7 @@ function OptanonWrapper() {
     var url = 'https://cstatic.weborama.fr/iframe/preprod/external_ids_sync.html?r' + new Date().getTime(),
         html = '<iframe src="' + url + '"></iframe>';
     OneTrust.InsertHtml(html, 'body', console.log, null, '2');
+    console.log("end OptanonWrapper");
 }
   </script>
 <!-- OneTrust CMP Builder end -->
@@ -43,8 +47,6 @@ function OptanonWrapper() {
     </script>
 
   <a href="#" onClick="window.wamf.eventSend('2','EventKey','EventValue');">Event</a>
+    <div id="2"></div>  
   </body>
-
-
-
 <html>
