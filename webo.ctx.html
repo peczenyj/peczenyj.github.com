@@ -27,24 +27,18 @@
 		  } else {
 		    console.log("unexpected code status when access URL Profile API", this.status);
 		  }
+		  console.timeEnd("request sent");	
 		}
 	      };
 	    xhr.ontimeout = function(){
 	    	console.log("error while access weborama URL Profile API: timeout");
+		console.timeEnd("request sent");
 	    };  
 
 	    xhr.send(null);
-	    console.log("request sent");
+	    console.time("request sent");
       }
-      var button = document.getElementById("submit");
-      button.addEventListener('click', function(){
-        var token = document.getElementById('token').value,
-          targetURL = document.getElementById('targetURL').value,
-          timeout = parseInt(document.getElementById('timeout').value, 10),
-          responseTypeJSON = document.getElementById('responseTypeJSON').checked;
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON); 
-      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON);
-      });
+
     </script>
   </head>
   <body>
@@ -67,5 +61,18 @@
       </fieldset>
       <input type="button" id="submit" value="submit"/>
      </div>
+	  
+    <script lang="text/javascript"> 	    
+      var button = document.getElementById("submit");
+      button.addEventListener('click', function(){
+        var token = document.getElementById('token').value,
+          targetURL = document.getElementById('targetURL').value,
+          timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
+          responseTypeJSON = document.getElementById('responseTypeJSON').checked;
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON);
+      });
+    </script>
+
   </body>
 </html>	
