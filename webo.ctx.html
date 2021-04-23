@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>test contextual url profile</title>
+    <script lang="text/javascript">
+      var targetURL = 'https://www.ladepeche.fr/2021/04/13/transition-ecologique-les-francais-attendent-beaucoup-des-energies-renouvelables-9485204.php',
+        TOKEN = 'test-secret',
+        weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+        method = 'GET',
+        timeout = 50, // milliseconds
+        xhr = new XMLHttpRequest();
+
+      xhr.open(method, weboramaURLProfileAPI, true);
+       
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var weboramaURLProfileResponse = JSON.parse(this.responseText);
+          console.log("weborama URL Profile Response",weboramaURLProfileResponse);
+        }
+      };
+
+      xhr.send(null);
+      console.log("request sent");
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>example</p>
+     </div>
+  </body>
+</html>
