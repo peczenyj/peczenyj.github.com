@@ -1,30 +1,71 @@
 <html>
   <head>
     <title>test contextual url profile</title>
-    <script lang="text/javascript">
-      var targetURL = 'https://www.ladepeche.fr/2021/04/13/transition-ecologique-les-francais-attendent-beaucoup-des-energies-renouvelables-9485204.php',
-        TOKEN = 'test-secret',
-        weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
-        method = 'GET',
-        timeout = 50, // milliseconds
-        xhr = new XMLHttpRequest();
+    <script lang="text/javascript">      
+      function fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON){
+      	    var weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + token + '&url=' + encodeURIComponent(targetURL),
+      	      method = 'GET',
+      	      xhr = new XMLHttpRequest();
+      	      
+	    xhr.open(method, weboramaURLProfileAPI, true);
+	    if (timeout>0) {
+	      xhr.timeout = timeout;
+	    }
+	    if (responseTypeJSON){
+	      xhr.responseType = 'json';
+	    }
+	    xhr.onreadystatechange = function () {
+		if (this.readyState == 4){
+		  if (this.status == 200) {	
+		    var weboramaURLProfileResponse;
+		    if (this.responseType === "json") {
+		    	weboramaURLProfileResponse = this.response;
+		    } else { 
+		    	weboramaURLProfileResponse = JSON.parse(this.responseText);
+		    }
+		    console.log("weborama URL Profile API Response",weboramaURLProfileResponse);
+		  } else {
+		    console.log("unexpected code status when access URL Profile API", this.status);
+		  }
+		}
+	      };
+	    xhr.ontimeout = function(){
+	    	console.log("error while access weborama URL Profile API: timeout");
+	    };  
 
-      xhr.open(method, weboramaURLProfileAPI, true);
-       
-      xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          var weboramaURLProfileResponse = JSON.parse(this.responseText);
-          console.log("weborama URL Profile Response",weboramaURLProfileResponse);
-        }
-      };
-
-      xhr.send(null);
-      console.log("request sent");
+	    xhr.send(null);
+	    console.log("request sent");
+      }
+      var button = document.getElementById("submit");
+      button.addEventListener('click', function(){
+        var token = document.getElementById('token').value,
+          targetURL = document.getElementById('targetURL').value,
+          timeout = parseInt(document.getElementById('timeout').value, 10),
+          responseTypeJSON = document.getElementById('responseTypeJSON').checked;
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON);
+      });
     </script>
   </head>
   <body>
     <div>
       <p>example</p>
+      <fieldset>
+      	<label for="token">token</label>
+      	<input type="text" id="token" value="test-secret"/>
+      </fieldset>
+      <fieldset>
+      	<label for="targetURL">target url</label>
+      	<input type="text" id="targetURL" value="https://www.ladepeche.fr/2021/04/13/transition-ecologique-les-francais-attendent-beaucoup-des-energies-renouvelables-9485204.php"/>
+      </fieldset>
+      <fieldset>
+      	<label for="timeout">timeout</label>
+      	<input type="text" id="timeout"/>
+      </fieldset>
+      <fieldset>
+    	<input type="radio" id="responseTypeJSON"><label for="responseTypeJSON">responseType=json</label>
+      </fieldset>
+      <input type="button" id="submit" value="submit"/>
      </div>
   </body>
-</html>
+</html>	
