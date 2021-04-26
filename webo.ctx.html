@@ -2,7 +2,7 @@
   <head>
     <title>test contextual url profile</title>
     <script lang="text/javascript">      
-      function fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, logger){
+      function fetchProfileFromContextualAPI(token, targetURL, timeout, customHeader, logger){
       	    var weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + token + '&url=' + encodeURIComponent(targetURL),
       	      method = 'GET',
       	      xhr = new XMLHttpRequest();
@@ -11,24 +11,14 @@
 	    if (timeout>0) {
 	      xhr.timeout = timeout;
 	    }
-	    if (responseTypeJSON){
-	      xhr.responseType = 'json';
-	    }
-	    if (contentTypeJSON){
-	      xhr.setRequestHeader('Content-Type', 'application/json');
-	    }
+	    xhr.responseType = 'json';
 	    if (customHeader.length == 2){
 	      xhr.setRequestHeader(customHeader[0], customHeader[1]);
 	    }
 	    xhr.onreadystatechange = function () {
 		if (this.readyState == 4){
 		  if (this.status == 200) {	
-		    var weboramaURLProfileResponse;
-		    if (this.responseType === "json") {
-		    	weboramaURLProfileResponse = this.response;
-		    } else { 
-		    	weboramaURLProfileResponse = JSON.parse(this.responseText);
-		    }
+		    var weboramaURLProfileResponse = this.response;
 		    console.log("weborama URL Profile API Response",weboramaURLProfileResponse);
 	            logger("weborama URL Profile API Response");
 		    logger(JSON.stringify(weboramaURLProfileResponse));  
@@ -47,7 +37,6 @@
 	    console.time("request sent");  	
 	    xhr.send(null);
       }
-
     </script>
   </head>
   <body>
@@ -69,20 +58,18 @@
     	<input type="checkbox" id="responseTypeJSON"><label for="responseTypeJSON">XMLHttpRequest property responseType=json</label>
       </fieldset>
       <fieldset>
-    	<input type="checkbox" id="contentTypeJSON"><label for="contentTypeJSON">request content-type=application/json</label>
-      </fieldset>
-      <fieldset>
       	<label for="customHeader">Custom Header</label>
       	<input type="text" id="customHeader"/>
       </fieldset>
       <input type="button" id="submit" value="submit"/>
      </div>
      
+   	  
     <div id="logger" style="overflow-y: scroll;">
-	
+    <input type="button" id="clear" value="clear output"/>
+	    
     <script lang="text/javascript"> 	    
-      var button = document.getElementById("submit");
-      button.addEventListener('click', function(){
+      document.getElementById("submit").addEventListener('click', function(){
         var token = document.getElementById('token').value,
           targetURL = document.getElementById('targetURL').value,
           timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
@@ -98,6 +85,10 @@
           };
         console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON, customHeader, mylog); 
       	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, mylog);
+      });
+	    
+      document.getElementById("clear").addEventListener('click', function(){
+        document.getElementById("logger").innerText = "";
       });
     </script>
 
