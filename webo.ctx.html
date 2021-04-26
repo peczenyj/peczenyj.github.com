@@ -2,7 +2,7 @@
   <head>
     <title>test contextual url profile</title>
     <script lang="text/javascript">      
-      function fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON){
+      function fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON,contentTypeJSON){
       	    var weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + token + '&url=' + encodeURIComponent(targetURL),
       	      method = 'GET',
       	      xhr = new XMLHttpRequest();
@@ -14,6 +14,9 @@
 	    if (responseTypeJSON){
 	      xhr.responseType = 'json';
 	    }
+	    if (contentTypeJSON){
+	      xht.setRequestHeader('Content-Type', 'application/json');
+	    }  
 	    xhr.onreadystatechange = function () {
 		if (this.readyState == 4){
 		  if (this.status == 200) {	
@@ -56,8 +59,11 @@
       	<input type="text" id="timeout"/>
       </fieldset>
       <fieldset>
-    	<input type="checkbox" id="responseTypeJSON"><label for="responseTypeJSON">responseType=json</label>
+    	<input type="checkbox" id="responseTypeJSON"><label for="responseTypeJSON">XMLHttpRequest property responseType=json</label>
       </fieldset>
+      <fieldset>
+    	<input type="checkbox" id="contentTypeJSON"><label for="contentTypeJSON">request content-type=application/json</label>
+      </fieldset>	    
       <input type="button" id="submit" value="submit"/>
      </div>
 	  
@@ -67,9 +73,11 @@
         var token = document.getElementById('token').value,
           targetURL = document.getElementById('targetURL').value,
           timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
-          responseTypeJSON = document.getElementById('responseTypeJSON').checked;
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON); 
-      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON);
+          responseTypeJSON = document.getElementById('responseTypeJSON').checked,
+	  contentTypeJSON = document.getElementById('contentTypeJSON').checked;
+	      
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON,contentTypeJSON); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON,contentTypeJSON);
       });
     </script>
 
