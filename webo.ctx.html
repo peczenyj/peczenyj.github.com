@@ -2,7 +2,7 @@
   <head>
     <title>test contextual url profile</title>
     <script lang="text/javascript">      
-      function fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, contentTypeJSON, customHeader){
+      function fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, logger){
       	    var weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + token + '&url=' + encodeURIComponent(targetURL),
       	      method = 'GET',
       	      xhr = new XMLHttpRequest();
@@ -30,14 +30,18 @@
 		    	weboramaURLProfileResponse = JSON.parse(this.responseText);
 		    }
 		    console.log("weborama URL Profile API Response",weboramaURLProfileResponse);
+	            logger("weborama URL Profile API Response");
+		    logger(JSON.stringify(weboramaURLProfileResponse));  
 		  } else {
 		    console.log("unexpected code status when access URL Profile API", this.status);
+		    logger("unexpected code status: " + this.status);
 		  }
 		  console.timeEnd("request sent");	
 		}
-	      };
+	    };
 	    xhr.ontimeout = function(){
 	    	console.log("error while access weborama URL Profile API: timeout");
+		logger("error while access weborama URL Profile API: timeout");
 	    };  
 
 	    console.time("request sent");  	
@@ -73,7 +77,9 @@
       </fieldset>
       <input type="button" id="submit" value="submit"/>
      </div>
-	  
+     
+    <div id="logger" style="overflow-y: scroll;">
+	
     <script lang="text/javascript"> 	    
       var button = document.getElementById("submit");
       button.addEventListener('click', function(){
@@ -81,13 +87,45 @@
           targetURL = document.getElementById('targetURL').value,
           timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
           responseTypeJSON = document.getElementById('responseTypeJSON').checked,
-	  contentTypeJSON = document.getElementById('contentTypeJSON').checked,
-	  customHeader = document.getElementById('customHeader').value.split('=');
-	      
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON, contentTypeJSON, customHeader); 
-      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, contentTypeJSON, customHeader);
+	  customHeader = document.getElementById('customHeader').value.split('='),
+	  logger = document.getElementById("logger"),
+	  log = function(text){
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+          };
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON, customHeader, log); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, logger);
       });
     </script>
 
   </body>
 </html>	
+
+	
+	        // Overriding console object
+        var console = {};
+
+        // Getting div to insert logs
+        var logger = document.getElementById("logger");
+
+        // Adding log method from our console object
+        console.log = function(text)
+        {
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+        }
+
+        // testing
+        console.log("Hello World...");
+        console.log("WOW");
+
+        /**
+            console.log prints the message in the page instead browser console, useful to programming and debugging JS using a Android phone
+
+        */
