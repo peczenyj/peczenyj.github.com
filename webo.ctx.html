@@ -5,7 +5,8 @@
       function fetchProfileFromContextualAPI(token, targetURL, timeout, customHeader, logger){
       	    var weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + token + '&url=' + encodeURIComponent(targetURL),
       	      method = 'GET',
-      	      xhr = new XMLHttpRequest();
+      	      xhr = new XMLHttpRequest(),
+	      t0;
       	      
 	    xhr.open(method, weboramaURLProfileAPI, true);
 	    if (timeout>0) {
@@ -19,22 +20,22 @@
 		if (this.readyState == 4){
 		  if (this.status == 200) {	
 		    var weboramaURLProfileResponse = this.response;
-		    console.log("weborama URL Profile API Response",weboramaURLProfileResponse);
-	            logger("weborama URL Profile API Response");
+		    logger("weborama URL Profile API Response");
 		    logger(JSON.stringify(weboramaURLProfileResponse));  
 		  } else {
-		    console.log("unexpected code status when access URL Profile API", this.status);
 		    logger("unexpected code status: " + this.status);
 		  }
-		  console.timeEnd("request sent");	
+		  console.timeEnd("request sent");
+		  var t1 = performance.now();
+		  logger("took " + (t1 - t0) + " milliseconds.");
 		}
 	    };
 	    xhr.ontimeout = function(){
-	    	console.log("error while access weborama URL Profile API: timeout");
-		logger("error while access weborama URL Profile API: timeout");
+	    	logger("error while access weborama URL Profile API: timeout");
 	    };  
 
-	    console.time("request sent");  	
+	    console.time("request sent");
+	    t0 = performance.now();
 	    xhr.send(null);
       }
     </script>
@@ -73,6 +74,7 @@
 	  customHeader = document.getElementById('customHeader').value.split('='),
 	  logger = document.getElementById("logger"),
 	  mylog = function(text){
+	    console.log(text);
             var element = document.createElement("div");
             var txt = document.createTextNode(text);
 
