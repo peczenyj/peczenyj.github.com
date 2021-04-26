@@ -30,8 +30,13 @@
 		  logger("took " + (t1 - t0) + " milliseconds.");
 		}
 	    };
-	    xhr.ontimeout = function(){
+	    xhr.onerror = function(e){
+	    	logger("error while access weborama URL Profile API: ...");
+		console.log(e);
+	    };
+	    xhr.ontimeout = function(e){
 	    	logger("error while access weborama URL Profile API: timeout");
+		console.log(e);
 	    };  
 
 	    console.time("request sent");
