@@ -55,9 +55,6 @@
       	<input type="text" id="timeout"/>
       </fieldset>
       <fieldset>
-    	<input type="checkbox" id="responseTypeJSON"><label for="responseTypeJSON">XMLHttpRequest property responseType=json</label>
-      </fieldset>
-      <fieldset>
       	<label for="customHeader">Custom Header</label>
       	<input type="text" id="customHeader"/>
       </fieldset>
@@ -73,7 +70,6 @@
         var token = document.getElementById('token').value,
           targetURL = document.getElementById('targetURL').value,
           timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
-          responseTypeJSON = document.getElementById('responseTypeJSON').checked,
 	  customHeader = document.getElementById('customHeader').value.split('='),
 	  logger = document.getElementById("logger"),
 	  mylog = function(text){
@@ -83,8 +79,8 @@
             element.appendChild(txt);
             logger.appendChild(element);
           };
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON, customHeader, mylog); 
-      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, mylog);
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, customHeader, mylog); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, customHeader, mylog);
       });
 	    
       document.getElementById("clear").addEventListener('click', function(){
