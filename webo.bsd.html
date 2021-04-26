@@ -1,0 +1,93 @@
+<html>
+  <head>
+    <title>test bigsea delivery profile</title>
+    <script lang="text/javascript">      
+      function fetchProfileFromContextualAPI(token, timeout, customHeader, logger){
+      	    var weboramaBSDProfileAPI = 'https://bsd.frontend.weborama.fr/bsd?token=' + token,
+      	      method = 'GET',
+      	      xhr = new XMLHttpRequest(),
+	      t0;
+      	      
+	    xhr.open(method, weboramaBSDProfileAPI, true);
+	    if (timeout>0) {
+	      xhr.timeout = timeout;
+	    }
+	    xhr.responseType = 'json';
+	    if (customHeader.length == 2){
+	      xhr.setRequestHeader(customHeader[0], customHeader[1]);
+	    }
+	    xhr.onreadystatechange = function (e) {
+		if (this.readyState == 4){
+		  if (this.status == 200) {	
+		    var weboramaBSDProfileResponse = this.response;
+		    logger("weborama URL Profile API Response");
+		    logger(JSON.stringify(weboramaBSDProfileResponse));  
+		  } else {
+		    logger("unexpected response code: " + this.status);
+		  }
+		  console.timeEnd("request sent");
+		  var t1 = performance.now();
+		  logger("took " + (t1 - t0) + " milliseconds.");
+		}
+		console.log(e);
+	    };
+	    xhr.onerror = function(){
+	    	logger("error while access weborama URL Profile API: client side error");
+	    };
+	    xhr.ontimeout = function(){
+	    	logger("error while access weborama URL Profile API: client side timeout");
+	    };  
+
+	    console.time("request sent");
+	    t0 = performance.now();
+	    xhr.send(null);
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>example</p>
+      <fieldset>
+      	<label for="token">token</label>
+      	<input type="text" id="token" value="token-without-account-id"/>
+      </fieldset>
+      <fieldset>
+      	<label for="timeout">timeout (optional)</label>
+      	<input type="text" id="timeout"/>
+      </fieldset>
+      <fieldset>
+      	<label for="customHeader">Custom Header (optional, name=value)</label>
+      	<input type="text" id="customHeader"/>
+      </fieldset>
+      <input type="button" id="submit" value="submit"/>
+     </div>
+     
+   	  
+    <div id="logger" style="overflow-y: scroll;"></div>
+    <input type="button" id="clear" value="clear output"/>
+	    
+    <script lang="text/javascript"> 	    
+      document.getElementById("submit").addEventListener('click', function(){
+        var token = document.getElementById('token').value,
+          timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
+	  customHeader = document.getElementById('customHeader').value.split('='),
+	  logger = document.getElementById("logger"),
+	  mylog = function(text){
+	    console.log(text);
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+          };
+        console.log("calling fetchProfileFromContextualAPI",token, timeout, customHeader); 
+      	fetchProfileFromContextualAPI(token, timeout, customHeader, mylog);
+      });
+	    
+      document.getElementById("clear").addEventListener('click', function(){
+        document.getElementById("logger").innerText = "";
+      });
+    </script>
+
+  </body>
+</html>	
