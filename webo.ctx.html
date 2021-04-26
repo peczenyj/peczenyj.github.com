@@ -16,27 +16,26 @@
 	    if (customHeader.length == 2){
 	      xhr.setRequestHeader(customHeader[0], customHeader[1]);
 	    }
-	    xhr.onreadystatechange = function () {
+	    xhr.onreadystatechange = function (e) {
 		if (this.readyState == 4){
 		  if (this.status == 200) {	
 		    var weboramaURLProfileResponse = this.response;
 		    logger("weborama URL Profile API Response");
 		    logger(JSON.stringify(weboramaURLProfileResponse));  
 		  } else {
-		    logger("unexpected code status: " + this.status);
+		    logger("unexpected response code: " + this.status);
 		  }
 		  console.timeEnd("request sent");
 		  var t1 = performance.now();
 		  logger("took " + (t1 - t0) + " milliseconds.");
 		}
-	    };
-	    xhr.onerror = function(e){
-	    	logger("error while access weborama URL Profile API: ...");
 		console.log(e);
 	    };
-	    xhr.ontimeout = function(e){
-	    	logger("error while access weborama URL Profile API: timeout");
-		console.log(e);
+	    xhr.onerror = function(){
+	    	logger("error while access weborama URL Profile API: client side error");
+	    };
+	    xhr.ontimeout = function(){
+	    	logger("error while access weborama URL Profile API: client side timeout");
 	    };  
 
 	    console.time("request sent");
