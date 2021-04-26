@@ -89,43 +89,17 @@
           responseTypeJSON = document.getElementById('responseTypeJSON').checked,
 	  customHeader = document.getElementById('customHeader').value.split('='),
 	  logger = document.getElementById("logger"),
-	  log = function(text){
+	  mylog = function(text){
             var element = document.createElement("div");
             var txt = document.createTextNode(text);
 
             element.appendChild(txt);
             logger.appendChild(element);
           };
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON, customHeader, log); 
-      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, logger);
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, responseTypeJSON, customHeader, mylog); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, responseTypeJSON, customHeader, mylog);
       });
     </script>
 
   </body>
 </html>	
-
-	
-	        // Overriding console object
-        var console = {};
-
-        // Getting div to insert logs
-        var logger = document.getElementById("logger");
-
-        // Adding log method from our console object
-        console.log = function(text)
-        {
-            var element = document.createElement("div");
-            var txt = document.createTextNode(text);
-
-            element.appendChild(txt);
-            logger.appendChild(element);
-        }
-
-        // testing
-        console.log("Hello World...");
-        console.log("WOW");
-
-        /**
-            console.log prints the message in the page instead browser console, useful to programming and debugging JS using a Android phone
-
-        */
