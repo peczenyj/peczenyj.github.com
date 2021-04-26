@@ -45,11 +45,11 @@
       <p>example</p>
       <fieldset>
       	<label for="token">token</label>
-      	<input type="text" id="token" value="test-secret"/>
+      	<input type="text" id="token" value="topsecret"/>
       </fieldset>
       <fieldset>
       	<label for="targetURL">target url</label>
-      	<input type="text" id="targetURL" value="https://www.ladepeche.fr/2021/04/13/transition-ecologique-les-francais-attendent-beaucoup-des-energies-renouvelables-9485204.php"/>
+      	<input type="text" id="targetURL" value="https://www.lemonde.fr"/>
       </fieldset>
       <fieldset>
       	<label for="timeout">timeout</label>
@@ -81,7 +81,7 @@
             element.appendChild(txt);
             logger.appendChild(element);
           };
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, customHeader, mylog); 
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, customHeader); 
       	fetchProfileFromContextualAPI(token, targetURL, timeout, customHeader, mylog);
       });
 	    
