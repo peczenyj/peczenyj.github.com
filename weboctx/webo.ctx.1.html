@@ -26,15 +26,15 @@
     }
     alreadyCalled = true;
     
-    // GAM setup ...
-    googletag.cmd.push(function() {
+    console.log("clientSetupGAMAndDisplayADs", profile);
+
     
+    // GAM setup ...
+    googletag.cmd.push(function() {      
       for(var key in profile){
 	var value = profile[key];
 	
 	googletag.pubads().setTargeting(key, value);
-	
-	console.log("GAM setTargeting", key, value);
       }
     });  
     
@@ -45,7 +45,7 @@
   }
   
   var TOKEN = 'topsecret2',
-    targetURL = 'https://www.lefigaro.fr' , // instead of document.URL
+    targetURL = 'https://www.lefigaro.com' , // instead of document.URL
     urlProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
     method = 'GET',
     timeout = 50, // milliseconds
@@ -59,6 +59,9 @@
       var profile = {};
       if (this.status == 200) {
 	profile = this.response;
+	console.log("request to contextual api: success");
+      } else {
+	console.log("request to contextual api: unexpected status code", this.status, this.response);      
       }
       clientSetupGAMAndDisplayADs(profile);
     }
