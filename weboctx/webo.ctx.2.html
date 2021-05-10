@@ -68,11 +68,11 @@
       clientSetupGAMAndDisplayADs(profile);
     }
   };
-  xhr.ontimeout = function(e){
-    console.log("contextual api timeout",e);
+  xhr.ontimeout = function(){
+    console.log("contextual api timeout");
   };
-  xhr.onerror = function(e){
-    console.log("contextual api error",e);
+  xhr.onerror = function(){
+    console.log("contextual api error");
   };
 
   xhr.send(null);
