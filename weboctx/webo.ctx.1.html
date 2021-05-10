@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>test webo ctx 1</title>
+    <title>test webo ctx using lefigaro / (gold)</title>
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
@@ -19,8 +19,61 @@
 </div>
 
   <script>
-    googletag.cmd.push(function() { googletag.pubads().setTargeting("webo_ctx", ["best_segment"]); });
-    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1620653642627-0'); });
+  var alreadyCalled = false; // global state for the function below
+  function clientSetupGAMAndDisplayADs(profile){
+    if ( alreadyCalled ) {
+      return
+    }
+    alreadyCalled = true;
+    
+    // GAM setup ...
+    googletag.cmd.push(function() {
+    
+      for(var key in profile){
+	var value = profile[key];
+	
+	googletag.pubads().setTargeting(key, value);
+	
+	console.log("GAM setTargeting", key, value);
+      }
+    });  
+    
+    // and display
+    googletag.cmd.push(function() {  
+      googletag.display('div-gpt-ad-1620653642627-0');
+    });
+  }
+  
+  var TOKEN = 'topsecret2',
+    targetURL = 'https://www.lefigaro.com' , // instead of document.URL
+    urlProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+    method = 'GET',
+    timeout = 50, // milliseconds
+    xhr = new XMLHttpRequest();
+
+  xhr.open(method, urlProfileAPI, true);
+  xhr.timeout = timeout;
+  xhr.responseType = 'json';
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      var profile = {};
+      if (this.status == 200) {
+	profile = this.response;
+      }
+      clientSetupGAMAndDisplayADs(profile);
+    }
+  };
+  xhr.ontimeout = function(e){
+    console.log("contextual api timeout",e);
+  };
+  xhr.onerror = function(e){
+    console.log("contextual api error",e);
+  };
+
+  xhr.send(null);
+  
+  // fallback
+  setTimeout(clientSetupGAMAndDisplayADs, timeout,{});
   </script>
     
   </body>
