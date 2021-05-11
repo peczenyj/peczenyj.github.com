@@ -14,13 +14,21 @@
   
   <body>
 	<p>test webo ctx using lemonde / (ad: fish)</p>
-    	  
     <!-- /1056029/test-webo-contextual -->
-<div id='div-gpt-ad-1620653642627-0' style='width: 300px; height: 300px;'>
-
-</div>
+<div id='div-gpt-ad-1620653642627-0' style='width: 300px; height: 300px;'></div>
+	  
+<div id="logger" style="overflow-y: scroll;"></div>
 
   <script>
+  function mylog(text){
+	    console.log(text);
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+  }	  
+	  
   var alreadyCalled = false; // global state for the function below
   function clientSetupGAMAndDisplayADs(profile){
     if ( alreadyCalled ) {
@@ -28,7 +36,7 @@
     }
     alreadyCalled = true;
     
-    console.log("clientSetupGAMAndDisplayADs", profile);
+    mylog("clientSetupGAMAndDisplayADs", profile);
 
     
     // GAM setup ...
@@ -44,13 +52,13 @@
     googletag.cmd.push(function() {  
       googletag.display('div-gpt-ad-1620653642627-0');
     });
-  }
+  }	  
   
   var TOKEN = 'topsecret',
     targetURL = 'https://www.lemonde.fr' , // instead of document.URL
     urlProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
     method = 'GET',
-    timeout = 50, // milliseconds
+    timeout = 100, // milliseconds
     xhr = new XMLHttpRequest();
 
   xhr.open(method, urlProfileAPI, true);
@@ -61,18 +69,18 @@
       var profile = {};
       if (this.status == 200) {
 	profile = this.response;
-	console.log("request to contextual api: success");
+	mylog("request to contextual api: success");
       } else {
-	console.log("request to contextual api: unexpected status code", this.status, this.response);      
+	mylog("request to contextual api: unexpected status code: " + this.status);      
       }
       clientSetupGAMAndDisplayADs(profile);
     }
   };
   xhr.ontimeout = function(){
-    console.log("contextual api timeout");
+    mylog("contextual api timeout");
   };
   xhr.onerror = function(){
-    console.log("contextual api error");
+    mylog("contextual api error");
   };
 
   xhr.send(null);
