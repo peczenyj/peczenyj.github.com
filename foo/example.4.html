@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Example WAM2GAM with wamfactory wildcard #1</title>
+
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || {cmd: []};
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1056029/wam2gam-cookieless-demo', [256, 256], 'div-gpt-ad-1620739539348-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+      
+      // this substitute weborama.updateGAM()
+      // to be used when we should be fast
+      googletag.cmd.push(function() {
+        console.log("using workaround");
+        var data = JSON.parse(localStorage.getItem("webo_wam2gam_entry")) || {},
+        targeting = data["targeting"];
+        for(var key in targeting){
+          googletag.pubads().setTargeting(key, targeting[key]);
+        }
+      });
+    </script>
+    <!-- something else -->
+  </head>
+  <body>
+    
+    <script type='text/javascript'>
+      var wamid = '259'; /* Wam Account ID */
+      var typ = '1'; /* Event Type default 1 */
+      var WfirstParty = false;
+      var Wam2gamConf = { // if set, enable the feature
+        debug: true,               // default is false
+        token: "JyqFfnyJvcF4",     // needed!
+        idcrm: 11111,              // needed!
+        cookieless: true,          // ignore/do not create AFFICHE_W cookies
+        useXdevice: true           // use crossdevice 
+      };
+
+      /* Segments: Json object method */
+      var Wvar =  [];
+      Wvar.push("color","blue");
+      Wvar.push("userid","11111");
+
+      (function(){
+      var w = document.createElement("script");
+      w.type = "text/javascript";
+      w.src = document.location.protocol + "//cstatic.weborama.fr/js/wam/customers/wamfactory_dpm.wildcard-f.min.js?rnd="+new Date().getTime();
+      w.async = true;
+      var body = document.getElementsByTagName('script')[0];
+      body.parentNode.insertBefore(w,body);
+      console.log("finish include wildcard");
+      })();
+     </script>
+
+    <p>using idcrm 11111 + crossdevice to present advertiser Red / Blue</p>
+    <div>
+      <button onClick="wamf.clearCache()">Clear Profile Cache</button><br/>
+    </div>
+    <!-- /1056029/test-for-code-333 -->
+    <div id='div-gpt-ad-1620739539348-0' style='width: 256px; height: 256px;'>
+      <script>
+        googletag.cmd.push(function() {
+          console.log("calling googletag.display(...)");
+          googletag.display('div-gpt-ad-1620739539348-0'); 
+        });
+      </script>
+    </div>
+  </body>
+</html>
