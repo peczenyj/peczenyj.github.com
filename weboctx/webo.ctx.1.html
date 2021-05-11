@@ -35,9 +35,8 @@
       return
     }
     alreadyCalled = true;
-    
-    mylog("clientSetupGAMAndDisplayADs", profile);
-
+	  
+    mylog("clientSetupGAMAndDisplayADs: profile=" + JSON.stringify( profile ) );
     
     // GAM setup ...
     googletag.cmd.push(function() {      
