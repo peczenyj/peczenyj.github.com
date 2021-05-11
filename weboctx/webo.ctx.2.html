@@ -37,7 +37,6 @@
     alreadyCalled = true;
     
     mylog("clientSetupGAMAndDisplayADs: profile=" + JSON.stringify( profile ) );
-
     
     // GAM setup ...
     googletag.cmd.push(function() {      
@@ -70,7 +69,6 @@
       if (this.status == 200) {
 	profile = this.response;
 	mylog("request to contextual api: success");
-	console.log(this);
       } else {
 	mylog("request to contextual api: unexpected status code: " + this.status);      
       }
