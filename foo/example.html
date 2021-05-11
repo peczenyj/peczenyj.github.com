@@ -29,6 +29,7 @@
     <script type='text/javascript'>
       var wamid = '259'; /* Wam Account ID */
       var typ = '1'; /* Event Type default 1 */
+      var WfirstParty = true;
       var Wam2gamConf = { // if set, enable the feature
         debug: true,               // default is false
         token: "JyqFfnyJvcF4",     // needed!
@@ -38,12 +39,14 @@
       };
 
       /* Segments: Json object method */
-      var Wvar =  {"key1":"abc","key2":"efg","key4":["1","2"],"key3":["val1","val2","val3","val4"]};
+      var Wvar =  [];
+      Wvar.push("color","red");
+      Wvar.push("userid","11111");
 
       (function(){
       var w = document.createElement("script");
       w.type = "text/javascript";
-      w.src = document.location.protocol + "//cstatic.weborama.fr/js/wam/customers/wamfactory_dpm.wildcard.min.js?rnd="+new Date().getTime();
+      w.src = document.location.protocol + "//cstatic.weborama.fr/js/wam/customers/wamfactory_dpm.wildcard-f.min.js?rnd="+new Date().getTime();
       w.async = true;
       var body = document.getElementsByTagName('script')[0];
       body.parentNode.insertBefore(w,body);
