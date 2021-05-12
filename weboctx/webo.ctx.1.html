@@ -70,7 +70,7 @@
       if (this.status == 200) {
 	profile = this.response;
 	t1 = performance.now();
-	mylog("request to contextual api: success, took" +(t1 - t0)+ " ms" );
+	mylog("request to contextual api: success, took: " +(t1 - t0)+ " ms" );
       } else {
 	mylog("request to contextual api: unexpected status code: " + this.status);      
       }
