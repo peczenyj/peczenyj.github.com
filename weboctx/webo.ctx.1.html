@@ -57,7 +57,7 @@
     targetURL = 'https://www.lefigaro.fr' , // instead of document.URL
     urlProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
     method = 'GET',
-    timeout = 100, // milliseconds
+    timeout = 1000, // milliseconds
     xhr = new XMLHttpRequest();
 
   xhr.open(method, urlProfileAPI, true);
