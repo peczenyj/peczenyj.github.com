@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <title>test webo ctx using lemonde / (fish)</title>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || {cmd: []};
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1056029/test-webo-contextual', [300, 300], 'div-gpt-ad-1620653642627-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+  </head>
+  
+  <body>
+	<p>test webo ctx using contextual url https://www.lemonde.fr and it should present the FISH ad with 50ms timeout</p>  
+
+    <!-- /1056029/test-webo-contextual -->
+<div id='div-gpt-ad-1620653642627-0' style='width: 300px; height: 300px;'></div>
+	  
+<div id="logger" style="overflow-y: scroll;"></div>
+
+  <script>
+  function mylog(text){
+	    console.log(text);
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+  }	  
+	  
+  var alreadyCalled = false; // global state for the function below
+  function clientSetupGAMAndDisplayADs(profile){
+    if ( alreadyCalled ) {
+      return
+    }
+    alreadyCalled = true;
+    
+    mylog("clientSetupGAMAndDisplayADs: profile=" + JSON.stringify( profile ) );
+    
+    // GAM setup ...
+    googletag.cmd.push(function() {      
+      for(var key in profile){
+	var value = profile[key];
+	
+	googletag.pubads().setTargeting(key, value);
+      }
+    });  
+    
+    // and display
+    googletag.cmd.push(function() {  
+      googletag.display('div-gpt-ad-1620653642627-0');
+    });
+  }	  
+  
+  var TOKEN = 'topsecret',
+    targetURL = 'https://www.lemonde.fr' , // instead of document.URL
+    urlProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+    method = 'GET',
+    timeout = 50, // milliseconds
+    xhr = new XMLHttpRequest(),
+    t0 = 0;
+
+  xhr.open(method, urlProfileAPI, true);
+  xhr.timeout = timeout;
+  xhr.responseType = 'json';
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      var profile = {};
+      if (this.status == 200) {
+	profile = this.response;
+	t1 = performance.now();
+	mylog("request to contextual api: success, took: " +(t1 - t0)+ " ms" );
+      } else {
+	mylog("request to contextual api: unexpected status code: " + this.status);      
+      }
+      clientSetupGAMAndDisplayADs(profile);
+    }
+  };
+  xhr.ontimeout = function(){
+    mylog("contextual api timeout");
+  };
+  xhr.onerror = function(){
+    mylog("contextual api error");
+  };
+
+  xhr.send(null);
+  t0 = performance.now();
+	  
+  // fallback
+  setTimeout(clientSetupGAMAndDisplayADs, timeout,{});
+  </script>
+    
+  </body>
+</html>
