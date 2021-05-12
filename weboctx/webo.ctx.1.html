@@ -63,12 +63,11 @@
 
   xhr.open(method, urlProfileAPI, true);
   xhr.timeout = timeout;
-  xhr.responseType = 'json';
   xhr.onreadystatechange = function () {
     if (this.readyState == 4) {
       var profile = {};
       if (this.status == 200) {
-	profile = this.response;
+	profile = JSON.parse( this.responseText );
 	t1 = performance.now();
 	mylog("request to contextual api: success, took: " +(t1 - t0)+ " ms" );
       } else {
