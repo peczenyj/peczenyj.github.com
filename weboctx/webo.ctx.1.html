@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>test webo ctx using lefigaro / (gold)</title>
+    <title>test webo ctx using ladepeche.fr / (gold)</title>
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
@@ -53,9 +53,10 @@
     });
   }	  
   
-  var TOKEN = 'topsecret2',
-    targetURL = 'https://www.lefigaro.fr' , // instead of document.URL
-    urlProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+  var TOKEN = 'token2',
+    targetURL = 'https://www.ladepeche.fr' , // instead of document.URL
+    baseURL = "https://ctx.weborama.com/api/profile",
+    urlProfileAPI = baseURL + '?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
     method = 'GET',
     timeout = 200, // milliseconds
     xhr = new XMLHttpRequest(),
@@ -69,18 +70,18 @@
       if (this.status == 200) {
 	profile = JSON.parse( this.responseText );
 	t1 = performance.now();
-	mylog("request to contextual api: success, took: " +(t1 - t0)+ " ms" );
+	mylog("request to contextual api: "+baseURL+", success, took: " +(t1 - t0)+ " ms" );
       } else {
-	mylog("request to contextual api: unexpected status code: " + this.status);      
+	mylog("request to contextual api: "+baseURL+", unexpected status code: " + this.status);      
       }
       clientSetupGAMAndDisplayADs(profile);
     }
   };
   xhr.ontimeout = function(){
-    mylog("contextual api timeout");
+    mylog("timeout contextual api: "+baseURL);
   };
   xhr.onerror = function(){
-    mylog("contextual api error");
+    mylog("error contextual api: "+baseURL);
   };
 
   xhr.send(null);
