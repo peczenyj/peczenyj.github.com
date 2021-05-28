@@ -2,7 +2,7 @@
   <head>
     <title>test contextual url profile</title>
     <script lang="text/javascript">      
-      function fetchProfileFromContextualAPI(token, targetURL, timeout, customHeader, logger){
+      function fetchProfileFromContextualAPI(token, targetURL, timeout, baseUrls, logger){
       	    var weboramaURLProfileAPI = 'https://ctx-preprod.weborama.com/api/profile?token=' + token + '&url=' + encodeURIComponent(targetURL),
       	      method = 'GET',
       	      xhr = new XMLHttpRequest(),
@@ -12,16 +12,13 @@
 	    if (timeout>0) {
 	      xhr.timeout = timeout;
 	    }
-	    xhr.responseType = 'json';
-	    if (customHeader.length == 2){
-	      xhr.setRequestHeader(customHeader[0], customHeader[1]);
-	    }
+	    console.log(baseUrls);
 	    xhr.onreadystatechange = function (e) {
 		if (this.readyState == 4){
 		  if (this.status == 200) {	
-		    var weboramaURLProfileResponse = this.response;
+		    var weboramaURLProfileResponse = JSON.parse(this.responseText);
 		    logger("weborama URL Profile API Response");
-		    logger(JSON.stringify(weboramaURLProfileResponse));  
+		    logger(this.responseText);  
 		  } else {
 		    logger("unexpected response code: " + this.status);
 		  }
@@ -59,9 +56,11 @@
       	<label for="timeout">timeout (optional)</label>
       	<input type="text" id="timeout"/>
       </fieldset>
-      <fieldset>
-      	<label for="customHeader">Custom Header (optional, name=value)</label>
-      	<input type="text" id="customHeader"/>
+      <fieldset>  
+	<input type="radio" id="prod" name="baseUrl" value="ctx.weborama.com">
+  	<label for="prod">Prod</label><br>
+  	<input type="radio" id="preprod" name="baseUrl" value="ctx-preprod.weborama.com">
+  	<label for="preprod">Preprod</label><br>
       </fieldset>
       <input type="button" id="submit" value="submit"/>
      </div>
@@ -75,7 +74,7 @@
         var token = document.getElementById('token').value,
           targetURL = document.getElementById('targetURL').value,
           timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
-	  customHeader = document.getElementById('customHeader').value.split('='),
+	  baseUrls = document.querySelectorAll('input[name=baseUrl]'),
 	  logger = document.getElementById("logger"),
 	  mylog = function(text){
 	    console.log(text);
@@ -85,8 +84,8 @@
             element.appendChild(txt);
             logger.appendChild(element);
           };
-        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, customHeader); 
-      	fetchProfileFromContextualAPI(token, targetURL, timeout, customHeader, mylog);
+        console.log("calling fetchProfileFromContextualAPI",token, targetURL, timeout, baseUrls); 
+      	fetchProfileFromContextualAPI(token, targetURL, timeout, baseUrls, mylog);
       });
 	    
       document.getElementById("clear").addEventListener('click', function(){
