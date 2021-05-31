@@ -90,7 +90,8 @@
 			break;
 		}	
 	  }
-          console.log("using",token, targetURL, timeout, baseUrl); 
+          console.log("using",token, targetURL, timeout, baseUrl);
+	  fetchProfileAndDisplayAd(token, targetURL, timeout, baseUrl);
     };
     function clearLog(){
       document.getElementById("logger").innerText = "";
