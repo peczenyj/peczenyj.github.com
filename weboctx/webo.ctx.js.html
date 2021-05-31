@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <title>test contextual url profile</title>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>
+    window.googletag = window.googletag || {cmd: []};
+    googletag.cmd.push(function() {
+ 	googletag.defineSlot('/1056029/test-webo-contextual', [300, 300], 'div-gpt-ad-1620653642627-0').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.enableServices();
+    });
+    </script>
+  </head>
+  <body>
+    <script>
+    function mylog(text){
+	    console.log(text);
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+    }
+    function clientSetupGAMAndDisplayADs(profile){
+        mylog("clientSetupGAMAndDisplayADs: profile=" + JSON.stringify( profile ) );
+    
+	// GAM setup ...
+	googletag.cmd.push(function() {      
+	  for(var key in profile){
+ 	    var value = profile[key];
+	    googletag.pubads().setTargeting(key, value);
+	  }
+	});  
+
+	// and display
+	googletag.cmd.push(function() {  
+	  googletag.display('div-gpt-ad-1620653642627-0');
+	});
+    }
+    function fetchProfileAndDisplayAd(token, targetURL, timeout, baseUrl){
+	  var TOKEN = token,
+	    urlProfileAPI = baseURL + '/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+	    method = 'GET',
+	    xhr = new XMLHttpRequest(),
+	    t0 = 0;
+
+	  xhr.open(method, urlProfileAPI, true);
+	  xhr.timeout = timeout;
+	  xhr.onreadystatechange = function () {
+	    if (this.readyState == 4) {
+	      var profile = {};
+	      if (this.status == 200) {
+		profile = JSON.parse( this.responseText );
+		t1 = performance.now();
+		mylog("request to contextual api: "+baseURL+", success, took: " +(t1 - t0)+ " ms" );
+	      } else {
+		mylog("request to contextual api: "+baseURL+", unexpected status code: " + this.status);      
+	      }
+	      clientSetupGAMAndDisplayADs(profile);
+	    }
+	  };
+	  xhr.ontimeout = function(){
+	    mylog("timeout contextual api: "+baseURL);
+	  };
+	  xhr.onerror = function(){
+	    mylog("error contextual api: "+baseURL);
+	  };
+
+	  xhr.send(null);
+	  t0 = performance.now();
+    }
+    function displayAd(){
+	var token = document.getElementById('token').value,
+	  targetURL = document.getElementById('targetURL').value,
+	  timeout = parseInt(document.getElementById('timeout').value, 10) || 0,
+	  logger = document.getElementById("logger"),
+	  mylog = function(text){
+	    console.log(text);
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+          },
+          baseUrls = document.querySelectorAll('input[name=baseUrl]'),
+          baseUrl = "ctx-preprod.weborama.com";      
+          for(var index in baseUrls){
+		if(baseUrls.hasOwnProperty(index) && baseUrls[index].checked){
+			baseUrl = baseUrls[index].value;
+			break;
+		}	
+	  }
+          console.log("using",token, targetURL, timeout, baseUrl); 
+    };
+    function clearLog(){
+      document.getElementById("logger").innerText = "";
+    }
+    </script>
+  
+    <p>test webo ctx using contextual url defined below (setting ad 300x300 using adslot /1056029/test-webo-contextual)</p>
+    
+    <div id='div-gpt-ad-1620653642627-0' style='width: 300px; height: 300px;'></div>
+
+    <div>
+      <p>parameteres</p>
+      <fieldset>
+      	<label for="token">token</label>
+      	<input type="text" id="token" value="topsecret"/>
+      </fieldset>
+      <fieldset>
+      	<label for="targetURL">target url</label>
+      	<input type="text" id="targetURL" value="https://www.lemonde.fr"/>
+      </fieldset>
+      <fieldset>
+      	<label for="timeout">timeout (milisseconds)</label>
+      	<input type="text" id="timeout" value="200"/>
+      </fieldset>
+      <fieldset>  
+	<input type="radio" id="prod" name="baseUrl" value="ctx.weborama.com">
+  	<label for="prod">Prod</label><br>
+  	<input type="radio" id="preprod" name="baseUrl" value="ctx-preprod.weborama.com" checked>
+  	<label for="preprod">Preprod</label><br>
+      </fieldset>
+      <input type="button" id="display" value="display"/>
+    </div>
+
+    <div id="logger" style="overflow-y: scroll;"></div>
+    <input type="button" id="clear" value="clear output"/>
+    
+    <script>
+    document.getElementById("display").addEventListener('click', displayAd);
+    document.getElementById("clear").addEventListener('click', clearLog);
+    </script>
+   </body>
+</html>	
