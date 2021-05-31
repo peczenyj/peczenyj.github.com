@@ -39,7 +39,7 @@
     }
     function fetchProfileAndDisplayAd(token, targetURL, timeout, baseURL){
 	  var TOKEN = token,
-	    urlProfileAPI = baseURL + '/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+	    urlProfileAPI = 'https://'+ baseURL + '/api/profile?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
 	    method = 'GET',
 	    xhr = new XMLHttpRequest(),
 	    t0 = 0;
