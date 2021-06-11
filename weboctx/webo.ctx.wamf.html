@@ -20,8 +20,9 @@
 <script>
       var wamid = '259'; /* Wam Account ID */
       var typ = '1'; /* Event Type default 1 */
-      var Wcontextual = {
+      var WeboCtxConf = {
       	timeout: 200,
+	debug: true,
       	token: "263GgpvUT8WDTRhPqPTz",
       	targetURL: "https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108",
       };
@@ -44,12 +45,12 @@
  
 <script>
  function clientSetupGAMAndDisplayADs(){
-    console.log("clientSetupGAMAndDisplayADs with weborama contextual profile:", document.weboContextualProfile );
+    console.log("clientSetupGAMAndDisplayADs with weborama contextual profile:", window.weboCtxProfile );
     
     // GAM setup ...
     googletag.cmd.push(function() {      
-      for(var key in document.weboContextualProfile){
-	var value = document.weboContextualProfile[key];
+      for(var key in window.weboCtxProfile){
+	var value = window.weboCtxProfile[key];
 	console.log("setTargeting",key,value);
 	googletag.pubads().setTargeting(key, value);
       }
@@ -61,7 +62,7 @@
     });
  }
  
- setTimeout(clientSetupGAMAndDisplayADs, 250,{});
+ setTimeout(clientSetupGAMAndDisplayADs, 250);
  </script>
     
   </body>
