@@ -41,10 +41,10 @@ function WeboCtx(){
         return
       }
 
-      var baseURL = "https://dx.frontend.weborama.com/collect",
+      var baseURL = "https://dx.frontend-preprod.weborama.com/collect",
         clientID = encodeURIComponent(collectCtxConf.clientID),
         targetURL = extract(collectCtxConf, "targetURL", document.URL),
-        urlCollectAPI = baseURL + "?cookieless=1&touchpoint=" + clientID +
+        urlCollectAPI = baseURL + "?ctx=1&touchpoint=" + clientID +
           "&url=" + encodeURIComponent( targetURL ),
         xhr = new XMLHttpRequest();
 
