@@ -1,15 +1,6 @@
 <html>
   <head>
-    <title>test webo ctx using larep.fr + collect url with client id 123</title>
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-    <script>
-      window.googletag = window.googletag || {cmd: []};
-      googletag.cmd.push(function() {
-        googletag.defineSlot('/1056029/test-webo-contextual', [300, 300], 'div-gpt-ad-1620653642627-0').addService(googletag.pubads());
-        googletag.pubads().disableInitialLoad();
-        googletag.enableServices();
-      });
-    </script>
+    <title>test webo ctx using larep.fr to collect url with client id 123 without activation</title>
 
     <script async src="weboctx.js"></script>
     <script>
@@ -23,34 +14,10 @@
           targetURL: "https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108" // default is document.URL
         });
       });
-      // ACTIVATION + COLLECT URL
-      weboCtx.push(function() {
-          console.log("fetch a custom url and store the profile in window.weboCtxProfile");
-          this.fetchContextualProfile({
-            debug: true, // default false
-            token: "263GgpvUT8WDTRhPqPTz", // mandatory
-            setTargeting: true, // default false
-            targetURL: "https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108" // default is document.URL
-          });
-      });
     </script>
   </head>
 
   <body>
-	<p>test webo ctx using special wamfactory wildcard with contextual support on url https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108 and it should present some ad</p>
-    <!-- /1056029/test-webo-contextual -->
-<div id='div-gpt-ad-1620653642627-0' style='width: 300px; height: 300px;'></div>
-
-<script>
-// and display
-googletag.cmd.push(function() {
-  googletag.display('div-gpt-ad-1620653642627-0');
-});
- </script>
-
- <button onclick="googletag.cmd.push(function() { googletag.pubads().refresh(); });">
-       Show/Refresh Ad
- </button>
-
+	<p>test webo ctx using larep.fr to collect url with client id 123 without activation on url https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108 and it should present some ad</p>
   </body>
 </html>
