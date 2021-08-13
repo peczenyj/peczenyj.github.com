@@ -71,6 +71,7 @@
 
     function initAdserver() {
         if (pbjs.initAdserverSet) return;
+        console.log("calling initAdserver when we reach the failsafe timeout");
         pbjs.initAdserverSet = true;
         googletag.cmd.push(function() {
             pbjs.que.push(function() {
