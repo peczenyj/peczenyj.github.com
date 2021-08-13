@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <title>test webo ctx using larep.fr / (gold)</title>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || {cmd: []};
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1056029/test-webo-contextual', [300, 300], 'div-gpt-ad-1620653642627-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+  </head>
+  
+  <body>
+	<p>test webo ctx using contextual url https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108 and it should present some ad</p>  
+    <!-- /1056029/test-webo-contextual -->
+<div id='div-gpt-ad-1620653642627-0' style='width: 300px; height: 300px;'></div>
+	  
+<div id="logger" style="overflow-y: scroll;"></div>
+
+  <script>
+  function mylog(text){
+	    console.log(text);
+            var element = document.createElement("div");
+            var txt = document.createTextNode(text);
+
+            element.appendChild(txt);
+            logger.appendChild(element);
+  }	  
+	  
+  var alreadyCalled = false; // global state for the function below
+  function clientSetupGAMAndDisplayADs(profile){
+    if ( alreadyCalled ) {
+      return
+    }
+    alreadyCalled = true;
+	  
+    mylog("clientSetupGAMAndDisplayADs: profile=" + JSON.stringify( profile ) );
+    
+    // GAM setup ...
+    googletag.cmd.push(function() {      
+      for(var key in profile){
+	var value = profile[key];
+	
+	googletag.pubads().setTargeting(key, value);
+      }
+    });  
+    
+    // and display
+    googletag.cmd.push(function() {  
+      googletag.display('div-gpt-ad-1620653642627-0');
+    });
+  }	  
+  
+  var TOKEN = '263GgpvUT8WDTRhPqPTz',
+    targetURL = 'https://www.larep.fr/orleans-45000/actualites/l-allocation-de-rentree-scolaire-sera-versee-le-20-aout-dans-le-loiret_13611108' , // instead of document.URL
+    baseURL = "https://ctx.weborama.com/api/profile",
+    urlProfileAPI = baseURL + '?token=' + TOKEN + '&url=' + encodeURIComponent(targetURL),
+    method = 'GET',
+    timeout = 200, // milliseconds
+    xhr = new XMLHttpRequest(),
+    t0 = 0;
+
+  xhr.open(method, urlProfileAPI, true);
+  xhr.timeout = timeout;
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      var profile = {};
+      if (this.status == 200) {
+	profile = JSON.parse( this.responseText );
+	t1 = performance.now();
+	mylog("request to contextual api: "+baseURL+", success, took: " +(t1 - t0)+ " ms" );
+      } else {
+	mylog("request to contextual api: "+baseURL+", unexpected status code: " + this.status);      
+      }
+      clientSetupGAMAndDisplayADs(profile);
+    }
+  };
+  xhr.ontimeout = function(){
+    mylog("timeout contextual api: "+baseURL);
+  };
+  xhr.onerror = function(){
+    mylog("error contextual api: "+baseURL);
+  };
+
+  xhr.send(null);
+  t0 = performance.now();
+
+  // fallback
+  setTimeout(clientSetupGAMAndDisplayADs, timeout,{});
+  </script>
+    
+  </body>
+</html>
