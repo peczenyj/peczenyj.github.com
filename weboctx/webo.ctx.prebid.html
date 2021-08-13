@@ -71,6 +71,18 @@
 
     function initAdserver() {
         if (pbjs.initAdserverSet) return;
+        console.log("calling initAdserver normally");
+        pbjs.initAdserverSet = true;
+        googletag.cmd.push(function() {
+            pbjs.que.push(function() {
+                pbjs.setTargetingForGPTAsync();
+                googletag.pubads().refresh();
+            });
+        });
+    }
+    
+    function initAdserver2() {
+        if (pbjs.initAdserverSet) return;
         console.log("calling initAdserver when we reach the failsafe timeout");
         pbjs.initAdserverSet = true;
         googletag.cmd.push(function() {
@@ -83,7 +95,7 @@
 
     // in case PBJS doesn't load
     setTimeout(function() {
-        initAdserver();
+        initAdserver2();
     }, FAILSAFE_TIMEOUT);
 
     googletag.cmd.push(function() {
