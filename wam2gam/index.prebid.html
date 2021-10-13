@@ -13,6 +13,7 @@
     pbjs.que.push(function() {
         pbjs.setConfig({
             debug: true,
+	    auctionDelay: 5000,	
             realTimeData: {
                 dataProviders: [
                     {
@@ -41,6 +42,27 @@ var div_1_sizes = [
 var div_1_id = 'banner-ad-1';
 
 var gam_ad_slot = '/1056029/webo-ctx-prebid';
+
+    var PREBID_TIMEOUT = 3000;
+    var FAILSAFE_TIMEOUT = 5000;
+
+    var adUnits = [
+        {
+            code: gam_ad_slot, 
+            mediaTypes: {
+                banner: {
+                    sizes: div_1_sizes
+                }
+            },
+            bids: [/*{
+                bidder: 'appnexus',
+                params: {
+                        placementId: 1
+                }
+            }*/]
+        }
+        ];
+
 
 // see:
 // https://developers.google.com/publisher-tag/guides/key-value-targeting
