@@ -3,14 +3,22 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Demo prebid.js with Weborama RTD Module</title>
+
+    <script>
+	    if(window.localStorage){
+		localStorage.setItem('webo_wam2gam_entry','{"targeting":{"webo_cs":["red"]}}');
+	    }
+    </script>
 </head>
 
 <body>
     <div>
         <p>demo: prebid.js version 6.6.0 with weborama RTD submodule using different types of configuration</p><br />
-        <a href="index.prebid.01.html">site-centric (contextual) only</a><br />
-        <a href="index.prebid.02.html">user-centric (wam) only</a><br />
-        <a href="index.prebid.03.html">site-centric (contextual) + user-centric (wam)</a><br />
+        <ul>
+            <li><a href="index.prebid.01.html">site-centric (contextual) only</a></li>
+            <li><a href="index.prebid.02.html">user-centric (wam) only</a></li>
+            <li><a href="index.prebid.03.html">site-centric (contextual) + user-centric (wam)</a></li>
+        </ul>
     </div>
 
     <div>
