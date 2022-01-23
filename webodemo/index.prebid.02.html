@@ -115,6 +115,32 @@
     </div>
     <p>expects user-centric ad only</p>
     <button onclick="googletag.cmd.push(function() { googletag.pubads().refresh(); });">Show/Refresh Ad</button><br/>
+ 
+    <div>
+        <p>Prebid module setup</p>
+<pre>
+var pbjs = pbjs || {};
+pbjs.que = pbjs.que || [];
+
+pbjs.que.push(function () {
+    pbjs.setConfig({
+        debug: true, // enable console logging
+        realTimeData: {
+            auctionDelay: 1000,
+            dataProviders: [{
+                name: "weborama",
+                waitForIt: true,
+                params: {
+                    weboUserDataConf: { // user-centric configuration (wam)
+                        accountId: 12345, // recommended
+                    }
+                }
+            }]
+        }
+    });
+});    
+</pre>
+    </div> 
     <a href="index.html">return to index</a>
 </body>
 
