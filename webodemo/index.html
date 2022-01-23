@@ -4,9 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Demo prebid.js with Weborama RTD Module</title>
     <script>
-	    if(window.localStorage){
-		localStorage.removeItem('webo_wam2gam_entry');
-	    }
+        if (window.localStorage) {
+            localStorage.removeItem('webo_wam2gam_entry');
+        }
     </script>
 </head>
 
@@ -21,22 +21,163 @@
     </div>
 
     <div>
-        Site-Centric configuration will use the profile of one page in http://www.laprovence.com with profile:
+        Site-Centric configuration will use the profile of one page in http://www.laprovence.com with this <b>contextual</b> profile:
         <pre>
-	  {
-	    webo_ctx: ["Rugby_c3569", "Travel_in_France_c3524"]
-          }
+{
+    webo_ctx: ["Rugby_c3569", "Travel_in_France_c3524"]
+}
 	   </pre>
     </div>
 
     <div>
-        User-Centric configuration expects the page loads wamfactory wildcard js tag with <b>wam2gam</b> enabled, it will store on localStorage the following profile:
+        User-Centric configuration expects the page loads <b>wamfactory</b> tag with <b>wam2gam</b> enabled, it
+        will store on localStorage the following profile (where webo_cs represent the custom segment list):
         <pre>
-	    {
-	      webo_cs: ["red"]
-	    }
+{
+    webo_cs: ["red"]
+}
 	    </pre>
     </div>
+
+    <div>
+        <p>Google AD Manager Configuration</p>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>creative</th>
+                    <th>targeting</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <img alt="site centric (contextual)" src="img/site-centric.png" width="100" height="100" />
+                    </td>
+                    <td>
+                        webo_ctx is "Travel_in_France_c3524"
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img alt="user centric (wam)" src="img/user-centric.jpg" width="100" height="100" />
+                    </td>
+                    <td>
+                        webo_cs is "red"
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <p>Prebid module setup</p>
+<pre>
+var pbjs = pbjs || {};
+pbjs.que = pbjs.que || [];
+
+pbjs.que.push(function () {
+    pbjs.setConfig({
+        debug: true, // enable console logging
+        realTimeData: {
+            auctionDelay: 1000,
+            dataProviders: [{
+                name: "weborama",
+                waitForIt: true,
+                params: {
+                    weboCtxConf: { // site-centric configuration (contextual)
+                        token: "263GgpvUT8WDTRhPqPTz", // mandatory
+                        // default targetURL is document.URL
+                        targetURL: "http://www.laprovence.com/actu/en-direct/5922313/video-rugby-a-xiii-elite-1-le-so-avignon-sincline-face-a-saint-esteve-xiii-catalan.html",
+                    },
+                    weboUserDataConf: { // user-centric configuration (wam)
+                        accountId: 12345, // recommended
+                    }
+                }
+            }]
+        }
+    });
+});    
+</pre>
+    <p>Prebid adunit setup</p>
+    <pre>
+var adUnits = [{
+    code: '/1056029/webo-ctx-prebid',
+    mediaTypes: {
+        banner: {
+            sizes: [300,300]
+        }
+    },
+    bids: [{
+        bidder: 'smartadserver',
+        params: {
+            siteId: 1234,
+            pageId: 1234,
+            formatId: 1234,
+        }
+    }]
+}];
+
+var pbjs = pbjs || {};
+pbjs.que = pbjs.que || [];
+
+pbjs.que.push(function () {
+    pbjs.addAdUnits(adUnits);
+    pbjs.requestBids({
+        bidsBackHandler: initAdserver,
+        timeout: 5000
+    });
+});
+    </pre>
+    <p>GAM setup</p>
+    <pre>
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+googletag.cmd.push(function () {
+    // googletag lazy initialization, will wait for `refresh()` to display ads
+    googletag.pubads().disableInitialLoad();
+});
+
+googletag.cmd.push(function () {
+    googletag.defineSlot('/1056029/webo-ctx-prebid', [300,300], 'div-gpt-ad-1629281425486-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+});
+    </pre>
+<p>GAM on Prebid.js</p>
+<pre>
+// pbjs requestBids bidsBackHandler
+function initAdserver() {
+    if (pbjs.initAdserverSet) return;
+    pbjs.initAdserverSet = true;
+    googletag.cmd.push(function () {
+        pbjs.que.push(function () {
+            // set targeting on GAM
+            pbjs.setTargetingForGPTAsync();
+
+            // refresh adunits
+            googletag.pubads().refresh();
+        });
+    });
+}
+
+// in case PBJS doesn't load (failsafe)
+setTimeout(function () {
+    initAdserver();
+}, 3000);
+</pre> 
+
+<p>AdUnit itself</p>
+<textarea style='min-width: 600px; min-height: 150px;'>
+<div id='div-gpt-ad-1629281425486-0' style='min-width: 300px; min-height: 300px;'>
+    <script>
+        googletag.cmd.push(function () {
+            googletag.display('div-gpt-ad-1629281425486-0');
+        });
+    </script>
+</div>
+</textarea>
+</div>
+    
 </body>
 
 </html>
