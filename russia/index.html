@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>test sync russia</title>
+  </head>
+  <body>
+  <script type='text/javascript'>
+var wamid = '555'; /* Wam Account ID */
+
+/* Segments: 3 methods (choose one of them) */
+
+/* Segments: Json object method */
+//var Wvar =  {"key1":"abc","key2":"efg","key4":["1","2"],"key3":["val1","val2","val3","val4"]};
+
+/* Segments: Array method */
+//var Wvar = ["key2:efg","key1:abc","key4:1","key4:2" ,"key3:val1" ,"key3:val2","key3:val3","key3:val4"];
+
+/* Segments: Array push method */ 
+/*
+var Wvar=[];
+Wvar.push('key2','efg');
+Wvar.push('key1','abc');
+Wvar.push('key4','1');
+Wvar.push('key4','2');
+Wvar.push('key3','val1');
+Wvar.push('key3','val2');
+Wvar.push('key3','val3');
+Wvar.push('key3','val4');
+*/
+
+var wamhost = 'wf-ru-frontend.weborama-tech.ru';
+
+(function(){
+var w = document.createElement("script");
+w.type = "text/javascript";
+w.src = document.location.protocol + "//cstatic.weborama-tech.ru/js/wam/customers/wamfactory_dpm.wildcard.min.js?rnd="+new Date().getTime();
+w.async = true;
+var body = document.getElementsByTagName('script')[0];
+body.parentNode.insertBefore(w,body);
+})();
+</script>
+
+<a href="#" onClick="window.wamf.eventSend('2','EventKey','EventValue');">Event</a>  
+  </body>
+</html>
