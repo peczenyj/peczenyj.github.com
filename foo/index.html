@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consent removal example</title>
+    <script>
+        window.wamid = "123456";
+        window.wamhost= "wf.frontend-preprod.weborama.fr"
+    </script>
+</head>
+<body>
+    <button onclick="loadScript()">Remove consent</button>
+</body>
+<script>
+    const loadScript = () => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = `./consent_withdrawal.js`;
+        script.onload = () => {
+            console.log("Consent removal script loaded");
+        };
+        document.head.appendChild(script);
+    }
+</script>
+</html>
