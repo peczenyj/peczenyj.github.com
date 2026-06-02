@@ -83,4 +83,18 @@ class MigrateTest < Minitest::Test
     assert_equal "", fm
     assert_equal "no front matter here", body
   end
+
+  # --- resolve_destinations: collision handling ---
+  def test_resolve_destinations_no_collision
+    m = Migrate.resolve_destinations(["2013-01-22-foo.markdown", "2008-06-13-bar.html"])
+    assert_equal "foo.md", m["2013-01-22-foo.markdown"]
+    assert_equal "bar.html", m["2008-06-13-bar.html"]
+  end
+
+  def test_resolve_destinations_two_way_collision
+    files = ["2008-03-10-pra-bom-entendedor.html", "2007-07-06-pra-bom-entendedor.html"]
+    m = Migrate.resolve_destinations(files)
+    assert_equal "pra-bom-entendedor.html", m["2007-07-06-pra-bom-entendedor.html"]
+    assert_equal "2008-03-10-pra-bom-entendedor.html", m["2008-03-10-pra-bom-entendedor.html"]
+  end
 end

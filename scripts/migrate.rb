@@ -74,36 +74,41 @@ module Migrate
     end
   end
 
+  # Map each source filename -> unique destination basename.
+  # On slug collisions, the first file (in sorted order) keeps the plain
+  # slug; later ones fall back to the full date-prefixed name. Assumes at
+  # most 2-way collisions, which holds for this corpus; a 3-way collision
+  # sharing the same date+slug is not handled and would still collide.
+  def resolve_destinations(filenames)
+    sorted = filenames.sort
+    counts = Hash.new(0)
+    sorted.each { |f| counts[dest_name(f)] += 1 }
+    seen = Hash.new(0)
+    mapping = {}
+    sorted.each do |f|
+      base = dest_name(f)
+      if counts[base] > 1
+        seen[base] += 1
+        base = f.sub(/\.markdown\z/, ".md") if seen[base] > 1
+      end
+      mapping[f] = base
+    end
+    mapping
+  end
+
   def run
     FileUtils.mkdir_p(DEST_DIR)
-    migrated = 0
+    all_files = Dir.children(SRC_DIR).select { |f| File.file?(File.join(SRC_DIR, f)) }
+    mapping = resolve_destinations(all_files)
     flagged = []
-    # Detect slug collisions: when two source files map to the same dest name,
-    # keep the date prefix in the output filename for all but the first occurrence.
-    all_files = Dir.children(SRC_DIR).sort.select { |f| File.file?(File.join(SRC_DIR, f)) }
-    seen = Hash.new(0)
-    all_files.each { |f| seen[dest_name(f)] += 1 }
-    collision_count = Hash.new(0)
-    all_files.each do |filename|
-      path = File.join(SRC_DIR, filename)
-      content = File.read(path, encoding: "UTF-8")
+    mapping.each do |filename, base|
+      content = File.read(File.join(SRC_DIR, filename), encoding: "UTF-8")
       fm, body = split_post(content)
-      new_fm = convert_frontmatter(fm)
       new_body = convert_body(body)
-      base = dest_name(filename)
-      if seen[base] > 1
-        collision_count[base] += 1
-        if collision_count[base] > 1
-          # Use the date-prefixed version (keep .markdown->.md extension fix)
-          base = filename.sub(/\.markdown\z/, ".md")
-        end
-      end
-      dest = File.join(DEST_DIR, base)
-      File.write(dest, "---\n#{new_fm}---\n\n#{new_body}")
-      migrated += 1
+      File.write(File.join(DEST_DIR, base), "---\n#{convert_frontmatter(fm)}---\n\n#{new_body}")
       flagged << filename if has_unconverted_liquid?(new_body)
     end
-    puts "Migrated #{migrated} posts -> #{DEST_DIR}"
+    puts "Migrated #{mapping.size} posts -> #{DEST_DIR}"
     if flagged.empty?
       puts "No un-converted Liquid tags remaining."
     else
