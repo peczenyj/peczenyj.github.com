@@ -35,6 +35,14 @@ module Migrate
         next
       when /\Adate\s*:\s*(.+)/   # `.+` stops before the newline; no end-anchor
         out << "date: #{normalize_date($1.strip)}\n"
+      when /\Acategories\s*:\s*(.*)/
+        val = $1.strip
+        if val.empty? || val.start_with?("[")
+          out << line   # multi-line list or already-inline list: leave as-is
+        else
+          items = val.split(",").map(&:strip).reject(&:empty?)
+          out << "categories: [#{items.join(", ")}]\n"
+        end
       else
         out << line
       end

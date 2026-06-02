@@ -97,4 +97,18 @@ class MigrateTest < Minitest::Test
     assert_equal "pra-bom-entendedor.html", m["2007-07-06-pra-bom-entendedor.html"]
     assert_equal "2008-03-10-pra-bom-entendedor.html", m["2008-03-10-pra-bom-entendedor.html"]
   end
+
+  # --- convert_frontmatter: categories normalization ---
+  def test_convert_frontmatter_bare_categories_becomes_list
+    assert_includes Migrate.convert_frontmatter("categories: Ruby, Perl\n"), "categories: [Ruby, Perl]"
+  end
+
+  def test_convert_frontmatter_single_bare_category_becomes_list
+    assert_includes Migrate.convert_frontmatter("categories: Perl\n"), "categories: [Perl]"
+  end
+
+  def test_convert_frontmatter_inline_list_unchanged
+    out = Migrate.convert_frontmatter("categories: [ Ruby, MooseX, AOP ]\n")
+    assert_includes out, "categories: [ Ruby, MooseX, AOP ]"
+  end
 end
