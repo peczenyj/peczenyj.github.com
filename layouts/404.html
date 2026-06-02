@@ -1,0 +1,11 @@
+{{ define "main" }}
+<article class="page">
+  <h1 class="post-title">Whoops — I couldn't find that page</h1>
+  <p>You may want to <a href="/">visit the homepage</a>. Here are some recent posts:</p>
+  <ul class="post-list">
+    {{ range first 10 (where .Site.RegularPages "Section" "post").ByDate.Reverse }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+</article>
+{{ end }}
