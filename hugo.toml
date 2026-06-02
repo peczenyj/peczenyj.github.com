@@ -1,0 +1,31 @@
+baseURL = "https://pacman.blog.br/"
+languageCode = "en-us"
+title = "Peczenyj's Blog"
+enableRobotsTXT = false   # we ship our own static/robots.txt
+
+[params]
+  subtitle = "Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker"
+  author = "Tiago Peczenyj"
+
+[permalinks]
+  post = "/blog/:year/:month/:day/:slug/"
+
+[taxonomies]
+  category = "categories"
+
+[markup]
+  [markup.highlight]
+    style = "solarized-dark"
+    lineNos = false
+    noClasses = true
+  [markup.goldmark.renderer]
+    unsafe = true   # old markdown posts contain raw HTML
+
+[outputs]
+  home = ["HTML", "RSS"]
+
+# Serve the feed at /atom.xml to preserve old subscribers
+[outputFormats]
+  [outputFormats.RSS]
+    mediaType = "application/rss+xml"
+    baseName = "atom"
