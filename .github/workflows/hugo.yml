@@ -33,6 +33,8 @@ jobs:
         id: pages
       - name: Build
         run: hugo --gc --minify
+      - name: Verify legacy redirects
+        run: ruby scripts/verify_redirects.rb ./public
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
