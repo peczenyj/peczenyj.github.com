@@ -68,4 +68,19 @@ class MigrateTest < Minitest::Test
     assert Migrate.has_unconverted_liquid?("{% codeblock %}")
     refute Migrate.has_unconverted_liquid?("{{< gist 1 >}}")
   end
+
+  # --- split_post: separates front matter from body ---
+  def test_split_post_separates_frontmatter_and_body
+    content = %(---\ntitle: "Hi"\ndate: 2013-01-22 16:00\n---\n\n<div>body</div>\n)
+    fm, body = Migrate.split_post(content)
+    assert_includes fm, 'title: "Hi"'
+    assert_includes fm, "date: 2013-01-22 16:00"
+    assert_includes body, "<div>body</div>"
+  end
+
+  def test_split_post_no_frontmatter_returns_whole_as_body
+    fm, body = Migrate.split_post("no front matter here")
+    assert_equal "", fm
+    assert_equal "no front matter here", body
+  end
 end

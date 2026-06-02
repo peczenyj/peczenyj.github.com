@@ -86,7 +86,7 @@ module Migrate
       new_fm = convert_frontmatter(fm)
       new_body = convert_body(body)
       dest = File.join(DEST_DIR, dest_name(filename))
-      File.write(dest, "---\n#{new_fm}---\n#{new_body}")
+      File.write(dest, "---\n#{new_fm}---\n\n#{new_body}")
       migrated += 1
       flagged << filename if has_unconverted_liquid?(new_body)
     end
