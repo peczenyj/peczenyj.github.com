@@ -1,7 +1,7 @@
 ---
 title: "Schwartzian transform"
 date: 2013-01-22T16:00:00
-categories: Ruby, Perl
+categories: [Ruby, Perl]
 ---
 
 I will show in this post one of the most useful things that I learn in Perl: the famous Schwartzian transform. With examples in Ruby

@@ -1,7 +1,7 @@
 ---
 title: "Lazy::Bool my first module in CPAN"
 date: 2013-01-23T20:15:00
-categories: Perl
+categories: [Perl]
 ---
 
 [Lazy::Bool](https://metacpan.org/release/Lazy-Bool) is my first module in [CPAN](http://www.cpan.org/) (The Comprehensive Perl Archive Network). It is a simple module (only 60 lines) and few methods/operators but can be useful in some situation. The source code can be found in my [github](https://github.com/peczenyj/Lazy-Bool).
