@@ -1,4 +1,4 @@
-baseURL = "https://pacman.blog.br/"
+baseURL = "http://pacman.blog.br/"   # HTTP-only for now; switch to https:// once the cert is provisioned
 languageCode = "en-us"
 title = "Peczenyj's Blog"
 enableRobotsTXT = false   # we ship our own static/robots.txt
