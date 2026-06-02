@@ -16,6 +16,17 @@ module Migrate
     base.sub(/\.markdown\z/, ".md")
   end
 
+  # The original Octopress URL for a post, derived from its dated filename:
+  # "2008-03-10-pra-bom-entendedor.html" -> "/blog/2008/03/10/pra-bom-entendedor/".
+  # Used to pin the URL of a collision-renamed file (whose on-disk name no
+  # longer maps to the right path via the :filename permalink). Returns nil
+  # if the filename lacks a date prefix.
+  def post_url(filename)
+    m = filename.match(/\A(\d{4})-(\d{2})-(\d{2})-(.+)\.(?:html|markdown|md)\z/)
+    return nil unless m
+    "/blog/#{m[1]}/#{m[2]}/#{m[3]}/#{m[4]}/"
+  end
+
   # "2013-01-22 16:00" -> "2013-01-22T16:00:00"; ISO strings pass through.
   def normalize_date(value)
     v = value.to_s.strip
@@ -113,7 +124,11 @@ module Migrate
       content = File.read(File.join(SRC_DIR, filename), encoding: "UTF-8")
       fm, body = split_post(content)
       new_body = convert_body(body)
-      File.write(File.join(DEST_DIR, base), "---\n#{convert_frontmatter(fm)}---\n\n#{new_body}")
+      new_fm = convert_frontmatter(fm)
+      # A collision-renamed file keeps its date prefix; pin its real URL so the
+      # :filename permalink doesn't emit a doubled-date path.
+      new_fm += "url: #{post_url(filename)}\n" if base =~ DATE_PREFIX
+      File.write(File.join(DEST_DIR, base), "---\n#{new_fm}---\n\n#{new_body}")
       flagged << filename if has_unconverted_liquid?(new_body)
     end
     puts "Migrated #{mapping.size} posts -> #{DEST_DIR}"

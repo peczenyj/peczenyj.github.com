@@ -13,6 +13,21 @@ class MigrateTest < Minitest::Test
       Migrate.dest_name("2008-06-13-blog-post.html")
   end
 
+  # --- post_url: dated filename -> original Octopress URL ---
+  def test_post_url_html
+    assert_equal "/blog/2008/03/10/pra-bom-entendedor/",
+      Migrate.post_url("2008-03-10-pra-bom-entendedor.html")
+  end
+
+  def test_post_url_markdown
+    assert_equal "/blog/2013/01/22/schwartzian-transform/",
+      Migrate.post_url("2013-01-22-schwartzian-transform.markdown")
+  end
+
+  def test_post_url_without_date_prefix_is_nil
+    assert_nil Migrate.post_url("schwartzian-transform.md")
+  end
+
   # --- normalize_date: space form -> ISO T form; ISO passes through ---
   def test_normalize_date_space_form
     assert_equal "2013-01-22T16:00:00", Migrate.normalize_date("2013-01-22 16:00")

@@ -8,7 +8,7 @@ enableRobotsTXT = false   # we ship our own static/robots.txt
   author = "Tiago Peczenyj"
 
 [permalinks]
-  post = "/blog/:year/:month/:day/:slug/"
+  post = "/blog/:year/:month/:day/:filename/"
 
 [taxonomies]
   category = "categories"
