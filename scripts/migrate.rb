@@ -78,14 +78,27 @@ module Migrate
     FileUtils.mkdir_p(DEST_DIR)
     migrated = 0
     flagged = []
-    Dir.children(SRC_DIR).sort.each do |filename|
+    # Detect slug collisions: when two source files map to the same dest name,
+    # keep the date prefix in the output filename for all but the first occurrence.
+    all_files = Dir.children(SRC_DIR).sort.select { |f| File.file?(File.join(SRC_DIR, f)) }
+    seen = Hash.new(0)
+    all_files.each { |f| seen[dest_name(f)] += 1 }
+    collision_count = Hash.new(0)
+    all_files.each do |filename|
       path = File.join(SRC_DIR, filename)
-      next unless File.file?(path)
       content = File.read(path, encoding: "UTF-8")
       fm, body = split_post(content)
       new_fm = convert_frontmatter(fm)
       new_body = convert_body(body)
-      dest = File.join(DEST_DIR, dest_name(filename))
+      base = dest_name(filename)
+      if seen[base] > 1
+        collision_count[base] += 1
+        if collision_count[base] > 1
+          # Use the date-prefixed version (keep .markdown->.md extension fix)
+          base = filename.sub(/\.markdown\z/, ".md")
+        end
+      end
+      dest = File.join(DEST_DIR, base)
       File.write(dest, "---\n#{new_fm}---\n\n#{new_body}")
       migrated += 1
       flagged << filename if has_unconverted_liquid?(new_body)
