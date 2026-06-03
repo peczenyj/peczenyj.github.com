@@ -4,7 +4,7 @@ title = "Peczenyj's Blog"
 enableRobotsTXT = false   # we ship our own static/robots.txt
 
 [params]
-  subtitle = "Just Another /Perl|Ruby|C++|Java|Python|JavaScript|Flash|Bash/ Hacker"
+  subtitle = "Just Another Golang Hacker"
   author = "Tiago Peczenyj"
 
 [permalinks]
