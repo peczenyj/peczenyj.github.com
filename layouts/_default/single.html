@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article class="post">
+  <h1 class="post-title">{{ .Title }}</h1>
+  {{ if not .Date.IsZero }}<time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>{{ end }}
+  {{ with .Params.categories }}
+  <div class="post-categories">{{ range . }}<span class="category">{{ . }}</span> {{ end }}</div>
+  {{ end }}
+  <div class="post-content">{{ .Content }}</div>
+</article>
+{{ end }}

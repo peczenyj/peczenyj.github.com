@@ -1,0 +1,31 @@
+baseURL = "http://pacman.blog.br/"   # HTTP-only for now; switch to https:// once the cert is provisioned
+languageCode = "en-us"
+title = "Peczenyj's Blog"
+enableRobotsTXT = false   # we ship our own static/robots.txt
+
+[params]
+  subtitle = "Just Another Golang Hacker"
+  author = "Tiago Peczenyj"
+
+[permalinks]
+  post = "/blog/:year/:month/:day/:filename/"
+
+[taxonomies]
+  category = "categories"
+
+[markup]
+  [markup.highlight]
+    style = "solarized-dark"
+    lineNos = false
+    noClasses = true
+  [markup.goldmark.renderer]
+    unsafe = true   # old markdown posts contain raw HTML
+
+[outputs]
+  home = ["HTML", "RSS"]
+
+# Serve the feed at /atom.xml to preserve old subscribers
+[outputFormats]
+  [outputFormats.RSS]
+    mediaType = "application/rss+xml"
+    baseName = "atom"
