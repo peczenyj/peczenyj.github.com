@@ -64,9 +64,8 @@ carries an explicit `url:` to keep its original path under the `:filename` schem
 **Feed** is served at `/atom.xml` (Hugo's RSS output, `baseName = "atom"`) to
 preserve old subscribers.
 
-**`baseURL` is `http://` temporarily** — the domain is HTTP-only until a cert is
-provisioned. Flip to `https://` then; it controls absolute URLs in the feed,
-canonical tags, and sitemap.
+**`baseURL` is `https://`** and GitHub Pages enforces HTTPS (http 301s to
+https). It controls absolute URLs in the feed, canonical tags, and sitemap.
 
 ## Ruby in this repo
 

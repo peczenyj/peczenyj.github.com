@@ -1,7 +1,7 @@
 # pacman.blog.br
 
 Tiago Peczenyj's personal blog, built with [Hugo](https://gohugo.io/) and
-deployed to GitHub Pages at <http://pacman.blog.br> (HTTPS coming soon).
+deployed to GitHub Pages at <https://pacman.blog.br>.
 
 Migrated from Octopress in 2026; old `/blog/:year/:month/:day/:slug/` URLs are
 preserved.
