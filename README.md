@@ -93,9 +93,8 @@ The RSS feed is served at `/atom.xml` (renamed from Hugo's default
 
 ## Migration provenance
 
-The original Octopress posts are kept in `source/_posts/`, and the conversion
-is reproducible via `scripts/migrate.rb` (`ruby scripts/migrate_test.rb` runs
-its unit tests). `scripts/verify_redirects.rb` is the CI guard for legacy
-redirects. This Ruby tooling — along with the remaining Octopress files
-(`Rakefile`, `Gemfile`, `plugins/`, `config.rb`) — is slated for removal in a
-follow-up cleanup.
+The site was migrated from Octopress in 2026. The original posts and the
+migration tooling were removed once the migration was complete — they live on
+in git history (and the full pre-migration site is preserved in the
+`octopress-archive` tag). `scripts/verify_redirects.rb` remains as the CI
+guard for legacy redirects.
