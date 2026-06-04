@@ -19,8 +19,6 @@ mise exec -- hugo server         # local preview at http://localhost:1313/ (add 
 mise exec -- hugo --gc --minify  # production build into public/
 hugo new post/my-post.md         # scaffold a post from archetypes/post.md
 
-ruby scripts/migrate_test.rb               # migration unit tests
-ruby scripts/migrate_test.rb -n test_post_url_html   # a single test (minitest -n)
 ruby scripts/verify_redirects.rb public    # redirect guard (run after a build)
 ```
 
@@ -50,8 +48,8 @@ is required because Markdown posts contain raw HTML.
 
 **The `/wiki/index.php/` redirect is load-bearing.** One externally-indexed
 legacy URL must never break (see `static/wiki/index.php/index.html`, a static
-meta-refresh to the GAWK post). It's a static file — not a front-matter alias —
-because `migrate.rb` regenerates `content/post/` and would clobber an alias.
+meta-refresh to the GAWK post). It's a static file rather than a front-matter
+alias (a historical choice from the migration; both work now).
 `scripts/verify_redirects.rb` runs in CI and **fails the deploy** if this
 redirect or its target page disappears. Don't delete `static/wiki/`.
 
@@ -59,7 +57,6 @@ redirect or its target page disappears. Don't delete `static/wiki/`.
 `pra-bom-entendedor` on different dates; the migration date-prefixed one
 filename to avoid a collision, so `content/post/2008-03-10-pra-bom-entendedor.html`
 carries an explicit `url:` to keep its original path under the `:filename` scheme.
-`migrate.rb` re-emits this on every run.
 
 **Feed** is served at `/atom.xml` (Hugo's RSS output, `baseName = "atom"`) to
 preserve old subscribers.
@@ -69,14 +66,10 @@ https). It controls absolute URLs in the feed, canonical tags, and sitemap.
 
 ## Ruby in this repo
 
-Two unrelated kinds, both slated for removal in a follow-up PR:
-
-- **Migration provenance (keep for now):** `scripts/migrate.rb` (+ tests) converts
-  `source/_posts/` → `content/post/` and is idempotent (re-running reproduces the
-  committed content byte-for-byte). `scripts/verify_redirects.rb` is the CI guard.
-  `source/_posts/` is retained solely as the migration input.
-- **Dead Octopress framework:** `Rakefile`, `Gemfile`/`Gemfile.lock`, `plugins/`,
-  `config.rb`, `config.ru`. None of it runs under Hugo.
+Only `scripts/verify_redirects.rb` — the CI redirect guard. The Octopress
+framework and the migration tooling (`scripts/migrate.rb`, `source/_posts/`)
+were removed after the migration completed; they're recoverable from git
+history, and the full pre-migration site lives in the `octopress-archive` tag.
 
 ## Theme
 
